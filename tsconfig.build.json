@@ -1,0 +1,14 @@
+{
+  "extends": "@tsconfig/node16",
+  "compilerOptions": {
+    "outDir": "./lib",
+    "moduleResolution": "Node",
+    "module": "CommonJS"
+  },
+  "include": [
+    "./src/**.ts"
+  ],
+  "exclude": [
+    "./src/**.test.ts"
+  ]
+}

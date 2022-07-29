@@ -1,0 +1,36 @@
+{
+  "name": "@cntrl-site/sdk",
+  "version": "0.0.1",
+  "description": "Generic SDK for use in public websites.",
+  "main": "lib/index.js",
+  "types": "src/index.ts",
+  "scripts": {
+    "test": "jest",
+    "prebuild": "rm -rf ./lib",
+    "build": "tsc --project tsconfig.build.json",
+    "prepublishOnly": "NODE_ENV=production npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cntrl-site/sdk.git"
+  },
+  "author": "arsen@momdesign.nyc",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cntrl-site/sdk/issues"
+  },
+  "homepage": "https://github.com/cntrl-site/sdk#readme",
+  "directories": {
+    "lib": "lib"
+  },
+  "dependencies": {
+    "@cntrl-site/core": "^1.0.3",
+    "isomorphic-fetch": "^3.0.0"
+  },
+  "devDependencies": {
+    "@tsconfig/node16": "^1.0.3",
+    "@tsconfig/recommended": "^1.0.1",
+    "@types/isomorphic-fetch": "^0.0.36",
+    "typescript": "^4.7.4"
+  }
+}
