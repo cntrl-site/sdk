@@ -6,7 +6,14 @@ export class Client {
     private projectId: string,
     private APIUrl: string,
     private fetchImpl = fetch
-  ) {}
+  ) {
+    if (projectId.length === 0) {
+      throw new Error('CNTRL SDK: Project ID is empty. Did you forget to pass it?');
+    }
+    if (APIUrl.length === 0) {
+      throw new Error('CNTRL SDK: API URL is empty. Did you forget to pass it?');
+    }
+  }
 
   async getProject(): Promise<TProject> {
     const response = await this.fetchImpl(`${this.APIUrl}/projects/${this.projectId}`);
