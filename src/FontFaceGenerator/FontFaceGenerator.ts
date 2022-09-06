@@ -1,7 +1,8 @@
 import { TCustomFont } from '@cntrl-site/core';
 
 const FILE_TYPES_MAP: Record<string, string> = {
-  ttf: 'truetype'
+  ttf: 'truetype',
+  otf: 'opentype'
 };
 
 export class FontFaceGenerator {
