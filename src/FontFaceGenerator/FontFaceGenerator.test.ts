@@ -1,5 +1,5 @@
 import { FontFaceGenerator } from './FontFaceGenerator';
-import { TCustomFont } from '@cntrl-site/core';
+import { FontFileTypes, TCustomFont } from '@cntrl-site/core';
 
 describe('FontFaceGenerator', () => {
   it('generates font face with eot', () => {
@@ -10,11 +10,11 @@ describe('FontFaceGenerator', () => {
         style: 'normal',
         files: [
           {
-            type: 'eot',
+            type: FontFileTypes.EOT,
             url: 'link/to/font.eot'
           },
           {
-            type: 'woff',
+            type: FontFileTypes.WOFF,
             url: 'link/to/font.woff'
           }
         ]
@@ -25,11 +25,11 @@ describe('FontFaceGenerator', () => {
         style: 'italic',
         files: [
           {
-            type: 'woff',
+            type: FontFileTypes.WOFF,
             url: 'link/to/font.woff'
           },
           {
-            type: 'ttf',
+            type: FontFileTypes.TTF,
             url: 'link/to/font.ttf'
           }
         ]
