@@ -47,8 +47,8 @@ export class Client {
     return article;
   }
 
-  public static getPageMeta(projectMeta: TMeta, pageMeta: TPageMeta, enableMeta: boolean): TMeta {
-    return enableMeta ? {
+  public static getPageMeta(projectMeta: TMeta, pageMeta: TPageMeta): TMeta {
+    return pageMeta.enabled ? {
       title: pageMeta.title ? pageMeta.title : projectMeta.title,
       description: pageMeta.description ? pageMeta.description : projectMeta.description,
       keywords: pageMeta.keywords ? pageMeta.keywords : projectMeta.keywords,
