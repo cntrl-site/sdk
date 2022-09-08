@@ -47,13 +47,13 @@ export class Client {
     return article;
   }
 
-  public static getPageMeta(projectMeta: TMeta, pageMeta: TPageMeta): TMeta {
-    return {
+  public static getPageMeta(projectMeta: TMeta, pageMeta: TPageMeta, enableMeta: boolean): TMeta {
+    return enableMeta ? {
       title: pageMeta.title ? pageMeta.title : projectMeta.title,
       description: pageMeta.description ? pageMeta.description : projectMeta.description,
       keywords: pageMeta.keywords ? pageMeta.keywords : projectMeta.keywords,
       opengraphThumbnail: pageMeta.opengraphThumbnail ? pageMeta.opengraphThumbnail : projectMeta.opengraphThumbnail,
       favicon: projectMeta.favicon
-    };
+    } : projectMeta;
   }
 }
