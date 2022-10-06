@@ -1,4 +1,4 @@
-import { FontFaceGenerator } from './FontFaceGenerator';
+import { FontFaceGenerator } from './FontFaceGenerator.js';
 import { FontFileTypes, TCustomFont } from '@cntrl-site/core';
 
 describe('FontFaceGenerator', () => {

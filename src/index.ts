@@ -1,4 +1,4 @@
-export { Client as CntrlClient } from './Client/Client';
-export { FontFaceGenerator } from './FontFaceGenerator/FontFaceGenerator';
-export { getLayoutStyles } from './utils';
+export { Client as CntrlClient } from './Client/Client.js';
+export { FontFaceGenerator } from './FontFaceGenerator/FontFaceGenerator.js';
+export { getLayoutStyles } from './utils.js';
 export * from '@cntrl-site/core';
