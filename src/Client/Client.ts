@@ -38,7 +38,7 @@ export class Client {
     if (!page) {
       throw new Error(`Page with a slug ${pageSlug} was not found in project with id #${this.projectId}`);
     }
-    const url = new URL(`/projects/${this.projectId}/articles/${page.articleId}`, this.APIUrl);
+    const url = new URL(`/articles/${page.articleId}`, this.APIUrl);
     const articleResponse = await this.fetchImpl(url.href);
     if (!articleResponse.ok) {
       throw new Error(`Failed to fetch article with id #${page.articleId}: ${articleResponse.statusText}`);
