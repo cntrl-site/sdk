@@ -1,5 +1,6 @@
 import { TProject, ProjectSchema, TArticle, ArticleSchema, TMeta, TPageMeta } from '@cntrl-site/core';
 import fetch from 'isomorphic-fetch';
+import { URL } from 'url';
 
 export class Client {
   constructor(
@@ -16,7 +17,8 @@ export class Client {
   }
 
   async getProject(): Promise<TProject> {
-    const response = await this.fetchImpl(`${this.APIUrl}/projects/${this.projectId}`);
+    const projectUrl = new URL(`/projects/${this.projectId}`, this.APIUrl);
+    const response = await this.fetchImpl(projectUrl.href);
     if (!response.ok) {
       throw new Error(`Failed to fetch project with id #${this.projectId}: ${response.statusText}`);
     }
@@ -26,7 +28,8 @@ export class Client {
   }
 
   async getPageArticle(pageSlug: string): Promise<TArticle> {
-    const projectResponse = await this.fetchImpl(`${this.APIUrl}/projects/${this.projectId}`);
+    const projectUrl = new URL(`/projects/${this.projectId}`, this.APIUrl);
+    const projectResponse = await this.fetchImpl(projectUrl.href);
     if (!projectResponse.ok) {
       throw new Error(`Failed to fetch project with id #${this.projectId}: ${projectResponse.statusText}`);
     }
@@ -36,8 +39,8 @@ export class Client {
     if (!page) {
       throw new Error(`Page with a slug ${pageSlug} was not found in project with id #${this.projectId}`);
     }
-
-    const articleResponse = await this.fetchImpl(`${this.APIUrl}/articles/${page.articleId}`);
+    const url = new URL(`/articles/${page.articleId}`, this.APIUrl);
+    const articleResponse = await this.fetchImpl(url.href);
     if (!articleResponse.ok) {
       throw new Error(`Failed to fetch article with id #${page.articleId}: ${articleResponse.statusText}`);
     }

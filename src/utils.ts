@@ -1,4 +1,4 @@
-import { TLayout, getClosestLayoutValue } from '@cntrl-site/core';
+import { TLayout } from '@cntrl-site/core';
 
 export function getLayoutStyles<V, M> (
   layouts: TLayout[],
@@ -8,7 +8,7 @@ export function getLayoutStyles<V, M> (
   const mediaQueries = layouts
     .sort((a, b) => a.startsWith - b.startsWith)
     .reduce((acc, layout) => {
-      const values = layoutValues.map(lv => lv[layout.id] ?? getClosestLayoutValue(lv, layouts, layout.id));
+      const values = layoutValues.map(lv => lv[layout.id]);
       return `
         ${acc}
         ${layout.startsWith !== 0

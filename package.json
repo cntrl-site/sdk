@@ -1,6 +1,6 @@
 {
   "name": "@cntrl-site/sdk",
-  "version": "0.2.7",
+  "version": "0.2.8",
   "description": "Generic SDK for use in public websites.",
   "main": "lib/index.js",
   "types": "src/index.ts",
@@ -24,14 +24,16 @@
     "lib": "lib"
   },
   "dependencies": {
-    "@cntrl-site/core": "^1.7.1",
+    "@cntrl-site/core": "^1.7.3",
     "@types/isomorphic-fetch": "^0.0.36",
-    "isomorphic-fetch": "^3.0.0"
+    "isomorphic-fetch": "^3.0.0",
+    "url": "^0.11.0"
   },
   "devDependencies": {
     "@tsconfig/node16": "^1.0.3",
     "@tsconfig/recommended": "^1.0.1",
     "@types/jest": "^29.0.0",
+    "@types/node": "^18.11.7",
     "jest": "^28.1.3",
     "ts-jest": "^28.0.8",
     "typescript": "^4.7.4"
