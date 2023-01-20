@@ -3,6 +3,7 @@ import { projectMock } from './__mock__/projectMock';
 import { articleMock } from './__mock__/articleMock';
 import { typePresetsMock } from './__mock__/typePresetsMock';
 import { TMeta, TPageMeta } from '@cntrl-site/core';
+import { keyframesMock } from './__mock__/keyframesMock';
 
 describe('Client', () => {
   it('returns project', async () => {
@@ -140,6 +141,43 @@ describe('Client', () => {
     const client = new Client(projectId, apiUrl, fetch);
     await expect(client.getTypePresets()).rejects.toEqual(
       new Error(`Failed to fetch type presets for the project with id #${projectId}: reason`)
+    );
+  });
+
+  it('returns keyframes by article id', async () => {
+    let fetchCalledTimes = 0;
+    const projectId = 'projectId';
+    const articleId = 'articleId';
+    const apiUrl = 'https://api.cntrl.site/';
+    const fetch = (url: string) => {
+      fetchCalledTimes += 1;
+      expect(url).toBe(`${apiUrl}keyframes/${articleId}`);
+      return Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve(keyframesMock),
+        statusText: ''
+      });
+    };
+    const client = new Client(projectId, apiUrl, fetch);
+    const presets = await client.getKeyframes(articleId);
+    expect(presets).toEqual(keyframesMock);
+    expect(fetchCalledTimes).toEqual(1);
+  });
+
+  it('throws an error upon keyframes fetch failure', async () => {
+    const projectId = 'projectId';
+    const articleId = 'articleId';
+    const apiUrl = 'https://api.cntrl.site/';
+    const fetch = () => {
+      return Promise.resolve({
+        ok: false,
+        json: () => Promise.resolve(),
+        statusText: 'reason'
+      });
+    };
+    const client = new Client(projectId, apiUrl, fetch);
+    await expect(client.getKeyframes(articleId)).rejects.toEqual(
+      new Error(`Failed to fetch keyframes for the article with id #${articleId}: reason`)
     );
   });
 

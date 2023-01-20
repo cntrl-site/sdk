@@ -7,7 +7,9 @@ import {
   TPageMeta,
   TTypePresets,
   TypePresetsSchema,
-  TPage
+  TPage,
+  TKeyframeAny,
+  KeyframesSchema
 } from '@cntrl-site/core';
 import fetch from 'isomorphic-fetch';
 import { URL } from 'url';
@@ -59,6 +61,13 @@ export class Client {
     return typePresets;
   }
 
+  async getKeyframes(articleId: string): Promise<TKeyframeAny[]> {
+    const response = await this.fetchKeyframes(articleId);
+    const data = await response.json();
+    const keyframes = KeyframesSchema.parse(data);
+    return keyframes;
+  }
+
   public static getPageMeta(projectMeta: TMeta, pageMeta: TPageMeta): TMeta {
     return pageMeta.enabled ? {
       title: pageMeta.title ? pageMeta.title : projectMeta.title,
@@ -83,6 +92,15 @@ export class Client {
     const response = await this.fetchImpl(url.href);
     if (!response.ok) {
       throw new Error(`Failed to fetch article with id #${articleId}: ${response.statusText}`);
+    }
+    return response;
+  }
+
+  private async fetchKeyframes(articleId: string): Promise<FetchImplResponse> {
+    const url = new URL(`/keyframes/${articleId}`, this.APIUrl);
+    const response = await this.fetchImpl(url.href);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch keyframes for the article with id #${articleId}: ${response.statusText}`);
     }
     return response;
   }
