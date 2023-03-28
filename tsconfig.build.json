@@ -3,8 +3,7 @@
   "compilerOptions": {
     "outDir": "./lib",
     "moduleResolution": "Node",
-    "module": "CommonJS",
-    "lib": ["dom"]
+    "module": "CommonJS"
   },
   "include": [
     "./src/**.ts"
