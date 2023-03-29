@@ -24,7 +24,7 @@
     "lib": "lib"
   },
   "dependencies": {
-    "@cntrl-site/core": "^1.19.2",
+    "@cntrl-site/core": "^1.19.4",
     "@types/isomorphic-fetch": "^0.0.36",
     "isomorphic-fetch": "^3.0.0",
     "url": "^0.11.0"
