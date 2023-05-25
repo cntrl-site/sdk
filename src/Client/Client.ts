@@ -15,16 +15,17 @@ import fetch from 'isomorphic-fetch';
 import { URL } from 'url';
 
 export class Client {
+  private url: URL;
   constructor(
-    private projectId: string,
-    private APIUrl: string,
+    APIUrl: string,
     private fetchImpl: FetchImpl = fetch
   ) {
-    if (projectId.length === 0) {
-      throw new Error('CNTRL SDK: Project ID is empty. Did you forget to pass it?');
+    this.url = new URL(APIUrl);
+    if (!this.url.username) {
+      throw new Error('Project ID is missing in the URL.');
     }
-    if (APIUrl.length === 0) {
-      throw new Error('CNTRL SDK: API URL is empty. Did you forget to pass it?');
+    if (!this.url.password) {
+      throw new Error('API key is missing in the URL.');
     }
   }
 
@@ -39,7 +40,7 @@ export class Client {
     }
   }
 
-  async getPageArticle(pageSlug: string): Promise<TArticle> {
+  async getPageArticle(pageSlug: string): Promise<{ article: TArticle, keyframes: TKeyframeAny[] }> {
     try {
       const projectResponse = await this.fetchProject();
       const data = await projectResponse.json();
@@ -47,8 +48,9 @@ export class Client {
       const articleId = this.findArticleIdByPageSlug(pageSlug, project.pages);
       const articleResponse = await this.fetchArticle(articleId);
       const articleData = await articleResponse.json();
-      const article = ArticleSchema.parse(articleData);
-      return article;
+      const article = ArticleSchema.parse(articleData.article);
+      const keyframes = KeyframesSchema.parse(articleData.keyframes);
+      return { article, keyframes };
     } catch (e) {
       throw e;
     }
@@ -59,13 +61,6 @@ export class Client {
     const data = await response.json();
     const typePresets = TypePresetsSchema.parse(data);
     return typePresets;
-  }
-
-  async getKeyframes(articleId: string): Promise<TKeyframeAny[]> {
-    const response = await this.fetchKeyframes(articleId);
-    const data = await response.json();
-    const keyframes = KeyframesSchema.parse(data);
-    return keyframes;
   }
 
   public static getPageMeta(projectMeta: TMeta, pageMeta: TPageMeta): TMeta {
@@ -79,47 +74,54 @@ export class Client {
   }
 
   private async fetchProject(): Promise<FetchImplResponse> {
-    const url = new URL(`/projects/${this.projectId}`, this.APIUrl);
-    const response = await this.fetchImpl(url.href);
+    const { username: projectId, password: apiKey, origin } = this.url;
+    const url = new URL(`/projects/${projectId}`, origin);
+    const response = await this.fetchImpl(url.href, {
+      headers: {
+        Authorization: `Bearer ${apiKey}`
+      }
+    });
     if (!response.ok) {
-      throw new Error(`Failed to fetch project with id #${this.projectId}: ${response.statusText}`);
+      throw new Error(`Failed to fetch project with id #${projectId}: ${response.statusText}`);
     }
     return response;
   }
 
   private async fetchArticle(articleId: string): Promise<FetchImplResponse> {
-    const url = new URL(`/articles/${articleId}`, this.APIUrl);
-    const response = await this.fetchImpl(url.href);
+    const { username: projectId, password: apiKey, origin } = this.url;
+    const url = new URL(`/projects/${projectId}/articles/${articleId}`, origin);
+    const response = await this.fetchImpl(url.href, {
+      headers: {
+        Authorization: `Bearer ${apiKey}`
+      }
+    });
     if (!response.ok) {
       throw new Error(`Failed to fetch article with id #${articleId}: ${response.statusText}`);
     }
     return response;
   }
 
-  private async fetchKeyframes(articleId: string): Promise<FetchImplResponse> {
-    const url = new URL(`/keyframes/${articleId}`, this.APIUrl);
-    const response = await this.fetchImpl(url.href);
-    if (!response.ok) {
-      throw new Error(`Failed to fetch keyframes for the article with id #${articleId}: ${response.statusText}`);
-    }
-    return response;
-  }
-
   private async fetchTypePresets(): Promise<FetchImplResponse> {
-    const url = new URL(`/projects/${this.projectId}/type-presets`, this.APIUrl);
-    const response = await this.fetchImpl(url.href);
+    const { username: projectId, password: apiKey, origin } = this.url;
+    const url = new URL(`/projects/${projectId}/type-presets`, origin);
+    const response = await this.fetchImpl(url.href, {
+      headers: {
+        Authorization: `Bearer ${apiKey}`
+      }
+    });
     if (!response.ok) {
       throw new Error(
-        `Failed to fetch type presets for the project with id #${this.projectId}: ${response.statusText}`
+        `Failed to fetch type presets for the project with id #${projectId}: ${response.statusText}`
       );
     }
     return response;
   }
 
   private findArticleIdByPageSlug(slug: string, pages: TPage[]): string {
+    const { username: projectId } = this.url;
     const page = pages.find((page) => page.slug === slug);
     if (!page) {
-      throw new Error(`Page with a slug ${slug} was not found in project with id #${this.projectId}`);
+      throw new Error(`Page with a slug ${slug} was not found in project with id #${projectId}`);
     }
     return page.articleId;
   }
@@ -131,4 +133,4 @@ interface FetchImplResponse {
   statusText: string;
 }
 
-type FetchImpl = (url: string) => Promise<FetchImplResponse>;
+type FetchImpl = (url: string, init?: RequestInit) => Promise<FetchImplResponse>;
