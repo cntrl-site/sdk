@@ -25,7 +25,7 @@ export class Client {
       throw new Error('Project ID is missing in the URL.');
     }
     if (!this.url.password) {
-      throw new Error('API Key is missing in the URL.');
+      throw new Error('API key is missing in the URL.');
     }
   }
 
