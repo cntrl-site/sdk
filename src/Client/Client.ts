@@ -9,7 +9,8 @@ import {
   TypePresetsSchema,
   TPage,
   TKeyframeAny,
-  KeyframesSchema
+  KeyframesSchema,
+  TLayout
 } from '@cntrl-site/core';
 import fetch from 'isomorphic-fetch';
 import { URL } from 'url';
@@ -35,6 +36,17 @@ export class Client {
       const data = await response.json();
       const project = ProjectSchema.parse(data);
       return project;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  async getLayouts(): Promise<TLayout[]> {
+    try {
+      const response = await this.fetchProject();
+      const data = await response.json();
+      const project = ProjectSchema.parse(data);
+      return project.layouts;
     } catch (e) {
       throw e;
     }
