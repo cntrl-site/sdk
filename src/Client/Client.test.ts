@@ -50,19 +50,12 @@ describe('Client', () => {
     expect(pageData.article).toEqual(articleMock);
     expect(pageData.typePresets).toEqual(typePresetsMock);
     expect(pageData.keyframes).toEqual(keyframesMock);
-    expect(pageData.page).toEqual({
-      articleId: 'articleId',
-      id: 'pageId',
-      isPublished: true,
-      meta: {
-        description: 'page description',
-        favicon: 'project favicon',
-        keywords: 'page keywords',
-        opengraphThumbnail: 'page thumbnail',
-        title: 'page title'
-      },
-      slug: '/',
-      title: 'Page'
+    expect(pageData.meta).toEqual({
+      description: 'page description',
+      favicon: 'project favicon',
+      keywords: 'page keywords',
+      opengraphThumbnail: 'page thumbnail',
+      title: 'page title'
     });
   });
 
@@ -90,19 +83,12 @@ describe('Client', () => {
     };
     const client = new Client(apiUrl, fetch);
     const pageData = await client.getPageData('/2');
-    expect(pageData.page).toEqual({
-      articleId: 'articleId2',
-      id: 'pageId2',
-      isPublished: true,
-      meta: {
-        description: 'project description',
-        favicon: 'project favicon',
-        keywords: 'project keywords',
-        opengraphThumbnail: 'project opengraph',
-        title: 'project title'
-      },
-      slug: '/2',
-      title: 'Page 2'
+    expect(pageData.meta).toEqual({
+      description: 'project description',
+      favicon: 'project favicon',
+      keywords: 'project keywords',
+      opengraphThumbnail: 'project opengraph',
+      title: 'project title'
     });
   });
 

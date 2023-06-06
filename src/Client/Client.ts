@@ -55,11 +55,17 @@ export class Client {
         typePresets,
         article,
         keyframes,
-        page: {
-          ...page,
-          meta
-        }
+        meta
       };
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  async getProjectPagesPaths(): Promise<string[]> {
+    try {
+      const { pages } = await this.fetchProject();
+      return pages.map(p => p.slug);
     } catch (e) {
       throw e;
     }
@@ -154,5 +160,5 @@ interface ArticleData {
 interface CntrlPageData extends ArticleData {
   project: TProject;
   typePresets: TTypePresets;
-  page: TPage;
+  meta: TMeta;
 }
