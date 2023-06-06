@@ -14,11 +14,11 @@ export const projectMock: TProject = {
     head: ''
   },
   meta: {
-    favicon: undefined,
-    title: undefined,
-    opengraphThumbnail: undefined,
-    keywords: undefined,
-    description: undefined
+    favicon: 'project favicon',
+    title: 'project title',
+    opengraphThumbnail: 'project opengraph',
+    keywords: 'project keywords',
+    description: 'project description'
   },
   grid: {
     color: 'rgba(0, 0, 0, 1)'
@@ -30,11 +30,25 @@ export const projectMock: TProject = {
     slug: '/',
     isPublished: true,
     meta: {
-      opengraphThumbnail: 'page-thumbnail',
-      title: 'page-title',
-      description: 'page-description',
+      opengraphThumbnail: 'page thumbnail',
+      title: 'page title',
+      description: 'page description',
       enabled: true,
-      keywords: 'page-keywords'
+      keywords: 'page keywords'
     }
-  }]
+  },
+    {
+      id: 'pageId2',
+      title: 'Page 2',
+      articleId: 'articleId2',
+      slug: '/2',
+      isPublished: true,
+      meta: {
+        opengraphThumbnail: 'page thumbnail',
+        title: 'page title',
+        description: 'page description',
+        enabled: false,
+        keywords: 'page keywords'
+      }
+    }]
 };

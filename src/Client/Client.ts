@@ -30,52 +30,7 @@ export class Client {
     }
   }
 
-  async getProject(): Promise<TProject> {
-    try {
-      const response = await this.fetchProject();
-      const data = await response.json();
-      const project = ProjectSchema.parse(data);
-      return project;
-    } catch (e) {
-      throw e;
-    }
-  }
-
-  async getLayouts(): Promise<TLayout[]> {
-    try {
-      const response = await this.fetchProject();
-      const data = await response.json();
-      const project = ProjectSchema.parse(data);
-      return project.layouts;
-    } catch (e) {
-      throw e;
-    }
-  }
-
-  async getPageArticle(pageSlug: string): Promise<{ article: TArticle, keyframes: TKeyframeAny[] }> {
-    try {
-      const projectResponse = await this.fetchProject();
-      const data = await projectResponse.json();
-      const project = ProjectSchema.parse(data);
-      const articleId = this.findArticleIdByPageSlug(pageSlug, project.pages);
-      const articleResponse = await this.fetchArticle(articleId);
-      const articleData = await articleResponse.json();
-      const article = ArticleSchema.parse(articleData.article);
-      const keyframes = KeyframesSchema.parse(articleData.keyframes);
-      return { article, keyframes };
-    } catch (e) {
-      throw e;
-    }
-  }
-
-  async getTypePresets(): Promise<TTypePresets> {
-    const response = await this.fetchTypePresets();
-    const data = await response.json();
-    const typePresets = TypePresetsSchema.parse(data);
-    return typePresets;
-  }
-
-  public static getPageMeta(projectMeta: TMeta, pageMeta: TPageMeta): TMeta {
+  private static getPageMeta(projectMeta: TMeta, pageMeta: TPageMeta): TMeta {
     return pageMeta.enabled ? {
       title: pageMeta.title ? pageMeta.title : projectMeta.title,
       description: pageMeta.description ? pageMeta.description : projectMeta.description,
@@ -85,7 +40,52 @@ export class Client {
     } : projectMeta;
   }
 
-  private async fetchProject(): Promise<FetchImplResponse> {
+  async getPageData(pageSlug: string): Promise<CntrlPageData> {
+    try {
+      const project = await this.fetchProject();
+      const articleId = this.findArticleIdByPageSlug(pageSlug, project.pages);
+      const [{ article, keyframes }, typePresets] = await Promise.all([
+        this.fetchArticle(articleId),
+        this.fetchTypePresets()
+      ]);
+      const page = project.pages.find(page => page.slug === pageSlug)!;
+      const meta = Client.getPageMeta(project.meta, page?.meta!);
+      return {
+        project,
+        typePresets,
+        article,
+        keyframes,
+        meta
+      };
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  async getProjectPagesPaths(): Promise<string[]> {
+    try {
+      const { pages } = await this.fetchProject();
+      return pages.map(p => p.slug);
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  async getLayouts(): Promise<TLayout[]> {
+    try {
+      const { layouts } = await this.fetchProject();
+      return layouts;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  async getTypePresets(): Promise<TTypePresets> {
+    const response = await this.fetchTypePresets();
+    return response;
+  }
+
+  private async fetchProject(): Promise<TProject> {
     const { username: projectId, password: apiKey, origin } = this.url;
     const url = new URL(`/projects/${projectId}`, origin);
     const response = await this.fetchImpl(url.href, {
@@ -96,10 +96,12 @@ export class Client {
     if (!response.ok) {
       throw new Error(`Failed to fetch project with id #${projectId}: ${response.statusText}`);
     }
-    return response;
+    const data = await response.json();
+    const project = ProjectSchema.parse(data);
+    return project;
   }
 
-  private async fetchArticle(articleId: string): Promise<FetchImplResponse> {
+  private async fetchArticle(articleId: string): Promise<ArticleData> {
     const { username: projectId, password: apiKey, origin } = this.url;
     const url = new URL(`/projects/${projectId}/articles/${articleId}`, origin);
     const response = await this.fetchImpl(url.href, {
@@ -110,10 +112,13 @@ export class Client {
     if (!response.ok) {
       throw new Error(`Failed to fetch article with id #${articleId}: ${response.statusText}`);
     }
-    return response;
+    const data = await response.json();
+    const article = ArticleSchema.parse(data.article);
+    const keyframes = KeyframesSchema.parse(data.keyframes);
+    return { article, keyframes };
   }
 
-  private async fetchTypePresets(): Promise<FetchImplResponse> {
+  private async fetchTypePresets(): Promise<TTypePresets> {
     const { username: projectId, password: apiKey, origin } = this.url;
     const url = new URL(`/projects/${projectId}/type-presets`, origin);
     const response = await this.fetchImpl(url.href, {
@@ -126,7 +131,9 @@ export class Client {
         `Failed to fetch type presets for the project with id #${projectId}: ${response.statusText}`
       );
     }
-    return response;
+    const data = await response.json();
+    const typePresets = TypePresetsSchema.parse(data);
+    return typePresets;
   }
 
   private findArticleIdByPageSlug(slug: string, pages: TPage[]): string {
@@ -146,3 +153,12 @@ interface FetchImplResponse {
 }
 
 type FetchImpl = (url: string, init?: RequestInit) => Promise<FetchImplResponse>;
+interface ArticleData {
+  article: TArticle;
+  keyframes: TKeyframeAny[];
+}
+interface CntrlPageData extends ArticleData {
+  project: TProject;
+  typePresets: TTypePresets;
+  meta: TMeta;
+}

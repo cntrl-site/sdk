@@ -19,7 +19,7 @@ program
       const scssTemplate = fs.readFileSync(templateFilePath, 'utf-8');
       const apiUrl = process.env.CNTRL_API_URL;
       if (!apiUrl) {
-        throw new Error(`CNTRL_API_URL is not defined in the ${options.env} file`);
+        throw new Error('Environment variable "CNTRL_API_URL" must be set.');
       }
       const client = new Client(apiUrl);
       const layouts = await client.getLayouts();
