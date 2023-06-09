@@ -3,7 +3,7 @@
 // WE HIGHLY ADVICE YOU TO NOT CHANGE IT MANUALLY
 @use "sass:map";
 
-$__CNTRL_LAYOUT_WIDTH__: 100;
+$__CNTRL_LAYOUT_WIDTH__: <%= ranges[0].exemplary %>;
 
 $layout: (
 <% ranges.forEach(function(range) { %>
@@ -45,6 +45,6 @@ $layout: (
         }
     }
 
-    // reset global variable back to it's initial state
-    $__CNTRL_LAYOUT_WIDTH__: 100 !global;
+    // reset global variable back to first layout's exemplary (mobile-first)
+    $__CNTRL_LAYOUT_WIDTH__: <%= ranges[0].exemplary %> !global;
 }
