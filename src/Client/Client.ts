@@ -32,11 +32,11 @@ export class Client {
 
   private static getPageMeta(projectMeta: TMeta, pageMeta: TPageMeta): TMeta {
     return pageMeta.enabled ? {
-      title: pageMeta.title ? pageMeta.title : projectMeta.title,
-      description: pageMeta.description ? pageMeta.description : projectMeta.description,
-      keywords: pageMeta.keywords ? pageMeta.keywords : projectMeta.keywords,
-      opengraphThumbnail: pageMeta.opengraphThumbnail ? pageMeta.opengraphThumbnail : projectMeta.opengraphThumbnail,
-      favicon: projectMeta.favicon
+      title: pageMeta.title ? pageMeta.title : projectMeta.title ?? '',
+      description: pageMeta.description ? pageMeta.description : projectMeta.description ?? '',
+      keywords: pageMeta.keywords ? pageMeta.keywords : projectMeta.keywords ?? '',
+      opengraphThumbnail: pageMeta.opengraphThumbnail ? pageMeta.opengraphThumbnail : projectMeta.opengraphThumbnail ?? '',
+      favicon: projectMeta.favicon ?? ''
     } : projectMeta;
   }
 
