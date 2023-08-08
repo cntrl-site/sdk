@@ -1,22 +1,21 @@
 import { TLayout } from '@cntrl-site/core';
 
-export function getLayoutStyles<V, M> (
+export function getLayoutStyles<V extends any[]>(
   layouts: TLayout[],
-  layoutValues: Record<string, V>[],
-  mapToStyles: (values: V[]) => M
+  layoutValues: readonly [...V],
+  mapToStyles: (values: { [K in (keyof V)]: V[K] extends Record<string, infer R> ? R : V[K] }) => string
 ): string {
   const mediaQueries = layouts
     .sort((a, b) => a.startsWith - b.startsWith)
-    .reduce((acc, layout) => {
-      const values = layoutValues.map(lv => lv[layout.id]);
+    .map(layout => {
+      // @ts-ignore
+      const values: any = layoutValues.map(lv => lv[layout.id]);
       return `
-        ${acc}
         ${layout.startsWith !== 0
-        ? `@media (min-width: ${layout.startsWith}px) {${mapToStyles(values)}}`
-        : `${mapToStyles(values)}`
+          ? `@media (min-width: ${layout.startsWith}px) {${mapToStyles(values)}}`
+          : `${mapToStyles(values)}`
       }`;
-    },
-    '');
+    })
+    .join('\n');
   return mediaQueries;
 }
-
