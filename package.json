@@ -1,6 +1,6 @@
 {
   "name": "@cntrl-site/sdk",
-  "version": "1.1.10",
+  "version": "1.28.3-1",
   "description": "Generic SDK for use in public websites.",
   "main": "lib/index.js",
   "types": "src/index.ts",
@@ -27,7 +27,7 @@
     "lib": "lib"
   },
   "dependencies": {
-    "@cntrl-site/core": "^1.28.2",
+    "@cntrl-site/core": "^1.28.3-1",
     "@types/ejs": "^3.1.2",
     "@types/isomorphic-fetch": "^0.0.36",
     "commander": "^10.0.1",
