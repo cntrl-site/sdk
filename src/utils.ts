@@ -3,7 +3,7 @@ import { TLayout } from '@cntrl-site/core';
 export function getLayoutStyles<V, M> (
   layouts: TLayout[],
   layoutValues: Record<string, V>[],
-  mapToStyles: (values: V[]) => M
+  mapToStyles: (values: V[], exemplary: number) => M
 ): string {
   const mediaQueries = layouts
     .sort((a, b) => a.startsWith - b.startsWith)
@@ -12,8 +12,8 @@ export function getLayoutStyles<V, M> (
       return `
         ${acc}
         ${layout.startsWith !== 0
-        ? `@media (min-width: ${layout.startsWith}px) {${mapToStyles(values)}}`
-        : `${mapToStyles(values)}`
+        ? `@media (min-width: ${layout.startsWith}px) {${mapToStyles(values, layout.exemplary)}}`
+        : `${mapToStyles(values, layout.exemplary)}`
       }`;
     },
     '');
