@@ -40,7 +40,7 @@ describe('FontFaceGenerator', () => {
     const generator = new FontFaceGenerator(fonts);
     expect(generator.generate()).toEqual(`
 @font-face {
-  font-family: Aeonik;
+  font-family: "Aeonik";
   font-weight: 400;
   font-style: normal;
   src: url('link/to/font.eot');
@@ -48,7 +48,7 @@ describe('FontFaceGenerator', () => {
 }
 
 @font-face {
-  font-family: Anek Odia;
+  font-family: "Anek Odia";
   font-weight: 700;
   font-style: italic;
   src: url('link/to/font.woff') format('woff'), url('link/to/font.ttf') format('truetype');
