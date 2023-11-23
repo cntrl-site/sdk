@@ -1,7 +1,7 @@
-import { TLayout } from '@cntrl-site/core';
+import { Layout } from './types/project/Layout';
 
 export function getLayoutStyles<V, M> (
-  layouts: TLayout[],
+  layouts: Layout[],
   layoutValues: Record<string, V>[],
   mapToStyles: (values: V[], exemplary: number) => M
 ): string {

@@ -1,19 +1,14 @@
-import {
-  TProject,
-  ProjectSchema,
-  TArticle,
-  ArticleSchema,
-  TMeta,
-  TPageMeta,
-  TTypePresets,
-  TypePresetsSchema,
-  TPage,
-  TKeyframeAny,
-  KeyframesSchema,
-  TLayout
-} from '@cntrl-site/core';
 import fetch from 'isomorphic-fetch';
 import { URL } from 'url';
+import { Meta } from '../types/project/Meta';
+import { Page, PageMeta } from '../types/project/Page';
+import { Project } from '../types/project/Project';
+import { Layout } from '../types/project/Layout';
+import { Article } from '../types/article/Article';
+import { KeyframeAny } from '../types/keyframe/Keyframe';
+import { ArticleSchema } from '../schemas/article/Article.schema';
+import { ProjectSchema } from '../schemas/project/Project.schema';
+import { KeyframesSchema } from '../schemas/keyframe/Keyframes.schema';
 
 export class Client {
   private url: URL;
@@ -30,7 +25,7 @@ export class Client {
     }
   }
 
-  private static getPageMeta(projectMeta: TMeta, pageMeta: TPageMeta): TMeta {
+  private static getPageMeta(projectMeta: Meta, pageMeta: PageMeta): Meta {
     return pageMeta.enabled ? {
       title: pageMeta.title ? pageMeta.title : projectMeta.title ?? '',
       description: pageMeta.description ? pageMeta.description : projectMeta.description ?? '',
@@ -44,15 +39,11 @@ export class Client {
     try {
       const project = await this.fetchProject();
       const articleId = this.findArticleIdByPageSlug(pageSlug, project.pages);
-      const [{ article, keyframes }, typePresets] = await Promise.all([
-        this.fetchArticle(articleId),
-        this.fetchTypePresets()
-      ]);
+      const { article, keyframes } = await this.fetchArticle(articleId);
       const page = project.pages.find(page => page.slug === pageSlug)!;
       const meta = Client.getPageMeta(project.meta, page?.meta!);
       return {
         project,
-        typePresets,
         article,
         keyframes,
         meta
@@ -71,7 +62,7 @@ export class Client {
     }
   }
 
-  async getLayouts(): Promise<TLayout[]> {
+  async getLayouts(): Promise<Layout[]> {
     try {
       const { layouts } = await this.fetchProject();
       return layouts;
@@ -80,12 +71,7 @@ export class Client {
     }
   }
 
-  async getTypePresets(): Promise<TTypePresets> {
-    const response = await this.fetchTypePresets();
-    return response;
-  }
-
-  private async fetchProject(): Promise<TProject> {
+  private async fetchProject(): Promise<Project> {
     const { username: projectId, password: apiKey, origin } = this.url;
     const url = new URL(`/projects/${projectId}`, origin);
     const response = await this.fetchImpl(url.href, {
@@ -118,25 +104,7 @@ export class Client {
     return { article, keyframes };
   }
 
-  private async fetchTypePresets(): Promise<TTypePresets> {
-    const { username: projectId, password: apiKey, origin } = this.url;
-    const url = new URL(`/projects/${projectId}/type-presets`, origin);
-    const response = await this.fetchImpl(url.href, {
-      headers: {
-        Authorization: `Bearer ${apiKey}`
-      }
-    });
-    if (!response.ok) {
-      throw new Error(
-        `Failed to fetch type presets for the project with id #${projectId}: ${response.statusText}`
-      );
-    }
-    const data = await response.json();
-    const typePresets = TypePresetsSchema.parse(data);
-    return typePresets;
-  }
-
-  private findArticleIdByPageSlug(slug: string, pages: TPage[]): string {
+  private findArticleIdByPageSlug(slug: string, pages: Page[]): string {
     const { username: projectId } = this.url;
     const page = pages.find((page) => page.slug === slug);
     if (!page) {
@@ -154,11 +122,10 @@ interface FetchImplResponse {
 
 type FetchImpl = (url: string, init?: RequestInit) => Promise<FetchImplResponse>;
 interface ArticleData {
-  article: TArticle;
-  keyframes: TKeyframeAny[];
+  article: Article;
+  keyframes: KeyframeAny[];
 }
 interface CntrlPageData extends ArticleData {
-  project: TProject;
-  typePresets: TTypePresets;
-  meta: TMeta;
+  project: Project;
+  meta: Meta;
 }

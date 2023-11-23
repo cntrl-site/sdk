@@ -1,6 +1,6 @@
-import { TArticle } from '@cntrl-site/core';
+import { Article } from '../../types/article/Article';
 
-export const articleMock: TArticle = {
+export const articleMock: Article = {
   id: 'articleId',
   sections: [
     {

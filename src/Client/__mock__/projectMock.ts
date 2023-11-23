@@ -1,6 +1,6 @@
-import { TProject } from '@cntrl-site/core';
+import { Project } from '../../types/project/Project';
 
-export const projectMock: TProject = {
+export const projectMock: Project = {
   id: 'projectId',
   layouts: [],
   fonts: {
@@ -20,15 +20,11 @@ export const projectMock: TProject = {
     keywords: 'project keywords',
     description: 'project description'
   },
-  grid: {
-    color: 'rgba(0, 0, 0, 1)'
-  },
   pages: [{
     id: 'pageId',
     title: 'Page',
     articleId: 'articleId',
     slug: '/',
-    isPublished: true,
     meta: {
       opengraphThumbnail: 'page thumbnail',
       title: 'page title',
@@ -42,7 +38,6 @@ export const projectMock: TProject = {
       title: 'Page 2',
       articleId: 'articleId2',
       slug: '/2',
-      isPublished: true,
       meta: {
         opengraphThumbnail: 'page thumbnail',
         title: 'page title',

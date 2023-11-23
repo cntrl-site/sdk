@@ -27,7 +27,6 @@
     "lib": "lib"
   },
   "dependencies": {
-    "@cntrl-site/core": "^1.32.0",
     "@types/ejs": "^3.1.2",
     "@types/isomorphic-fetch": "^0.0.36",
     "commander": "^10.0.1",
@@ -35,7 +34,8 @@
     "ejs": "^3.1.9",
     "isomorphic-fetch": "^3.0.0",
     "ts-node": "^10.9.1",
-    "url": "^0.11.0"
+    "url": "^0.11.0",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@tsconfig/node16": "^1.0.3",
