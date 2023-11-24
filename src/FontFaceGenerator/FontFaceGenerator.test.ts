@@ -1,14 +1,13 @@
 import { FontFaceGenerator } from './FontFaceGenerator';
-import { FontFileTypes, TCustomFont } from '@cntrl-site/core';
+import { CustomFont, FontFileTypes } from '../types/project/Fonts';
 
 describe('FontFaceGenerator', () => {
   it('generates font face with eot', () => {
-    const fonts: TCustomFont[] = [
+    const fonts: CustomFont[] = [
       {
         name: 'Aeonik',
         weight: 400,
         style: 'normal',
-        readonly: false,
         files: [
           {
             type: FontFileTypes.EOT,
@@ -24,7 +23,6 @@ describe('FontFaceGenerator', () => {
         name: 'Anek Odia',
         weight: 700,
         style: 'italic',
-        readonly: false,
         files: [
           {
             type: FontFileTypes.WOFF,

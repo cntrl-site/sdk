@@ -1,9 +1,8 @@
-import { KeyframeType, TKeyframeAny } from '@cntrl-site/core';
+import { KeyframeAny, KeyframeType } from '../../types/keyframe/Keyframe';
 
-export const keyframesMock: TKeyframeAny[] = [
+export const keyframesMock: KeyframeAny[] = [
   {
     id: 'keyframeId',
-    articleId: 'articleId',
     type: KeyframeType.Color,
     position: 100,
     value: {

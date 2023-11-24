@@ -1,4 +1,4 @@
-import { TCustomFont } from '@cntrl-site/core';
+import { CustomFont } from '../types/project/Fonts';
 
 const FILE_TYPES_MAP: Record<string, string> = {
   ttf: 'truetype',
@@ -7,7 +7,7 @@ const FILE_TYPES_MAP: Record<string, string> = {
 
 export class FontFaceGenerator {
   constructor(
-    private fonts: TCustomFont[]
+    private fonts: CustomFont[]
   ) {}
 
   generate(): string {

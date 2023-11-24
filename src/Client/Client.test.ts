@@ -1,7 +1,6 @@
 import { Client } from './Client';
 import { projectMock } from './__mock__/projectMock';
 import { articleMock } from './__mock__/articleMock';
-import { typePresetsMock } from './__mock__/typePresetsMock';
 import { keyframesMock } from './__mock__/keyframesMock';
 
 describe('Client', () => {
@@ -26,7 +25,6 @@ describe('Client', () => {
     const API_BASE_URL = 'api-test.cntrl.site';
     const fetchesMap = {
       [`https://${API_BASE_URL}/projects/${projectId}`]: projectMock,
-      [`https://${API_BASE_URL}/projects/${projectId}/type-presets`]: typePresetsMock,
       [`https://${API_BASE_URL}/projects/${projectId}/articles/articleId`]: {
         article: articleMock,
         keyframes: keyframesMock
@@ -45,10 +43,9 @@ describe('Client', () => {
     };
     const client = new Client(apiUrl, fetch);
     const pageData = await client.getPageData('/');
-    expect(fetchCalledTimes).toBe(3);
+    expect(fetchCalledTimes).toBe(2);
     expect(pageData.project).toEqual(projectMock);
     expect(pageData.article).toEqual(articleMock);
-    expect(pageData.typePresets).toEqual(typePresetsMock);
     expect(pageData.keyframes).toEqual(keyframesMock);
     expect(pageData.meta).toEqual({
       description: 'page description',
@@ -64,7 +61,6 @@ describe('Client', () => {
     const API_BASE_URL = 'api-test.cntrl.site';
     const fetchesMap = {
       [`https://${API_BASE_URL}/projects/${projectId}`]: projectMock,
-      [`https://${API_BASE_URL}/projects/${projectId}/type-presets`]: typePresetsMock,
       [`https://${API_BASE_URL}/projects/${projectId}/articles/articleId2`]: {
         article: articleMock,
         keyframes: keyframesMock

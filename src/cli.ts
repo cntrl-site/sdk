@@ -5,8 +5,8 @@ import path from 'path';
 import ejs from 'ejs';
 import { config } from 'dotenv';
 import { program } from 'commander';
-import { TLayout } from '@cntrl-site/core';
 import { Client } from './Client/Client';
+import { Layout } from './types/project/Layout';
 
 program
   .command('generate-layouts')
@@ -38,7 +38,7 @@ program
     }
   });
 
-function convertLayouts(layouts: TLayout[], maxLayoutWidth: number = Number.MAX_SAFE_INTEGER): LayoutRange[] {
+function convertLayouts(layouts: Layout[], maxLayoutWidth: number = Number.MAX_SAFE_INTEGER): LayoutRange[] {
   const sorted = layouts.slice().sort((la, lb) => la.startsWith - lb.startsWith);
   const mapped = sorted.map<LayoutRange>((layout, i, ls) => {
     const next = ls[i + 1];
