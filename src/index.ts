@@ -7,7 +7,7 @@ export { getLayoutStyles, getLayoutMediaQuery } from './utils';
 export { SectionHeightMode } from './types/article/Section';
 export { TextAlign, TextDecoration, TextTransform, VerticalAlign } from './types/article/RichText';
 export { ArticleItemType } from './types/article/ArticleItemType';
-export { ScaleAnchor, AnchorSide } from './types/article/ItemArea';
+export { ScaleAnchor, AnchorSide, PositionType } from './types/article/ItemArea';
 export { KeyframeType } from './types/keyframe/Keyframe';
 
 // types

@@ -4,6 +4,11 @@ export enum AnchorSide {
   Center = 'center'
 }
 
+export enum PositionType {
+  SectionBased = 'section-based',
+  ScreenBased = 'screen-based'
+}
+
 export enum ScaleAnchor {
   TopLeft = 'top-left',
   TopCenter = 'top-center',
@@ -21,6 +26,7 @@ export interface ItemArea {
   left: number;
   width: number;
   height: number;
+  positionType: PositionType;
   zIndex: number;
   angle: number;
   anchorSide?: AnchorSide;

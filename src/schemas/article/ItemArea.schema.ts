@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { AnchorSide, ScaleAnchor } from '../../types/article/ItemArea';
+import { AnchorSide, PositionType, ScaleAnchor } from '../../types/article/ItemArea';
 
 export const ItemAreaSchema = z.object({
   top: z.number(),
@@ -10,5 +10,6 @@ export const ItemAreaSchema = z.object({
   angle: z.number(),
   anchorSide: z.nativeEnum(AnchorSide).optional(),
   scale: z.number().nonnegative(),
+  positionType: z.nativeEnum(PositionType),
   scaleAnchor: z.nativeEnum(ScaleAnchor)
 });
