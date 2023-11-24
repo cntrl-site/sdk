@@ -4,7 +4,6 @@ export enum AnchorSide {
   Center = 'center'
 }
 
-
 export enum ScaleAnchor {
   TopLeft = 'top-left',
   TopCenter = 'top-center',
