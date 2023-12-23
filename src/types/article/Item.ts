@@ -43,7 +43,10 @@ interface MediaCommonParams {
 
 interface VideoCommonParams extends MediaCommonParams {}
 
-interface ImageCommonParams extends MediaCommonParams {}
+interface ImageCommonParams extends MediaCommonParams {
+  hasGLEffect?: boolean;
+  fragmentShader?: string;
+}
 
 interface RichTextCommonParams {
   text: string;

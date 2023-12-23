@@ -19,7 +19,9 @@ import { ArticleItemType } from '../../types/article/ArticleItemType';
 const ImageItemSchema = ItemBaseSchema.extend({
   type: z.literal(ArticleItemType.Image),
   commonParams: z.object({
-    url: z.string().min(1)
+    url: z.string().min(1),
+    hasGLEffect: z.boolean().optional(),
+    fragmentShader: z.string().optional()
   }),
   sticky: z.record(
     z.object({
