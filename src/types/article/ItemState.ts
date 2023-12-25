@@ -16,6 +16,7 @@ export interface ItemHoverStatesMap {
   [ArticleItemType.VimeoEmbed]: EmbedHoverStateParams;
   [ArticleItemType.YoutubeEmbed]: EmbedHoverStateParams;
   [ArticleItemType.Custom]: CustomHoverStateParams;
+  [ArticleItemType.Group]: GroupHoverStateParams;
 }
 
 export interface HoverParams<T> {
@@ -62,3 +63,7 @@ export interface EmbedHoverStateParams extends ItemHoversBaseMap {
 }
 
 export interface CustomHoverStateParams extends ItemHoversBaseMap {}
+
+export interface GroupHoverStateParams extends ItemHoversBaseMap {
+  opacity?: HoverParams<number>;
+}
