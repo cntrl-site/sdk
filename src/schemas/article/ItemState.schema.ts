@@ -1,6 +1,6 @@
 import { z, ZodType } from 'zod';
 import {
-  CustomHoverStateParams, EmbedHoverStateParams,
+  CustomHoverStateParams, EmbedHoverStateParams, GroupHoverStateParams,
   MediaHoverStateParams,
   RectangleHoverStateParams, RichTextHoverStateParams
 } from '../../types/article/ItemState';
@@ -53,10 +53,15 @@ export const RichTextHoverStateParamsSchema = z.object({
   wordSpacing: getHoverParamsSchema(z.number())
 }).merge(ItemHoverStateBaseSchema) satisfies ZodType<RichTextHoverStateParams>;
 
+export const GroupHoverStateParamsSchema = z.object({
+  opacity: getHoverParamsSchema(z.number().nonnegative())
+}).merge(ItemHoverStateBaseSchema) satisfies ZodType<GroupHoverStateParams>;
+
 export const ItemHoverStateParamsSchema = z.union([
   EmbedHoverStateParamsSchema,
   MediaHoverStateParamsSchema,
   RectangleHoverStateParamsSchema,
   RichTextHoverStateParamsSchema,
-  CustomItemHoverStateParamsSchema
+  CustomItemHoverStateParamsSchema,
+  GroupHoverStateParamsSchema
 ]);

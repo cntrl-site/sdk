@@ -5,5 +5,6 @@ export enum ArticleItemType {
   Rectangle = 'rectangle',
   VimeoEmbed = 'vimeo-embed',
   YoutubeEmbed = 'youtube-embed',
-  Custom = 'custom'
+  Custom = 'custom',
+  Group = 'group'
 }
