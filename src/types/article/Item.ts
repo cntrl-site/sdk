@@ -11,7 +11,7 @@ export interface Item<T extends ArticleItemType> {
   area: Record<LayoutIdentifier, ItemArea>;
   hidden: Record<LayoutIdentifier, boolean>;
   link?: Link;
-  itemsIds?: T extends ArticleItemType.Group ? string[] : never;
+  items?: T extends ArticleItemType.Group ? ItemAny[] : never;
   sticky: Record<LayoutIdentifier, StickyParams | null>;
   commonParams: ItemCommonParamsMap[T];
   state: ItemState<T>;
