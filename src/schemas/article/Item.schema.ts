@@ -1,7 +1,9 @@
 import { z, ZodType } from 'zod';
 import {
-  CustomItem, GroupItem,
+  CustomItem,
+  GroupItem,
   ImageItem,
+  ItemAny,
   RectangleItem,
   VideoItem,
   VimeoEmbedItem,
@@ -166,27 +168,7 @@ const YoutubeEmbedItemSchema = ItemBaseSchema.extend({
   })
 }) satisfies ZodType<YoutubeEmbedItem>;
 
-const GroupItemSchema =  ItemBaseSchema.extend({
-  type: z.literal(ArticleItemType.Group),
-  commonParams: z.object({}),
-  itemsIds: z.array(z.string()),
-  sticky: z.record(
-    z.object({
-      from: z.number(),
-      to: z.number().optional()
-    }).nullable(),
-  ),
-  layoutParams: z.record(
-    z.object({
-      opacity: z.number().nonnegative()
-    })
-  ),
-  state: z.object({
-    hover: z.record(GroupHoverStateParamsSchema)
-  })
-}) satisfies ZodType<GroupItem>;
-
-export const ItemSchema = z.discriminatedUnion('type', [
+export const ItemSchema: ZodType<ItemAny> = z.lazy(() => z.discriminatedUnion('type', [
   ImageItemSchema,
   VideoItemSchema,
   RectangleItemSchema,
@@ -194,5 +176,23 @@ export const ItemSchema = z.discriminatedUnion('type', [
   RichTextItemSchema,
   VimeoEmbedItemSchema,
   YoutubeEmbedItemSchema,
-  GroupItemSchema
-]);
+  ItemBaseSchema.extend({
+    type: z.literal(ArticleItemType.Group),
+    commonParams: z.object({}),
+    items: z.array(ItemSchema),
+    sticky: z.record(
+      z.object({
+        from: z.number(),
+        to: z.number().optional()
+      }).nullable(),
+    ),
+    layoutParams: z.record(
+      z.object({
+        opacity: z.number().nonnegative()
+      })
+    ),
+    state: z.object({
+      hover: z.record(GroupHoverStateParamsSchema)
+    })
+  })
+]));
