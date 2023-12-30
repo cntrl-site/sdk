@@ -21,7 +21,12 @@ const ImageItemSchema = ItemBaseSchema.extend({
   commonParams: z.object({
     url: z.string().min(1),
     hasGLEffect: z.boolean().optional(),
-    fragmentShader: z.string().optional()
+    fragmentShader: z.string().optional(),
+    FXCursor: z.object({
+      type: z.enum(['mouse', 'manual']),
+      x: z.number(),
+      y: z.number()
+    }).optional()
   }),
   sticky: z.record(
     z.object({
