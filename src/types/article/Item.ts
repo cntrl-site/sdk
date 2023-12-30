@@ -11,6 +11,7 @@ export interface Item<T extends ArticleItemType> {
   area: Record<LayoutIdentifier, ItemArea>;
   hidden: Record<LayoutIdentifier, boolean>;
   link?: Link;
+  items?: T extends ArticleItemType.Group ? ItemAny[] : never;
   sticky: Record<LayoutIdentifier, StickyParams | null>;
   commonParams: ItemCommonParamsMap[T];
   state: ItemState<T>;
@@ -25,6 +26,7 @@ export interface ItemCommonParamsMap {
   [ArticleItemType.VimeoEmbed]: VimeoEmbedCommonParams;
   [ArticleItemType.YoutubeEmbed]: YoutubeEmbedCommonParams;
   [ArticleItemType.Custom]: CustomCommonParams;
+  [ArticleItemType.Group]: GroupCommonParams;
 }
 
 export interface ItemLayoutParamsMap {
@@ -35,6 +37,7 @@ export interface ItemLayoutParamsMap {
   [ArticleItemType.VimeoEmbed]: VimeoEmbedLayoutParams;
   [ArticleItemType.YoutubeEmbed]: YoutubeEmbedLayoutParams;
   [ArticleItemType.Custom]: CustomLayoutParams;
+  [ArticleItemType.Group]: GroupLayoutParams;
 }
 
 interface MediaCommonParams {
@@ -68,6 +71,8 @@ interface CustomCommonParams {
   name: string;
 }
 
+interface GroupCommonParams {}
+
 interface VimeoEmbedCommonParams {
   play: 'on-hover' | 'on-click' | 'auto';
   controls: boolean;
@@ -93,6 +98,10 @@ interface MediaLayoutParams {
 }
 
 interface CustomLayoutParams {}
+
+interface GroupLayoutParams {
+  opacity: number;
+}
 
 interface VimeoEmbedLayoutParams {
   radius: number;
@@ -158,3 +167,4 @@ export type RichTextItem = Item<ArticleItemType.RichText>;
 export type VimeoEmbedItem = Item<ArticleItemType.VimeoEmbed>;
 export type YoutubeEmbedItem = Item<ArticleItemType.YoutubeEmbed>;
 export type CustomItem = Item<ArticleItemType.Custom>;
+export type GroupItem = Item<ArticleItemType.Group>;

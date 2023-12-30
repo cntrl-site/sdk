@@ -1,7 +1,9 @@
 import { z, ZodType } from 'zod';
 import {
   CustomItem,
+  GroupItem,
   ImageItem,
+  ItemAny,
   RectangleItem,
   VideoItem,
   VimeoEmbedItem,
@@ -9,7 +11,7 @@ import {
 } from '../../types/article/Item';
 import {
   CustomItemHoverStateParamsSchema,
-  EmbedHoverStateParamsSchema, MediaHoverStateParamsSchema,
+  EmbedHoverStateParamsSchema, GroupHoverStateParamsSchema, MediaHoverStateParamsSchema,
   RectangleHoverStateParamsSchema
 } from './ItemState.schema';
 import { RichTextItemSchema } from './RichTextItem.schema';
@@ -171,12 +173,31 @@ const YoutubeEmbedItemSchema = ItemBaseSchema.extend({
   })
 }) satisfies ZodType<YoutubeEmbedItem>;
 
-export const ItemSchema = z.discriminatedUnion('type', [
+export const ItemSchema: ZodType<ItemAny> = z.lazy(() => z.discriminatedUnion('type', [
   ImageItemSchema,
   VideoItemSchema,
   RectangleItemSchema,
   CustomItemSchema,
   RichTextItemSchema,
   VimeoEmbedItemSchema,
-  YoutubeEmbedItemSchema
-]);
+  YoutubeEmbedItemSchema,
+  ItemBaseSchema.extend({
+    type: z.literal(ArticleItemType.Group),
+    commonParams: z.object({}),
+    items: z.array(ItemSchema),
+    sticky: z.record(
+      z.object({
+        from: z.number(),
+        to: z.number().optional()
+      }).nullable(),
+    ),
+    layoutParams: z.record(
+      z.object({
+        opacity: z.number().nonnegative()
+      })
+    ),
+    state: z.object({
+      hover: z.record(GroupHoverStateParamsSchema)
+    })
+  })
+]));
