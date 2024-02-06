@@ -64,6 +64,10 @@ const VideoItemSchema = ItemBaseSchema.extend({
   layoutParams: z.record(
     z.object({
       autoplay: z.boolean(),
+      scrollPlayback: z.object({
+        from: z.number(),
+        to: z.number()
+      }).nullable(),
       opacity: z.number().nonnegative(),
       radius: z.number(),
       strokeWidth: z.number(),
