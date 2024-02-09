@@ -17,6 +17,25 @@ import {
 import { RichTextItemSchema } from './RichTextItem.schema';
 import { ItemBaseSchema } from './ItemBase.schema';
 import { ArticleItemType } from '../../types/article/ArticleItemType';
+import { FXControlAny } from '../../types/article/FX';
+
+export const FXControlSchema = z.discriminatedUnion('type',[
+  z.object({
+    type: z.literal('float'),
+    shaderParam: z.string(),
+    value: z.number()
+  }),
+  z.object({
+    type: z.literal('int'),
+    shaderParam: z.string(),
+    value: z.number()
+  }),
+  z.object({
+    type: z.literal('vec2'),
+    shaderParam: z.string(),
+    value: z.tuple([z.number(), z.number()])
+  })
+]) satisfies ZodType<FXControlAny>;
 
 const ImageItemSchema = ItemBaseSchema.extend({
   type: z.literal(ArticleItemType.Image),
@@ -28,7 +47,8 @@ const ImageItemSchema = ItemBaseSchema.extend({
       type: z.enum(['mouse', 'manual']),
       x: z.number(),
       y: z.number()
-    }).optional()
+    }).optional(),
+    FXControls: z.array(FXControlSchema).optional()
   }),
   sticky: z.record(
     z.object({

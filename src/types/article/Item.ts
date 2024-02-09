@@ -2,6 +2,7 @@ import { RichTextBlock, RichTextStyle, TextAlign, TextDecoration, TextTransform,
 import { ArticleItemType } from './ArticleItemType';
 import { ItemArea } from './ItemArea';
 import { ItemState } from './ItemState';
+import { FXControlAny, FXCursor } from './FX';
 
 export type ItemAny = Item<ArticleItemType>;
 
@@ -44,18 +45,13 @@ interface MediaCommonParams {
   url: string;
 }
 
-interface FXCursor {
-  type: 'mouse' | 'manual';
-  x: number;
-  y: number;
-}
-
 interface VideoCommonParams extends MediaCommonParams {}
 
 interface ImageCommonParams extends MediaCommonParams {
   hasGLEffect?: boolean;
   fragmentShader?: string;
   FXCursor?: FXCursor;
+  FXControls?: FXControlAny[];
 }
 
 interface RichTextCommonParams {
