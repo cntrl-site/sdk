@@ -113,6 +113,7 @@ interface ImageLayoutParams extends MediaLayoutParams {}
 
 interface VideoLayoutParams extends MediaLayoutParams {
   autoplay: boolean;
+  scrollPlayback: ScrollPlaybackParams | null;
 }
 
 interface RichTextLayoutParams {
@@ -142,6 +143,11 @@ interface RectangleLayoutParams {
   blur: number;
   backdropBlur: number;
   blurMode: 'default' | 'backdrop';
+}
+
+export interface ScrollPlaybackParams {
+  from: number;
+  to: number;
 }
 
 export interface StickyParams {
