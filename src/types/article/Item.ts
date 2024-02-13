@@ -1,4 +1,4 @@
-import { RichTextBlock, RichTextStyle, TextAlign, TextDecoration, TextTransform, VerticalAlign } from './RichText';
+import { RichTextBlock, RichTextStyle, TextAlign, TextTransform, VerticalAlign } from './RichText';
 import { ArticleItemType } from './ArticleItemType';
 import { ItemArea } from './ItemArea';
 import { ItemState } from './ItemState';
@@ -131,7 +131,6 @@ interface RichTextLayoutParams {
   typeFace: string;
   fontStyle: string;
   fontWeight: number;
-  textDecoration: TextDecoration;
   fontVariant: string;
 }
 

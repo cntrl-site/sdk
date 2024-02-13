@@ -1,7 +1,6 @@
 import { z, ZodType } from 'zod';
 import {
   CustomItem,
-  GroupItem,
   ImageItem,
   ItemAny,
   RectangleItem,
