@@ -1,5 +1,5 @@
 import { z, ZodType } from 'zod';
-import { RichTextBlock, TextAlign, TextDecoration, TextTransform, VerticalAlign } from '../../types/article/RichText';
+import { RichTextBlock, TextAlign, TextTransform, VerticalAlign } from '../../types/article/RichText';
 import { ItemBaseSchema } from './ItemBase.schema';
 import { ArticleItemType } from '../../types/article/ArticleItemType';
 import { RichTextHoverStateParamsSchema } from './ItemState.schema';
@@ -58,8 +58,7 @@ export const RichTextItemSchema = ItemBaseSchema.extend({
       typeFace: z.string(),
       fontStyle: z.string(),
       fontWeight: z.number(),
-      fontVariant: z.string(),
-      textDecoration: z.nativeEnum(TextDecoration),
+      fontVariant: z.string()
     })
   ),
   state: z.object({
