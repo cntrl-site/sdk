@@ -23,7 +23,7 @@ describe('Client', () => {
   it('returns page data', async () => {
     const projectId = 'projectId';
     const API_BASE_URL = 'api-test.cntrl.site';
-    const fetchesMap = {
+    const fetchesMap: Record<string, unknown> = {
       [`https://${API_BASE_URL}/projects/${projectId}`]: projectMock,
       [`https://${API_BASE_URL}/projects/${projectId}/articles/articleId`]: {
         article: articleMock,
@@ -59,7 +59,7 @@ describe('Client', () => {
   it('ignores page meta if it is not enabled and uses project meta instead', async () => {
     const projectId = 'projectId';
     const API_BASE_URL = 'api-test.cntrl.site';
-    const fetchesMap = {
+    const fetchesMap: Record<string, unknown> = {
       [`https://${API_BASE_URL}/projects/${projectId}`]: projectMock,
       [`https://${API_BASE_URL}/projects/${projectId}/articles/articleId2`]: {
         article: articleMock,
