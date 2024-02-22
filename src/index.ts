@@ -2,6 +2,7 @@
 export { Client as CntrlClient } from './Client/Client';
 export { FontFaceGenerator } from './FontFaceGenerator/FontFaceGenerator';
 export { getLayoutStyles, getLayoutMediaQuery } from './utils';
+export {ScrollPlaybackVideoManager} from './ScrollPlaybackVideoManager/ScrollPlaybackVideoManager';
 
 // enums
 export { SectionHeightMode } from './types/article/Section';
