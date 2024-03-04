@@ -16,10 +16,10 @@ export class ScrollPlaybackVideoManager {
   private canvas: HTMLCanvasElement | null = null;
   private context: CanvasRenderingContext2D | null = null;
   private frames: ImageBitmap[] = [];
-  private frameRate = 0;
+  private frameRate = 0.01;
   private transitioning = false;
   private debug: boolean = false;
-  private frameThreshold: number = 0;
+  private frameThreshold: number = 0.1;
   private transitionSpeed: number = 10;
   private useWebCodecs: boolean = true;
   private resizeObserver: ResizeObserver;
