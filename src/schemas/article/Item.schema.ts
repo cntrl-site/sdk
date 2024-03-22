@@ -163,7 +163,8 @@ const VimeoEmbedItemSchema = ItemBaseSchema.extend({
   layoutParams: z.record(
     z.object({
       radius: z.number(),
-      blur: z.number()
+      blur: z.number(),
+      opacity: z.number().nonnegative()
     })
   ),
   state: z.object({
@@ -188,7 +189,8 @@ const YoutubeEmbedItemSchema = ItemBaseSchema.extend({
   layoutParams: z.record(
     z.object({
       radius: z.number(),
-      blur: z.number()
+      blur: z.number(),
+      opacity: z.number().nonnegative()
     })
   ),
   state: z.object({

@@ -102,11 +102,13 @@ interface GroupLayoutParams {
 interface VimeoEmbedLayoutParams {
   radius: number;
   blur: number;
+  opacity: number;
 }
 
 interface YoutubeEmbedLayoutParams {
   radius: number;
   blur: number;
+  opacity: number;
 }
 
 interface ImageLayoutParams extends MediaLayoutParams {}
