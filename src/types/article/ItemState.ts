@@ -60,6 +60,7 @@ export interface RectangleHoverStateParams extends ItemHoversBaseMap {
 
 export interface EmbedHoverStateParams extends ItemHoversBaseMap {
   radius?: HoverParams<number>;
+  opacity?: HoverParams<number>;
 }
 
 export interface CustomHoverStateParams extends ItemHoversBaseMap {}
