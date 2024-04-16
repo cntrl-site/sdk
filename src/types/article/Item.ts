@@ -1,6 +1,6 @@
 import { RichTextBlock, RichTextStyle, TextAlign, TextTransform, VerticalAlign } from './RichText';
 import { ArticleItemType } from './ArticleItemType';
-import { ItemArea } from './ItemArea';
+import { AreaAnchor, ItemArea } from './ItemArea';
 import { ItemState } from './ItemState';
 import { FXControlAny, FXCursor } from './FX';
 
@@ -28,6 +28,7 @@ export interface ItemCommonParamsMap {
   [ArticleItemType.YoutubeEmbed]: YoutubeEmbedCommonParams;
   [ArticleItemType.Custom]: CustomCommonParams;
   [ArticleItemType.Group]: GroupCommonParams;
+  [ArticleItemType.CodeEmbed]: CodeEmbedCommonParams
 }
 
 export interface ItemLayoutParamsMap {
@@ -39,6 +40,7 @@ export interface ItemLayoutParamsMap {
   [ArticleItemType.YoutubeEmbed]: YoutubeEmbedLayoutParams;
   [ArticleItemType.Custom]: CustomLayoutParams;
   [ArticleItemType.Group]: GroupLayoutParams;
+  [ArticleItemType.CodeEmbed]: CodeEmbedLayoutParams;
 }
 
 interface MediaCommonParams {
@@ -69,6 +71,10 @@ interface CustomCommonParams {
 
 interface GroupCommonParams {}
 
+interface CodeEmbedCommonParams {
+  html: string;
+}
+
 interface VimeoEmbedCommonParams {
   play: 'on-hover' | 'on-click' | 'auto';
   controls: boolean;
@@ -97,6 +103,12 @@ interface CustomLayoutParams {}
 
 interface GroupLayoutParams {
   opacity: number;
+}
+
+interface CodeEmbedLayoutParams {
+  areaAnchor: AreaAnchor;
+  opacity: number;
+  blur: number;
 }
 
 interface VimeoEmbedLayoutParams {
@@ -171,3 +183,4 @@ export type VimeoEmbedItem = Item<ArticleItemType.VimeoEmbed>;
 export type YoutubeEmbedItem = Item<ArticleItemType.YoutubeEmbed>;
 export type CustomItem = Item<ArticleItemType.Custom>;
 export type GroupItem = Item<ArticleItemType.Group>;
+export type CodeEmbedItem = Item<ArticleItemType.CodeEmbed>;

@@ -9,7 +9,7 @@ export enum PositionType {
   ScreenBased = 'screen-based'
 }
 
-export enum ScaleAnchor {
+export enum AreaAnchor {
   TopLeft = 'top-left',
   TopCenter = 'top-center',
   TopRight = 'top-right',
@@ -31,5 +31,5 @@ export interface ItemArea {
   angle: number;
   anchorSide?: AnchorSide;
   scale: number;
-  scaleAnchor: ScaleAnchor;
+  scaleAnchor: AreaAnchor;
 }

@@ -1,5 +1,6 @@
 import { z, ZodType } from 'zod';
 import {
+  CodeEmbedItem,
   CustomItem,
   ImageItem,
   ItemAny,
@@ -9,6 +10,7 @@ import {
   YoutubeEmbedItem
 } from '../../types/article/Item';
 import {
+  CodeEmbedHoverStateParamsSchema,
   CustomItemHoverStateParamsSchema,
   EmbedHoverStateParamsSchema, GroupHoverStateParamsSchema, MediaHoverStateParamsSchema,
   RectangleHoverStateParamsSchema
@@ -17,6 +19,7 @@ import { RichTextItemSchema } from './RichTextItem.schema';
 import { ItemBaseSchema } from './ItemBase.schema';
 import { ArticleItemType } from '../../types/article/ArticleItemType';
 import { FXControlAny } from '../../types/article/FX';
+import { AreaAnchor } from '../../types/article/ItemArea';
 
 export const FXControlSchema = z.discriminatedUnion('type',[
   z.object({
@@ -198,6 +201,29 @@ const YoutubeEmbedItemSchema = ItemBaseSchema.extend({
   })
 }) satisfies ZodType<YoutubeEmbedItem>;
 
+const CodeEmbedItemSchema =  ItemBaseSchema.extend({
+  type: z.literal(ArticleItemType.CodeEmbed),
+  commonParams: z.object({
+    html: z.string()
+  }),
+  sticky: z.record(
+    z.object({
+      from: z.number(),
+      to: z.number().optional()
+    }).nullable(),
+  ),
+  layoutParams: z.record(
+    z.object({
+      areaAnchor:  z.nativeEnum(AreaAnchor),
+      opacity: z.number().nonnegative(),
+      blur: z.number()
+    })
+  ),
+  state: z.object({
+    hover: z.record(CodeEmbedHoverStateParamsSchema)
+  })
+}) satisfies ZodType<CodeEmbedItem>;
+
 export const ItemSchema: ZodType<ItemAny> = z.lazy(() => z.discriminatedUnion('type', [
   ImageItemSchema,
   VideoItemSchema,
@@ -206,6 +232,7 @@ export const ItemSchema: ZodType<ItemAny> = z.lazy(() => z.discriminatedUnion('t
   RichTextItemSchema,
   VimeoEmbedItemSchema,
   YoutubeEmbedItemSchema,
+  CodeEmbedItemSchema,
   ItemBaseSchema.extend({
     type: z.literal(ArticleItemType.Group),
     commonParams: z.object({}),

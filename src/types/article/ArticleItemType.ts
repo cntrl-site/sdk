@@ -6,5 +6,6 @@ export enum ArticleItemType {
   VimeoEmbed = 'vimeo-embed',
   YoutubeEmbed = 'youtube-embed',
   Custom = 'custom',
-  Group = 'group'
+  Group = 'group',
+  CodeEmbed = 'code-embed'
 }

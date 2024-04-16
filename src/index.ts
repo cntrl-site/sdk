@@ -8,7 +8,7 @@ export {ScrollPlaybackVideoManager} from './ScrollPlaybackVideoManager/ScrollPla
 export { SectionHeightMode } from './types/article/Section';
 export { TextAlign, TextDecoration, TextTransform, VerticalAlign } from './types/article/RichText';
 export { ArticleItemType } from './types/article/ArticleItemType';
-export { ScaleAnchor, AnchorSide, PositionType } from './types/article/ItemArea';
+export { AreaAnchor, AnchorSide, PositionType } from './types/article/ItemArea';
 export { KeyframeType } from './types/keyframe/Keyframe';
 
 // types
@@ -17,7 +17,7 @@ export type { Section, SectionHeight } from './types/article/Section';
 export type {
   Item, ImageItem, ItemAny, CustomItem, ItemCommonParamsMap,
   ItemLayoutParamsMap, RectangleItem, StickyParams, VideoItem, RichTextItem,
-  Link, VimeoEmbedItem, YoutubeEmbedItem, GroupItem
+  Link, VimeoEmbedItem, YoutubeEmbedItem, GroupItem, CodeEmbedItem
 } from './types/article/Item';
 export type { RichTextBlock, RichTextEntity, RichTextStyle } from './types/article/RichText';
 export type { ItemArea } from './types/article/ItemArea';
