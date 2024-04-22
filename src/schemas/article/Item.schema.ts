@@ -204,7 +204,8 @@ const YoutubeEmbedItemSchema = ItemBaseSchema.extend({
 const CodeEmbedItemSchema =  ItemBaseSchema.extend({
   type: z.literal(ArticleItemType.CodeEmbed),
   commonParams: z.object({
-    html: z.string()
+    html: z.string(),
+    scale: z.boolean()
   }),
   sticky: z.record(
     z.object({

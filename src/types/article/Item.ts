@@ -73,6 +73,7 @@ interface GroupCommonParams {}
 
 interface CodeEmbedCommonParams {
   html: string;
+  scale: boolean;
 }
 
 interface VimeoEmbedCommonParams {
