@@ -205,7 +205,8 @@ const CodeEmbedItemSchema =  ItemBaseSchema.extend({
   type: z.literal(ArticleItemType.CodeEmbed),
   commonParams: z.object({
     html: z.string(),
-    scale: z.boolean()
+    scale: z.boolean(),
+    iframe: z.boolean()
   }),
   sticky: z.record(
     z.object({
