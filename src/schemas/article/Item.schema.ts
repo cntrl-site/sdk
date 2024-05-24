@@ -75,7 +75,8 @@ const ImageItemSchema = ItemBaseSchema.extend({
 const VideoItemSchema = ItemBaseSchema.extend({
   type: z.literal(ArticleItemType.Video),
   commonParams: z.object({
-    url: z.string().min(1)
+    url: z.string().min(1),
+    coverUrl: z.string().nullable()
   }),
   sticky: z.record(
     z.object({
@@ -155,6 +156,7 @@ const VimeoEmbedItemSchema = ItemBaseSchema.extend({
     muted: z.boolean(),
     pictureInPicture: z.boolean(),
     url: z.string().min(1),
+    coverUrl: z.string().nullable(),
     ratioLock: z.boolean()
   }),
   sticky: z.record(
@@ -181,7 +183,8 @@ const YoutubeEmbedItemSchema = ItemBaseSchema.extend({
     play: z.enum(['on-hover', 'on-click', 'auto']),
     controls: z.boolean(),
     loop: z.boolean(),
-    url: z.string().min(1)
+    url: z.string().min(1),
+    coverUrl: z.string().nullable()
   }),
   sticky: z.record(
     z.object({

@@ -3,6 +3,7 @@ import { ArticleItemType } from './ArticleItemType';
 import { AreaAnchor, ItemArea } from './ItemArea';
 import { ItemState } from './ItemState';
 import { FXControlAny, FXCursor } from './FX';
+import { z } from 'zod';
 
 export type ItemAny = Item<ArticleItemType>;
 
@@ -47,7 +48,9 @@ interface MediaCommonParams {
   url: string;
 }
 
-interface VideoCommonParams extends MediaCommonParams {}
+interface VideoCommonParams extends MediaCommonParams {
+  coverUrl: string | null;
+}
 
 interface ImageCommonParams extends MediaCommonParams {
   hasGLEffect?: boolean;
@@ -84,6 +87,7 @@ interface VimeoEmbedCommonParams {
   muted: boolean;
   pictureInPicture: boolean;
   url: string;
+  coverUrl: string | null;
 }
 
 interface YoutubeEmbedCommonParams {
@@ -91,6 +95,7 @@ interface YoutubeEmbedCommonParams {
   controls: boolean;
   loop: boolean;
   url: string;
+  coverUrl: string | null;
 }
 
 interface MediaLayoutParams {
