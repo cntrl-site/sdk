@@ -16,7 +16,7 @@ export interface ItemStatesMap {
   [ArticleItemType.YoutubeEmbed]: VideoEmbedStateParams;
   [ArticleItemType.Custom]: CustomItemStateParams;
   [ArticleItemType.Group]: GroupStateParams;
-  [ArticleItemType.CodeEmbed]: CodeEmbedHoverStateParams;
+  [ArticleItemType.CodeEmbed]: CodeEmbedStateParams;
 }
 
 export interface StateParams<T> {
@@ -68,6 +68,6 @@ export interface GroupStateParams extends ItemStatesBaseMap {
   opacity?: StateParams<number>;
 }
 
-export interface CodeEmbedHoverStateParams extends ItemStatesBaseMap {
+export interface CodeEmbedStateParams extends ItemStatesBaseMap {
   opacity?: StateParams<number>;
 }

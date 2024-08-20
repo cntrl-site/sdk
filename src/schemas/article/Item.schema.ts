@@ -10,10 +10,11 @@ import {
   YoutubeEmbedItem
 } from '../../types/article/Item';
 import {
-  CodeEmbedHoverStateParamsSchema,
-  CustomItemHoverStateParamsSchema,
-  EmbedHoverStateParamsSchema, GroupHoverStateParamsSchema, MediaHoverStateParamsSchema,
-  RectangleHoverStateParamsSchema
+  CodeEmbedStateParamsSchema,
+  CustomItemStateParamsSchema,
+  EmbedStateParamsSchema, GroupStateParamsSchema,
+  MediaStateParamsSchema,
+  RectangleStateParamsSchema
 } from './ItemState.schema';
 import { RichTextItemSchema } from './RichTextItem.schema';
 import { ItemBaseSchema } from './ItemBase.schema';
@@ -68,7 +69,7 @@ const ImageItemSchema = ItemBaseSchema.extend({
     })
   ),
   state: z.object({
-    hover: z.record(MediaHoverStateParamsSchema)
+    hover: z.record(MediaStateParamsSchema)
   })
 }) satisfies ZodType<ImageItem>;
 
@@ -99,7 +100,7 @@ const VideoItemSchema = ItemBaseSchema.extend({
     })
   ),
   state: z.object({
-    hover: z.record(MediaHoverStateParamsSchema)
+    hover: z.record(MediaStateParamsSchema)
   })
 }) satisfies ZodType<VideoItem>;
 
@@ -126,7 +127,7 @@ const RectangleItemSchema = ItemBaseSchema.extend({
     })
   ),
   state: z.object({
-    hover: z.record(RectangleHoverStateParamsSchema)
+    hover: z.record(RectangleStateParamsSchema)
   })
 }) satisfies ZodType<RectangleItem>;
 
@@ -143,7 +144,7 @@ const CustomItemSchema = ItemBaseSchema.extend({
   ),
   layoutParams: z.record(z.object({})),
   state: z.object({
-    hover: z.record(CustomItemHoverStateParamsSchema)
+    hover: z.record(CustomItemStateParamsSchema)
   })
 }) satisfies ZodType<CustomItem>;
 
@@ -173,7 +174,7 @@ const VimeoEmbedItemSchema = ItemBaseSchema.extend({
     })
   ),
   state: z.object({
-    hover: z.record(EmbedHoverStateParamsSchema)
+    hover: z.record(EmbedStateParamsSchema)
   })
 }) satisfies ZodType<VimeoEmbedItem>;
 
@@ -200,7 +201,7 @@ const YoutubeEmbedItemSchema = ItemBaseSchema.extend({
     })
   ),
   state: z.object({
-    hover: z.record(EmbedHoverStateParamsSchema)
+    hover: z.record(EmbedStateParamsSchema)
   })
 }) satisfies ZodType<YoutubeEmbedItem>;
 
@@ -225,7 +226,7 @@ const CodeEmbedItemSchema =  ItemBaseSchema.extend({
     })
   ),
   state: z.object({
-    hover: z.record(CodeEmbedHoverStateParamsSchema)
+    hover: z.record(CodeEmbedStateParamsSchema)
   })
 }) satisfies ZodType<CodeEmbedItem>;
 
@@ -254,7 +255,7 @@ export const ItemSchema: ZodType<ItemAny> = z.lazy(() => z.discriminatedUnion('t
       })
     ),
     state: z.object({
-      hover: z.record(GroupHoverStateParamsSchema)
+      hover: z.record(GroupStateParamsSchema)
     })
   })
 ]));

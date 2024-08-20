@@ -2,7 +2,7 @@ import { z, ZodType } from 'zod';
 import { RichTextBlock, TextAlign, TextTransform, VerticalAlign } from '../../types/article/RichText';
 import { ItemBaseSchema } from './ItemBase.schema';
 import { ArticleItemType } from '../../types/article/ArticleItemType';
-import { RichTextHoverStateParamsSchema } from './ItemState.schema';
+import { RichTextStateParamsSchema } from './ItemState.schema';
 import { RichTextItem } from '../../types/article/Item';
 
 export const RichTextEntitySchema = z.object({
@@ -62,6 +62,6 @@ export const RichTextItemSchema = ItemBaseSchema.extend({
     })
   ),
   state: z.object({
-    hover: z.record(RichTextHoverStateParamsSchema)
+    hover: z.record(RichTextStateParamsSchema)
   })
 }) satisfies ZodType<RichTextItem>;
