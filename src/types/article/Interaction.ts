@@ -2,6 +2,7 @@ export interface Interaction {
   id: string;
   triggers: InteractionTrigger[];
   states: InteractionState[];
+  startStateId: string;
 }
 
 export interface InteractionTrigger {

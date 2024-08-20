@@ -15,5 +15,6 @@ const StateSchema = z.object({
 export const InteractionSchema = z.object({
   id: z.string(),
   triggers: z.array(TriggerSchema),
-  states: z.array(StateSchema)
+  states: z.array(StateSchema),
+  startStateId: z.string(),
 }) satisfies ZodType<Interaction>;
