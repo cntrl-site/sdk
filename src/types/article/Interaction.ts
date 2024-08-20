@@ -7,6 +7,7 @@ export interface Interaction {
 export interface InteractionTrigger {
   itemId: string;
   type: 'hover-on' | 'hover-on-off' | 'click';
+  from: StateId;
   to: StateId;
 }
 
