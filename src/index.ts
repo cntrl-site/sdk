@@ -21,7 +21,7 @@ export type {
 } from './types/article/Item';
 export type { RichTextBlock, RichTextEntity, RichTextStyle } from './types/article/RichText';
 export type { ItemArea } from './types/article/ItemArea';
-export type { ItemState, ItemHoverState, HoverParams } from './types/article/ItemState';
+export type { ItemState, ItemStateParams, StateParams, ItemStatesMap } from './types/article/ItemState';
 export type { Layout } from './types/project/Layout';
 export type { Project } from './types/project/Project';
 export type { Meta } from './types/project/Meta';

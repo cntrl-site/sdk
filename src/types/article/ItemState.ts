@@ -1,75 +1,73 @@
 import { ArticleItemType } from './ArticleItemType';
 
-type LayoutIdentifier = string;
+type LayoutId = string;
+type StateId = string;
 
-export interface ItemState<T extends ArticleItemType> {
-  hover: Record<LayoutIdentifier, ItemHoverStatesMap[T]>;
-}
+export type ItemState<T extends ArticleItemType> = Record<StateId, Record<LayoutId, ItemStatesMap[T]>>;
 
-export type ItemHoverState = ItemHoverStatesMap[ArticleItemType];
+export type ItemStateParams = ItemStatesMap[ArticleItemType];
 
-export interface ItemHoverStatesMap {
-  [ArticleItemType.Image]: MediaHoverStateParams;
-  [ArticleItemType.Video]: MediaHoverStateParams;
-  [ArticleItemType.RichText]: RichTextHoverStateParams;
-  [ArticleItemType.Rectangle]: RectangleHoverStateParams;
-  [ArticleItemType.VimeoEmbed]: EmbedHoverStateParams;
-  [ArticleItemType.YoutubeEmbed]: EmbedHoverStateParams;
-  [ArticleItemType.Custom]: CustomHoverStateParams;
-  [ArticleItemType.Group]: GroupHoverStateParams;
+export interface ItemStatesMap {
+  [ArticleItemType.Image]: MediaStateParams;
+  [ArticleItemType.Video]: MediaStateParams;
+  [ArticleItemType.RichText]: RichTextStateParams;
+  [ArticleItemType.Rectangle]: RectangleStateParams;
+  [ArticleItemType.VimeoEmbed]: VideoEmbedStateParams;
+  [ArticleItemType.YoutubeEmbed]: VideoEmbedStateParams;
+  [ArticleItemType.Custom]: CustomItemStateParams;
+  [ArticleItemType.Group]: GroupStateParams;
   [ArticleItemType.CodeEmbed]: CodeEmbedHoverStateParams;
 }
 
-export interface HoverParams<T> {
+export interface StateParams<T> {
   timing: string;
   duration: number;
   delay: number;
   value: T;
 }
 
-interface ItemHoversBaseMap {
-  width?: HoverParams<number>;
-  height?: HoverParams<number>;
-  angle?:  HoverParams<number>;
-  top?:  HoverParams<number>;
-  left?:  HoverParams<number>;
-  scale?:  HoverParams<number>;
-  blur?: HoverParams<number>;
+interface ItemStatesBaseMap {
+  width?: StateParams<number>;
+  height?: StateParams<number>;
+  angle?: StateParams<number>;
+  top?: StateParams<number>;
+  left?: StateParams<number>;
+  scale?: StateParams<number>;
+  blur?: StateParams<number>;
 }
 
-export interface MediaHoverStateParams extends ItemHoversBaseMap {
-  opacity?: HoverParams<number>;
-  radius?: HoverParams<number>;
-  strokeWidth?: HoverParams<number>;
-  strokeColor?: HoverParams<string>;
+export interface MediaStateParams extends ItemStatesBaseMap {
+  opacity?: StateParams<number>;
+  radius?: StateParams<number>;
+  strokeWidth?: StateParams<number>;
+  strokeColor?: StateParams<string>;
 }
 
-export interface RichTextHoverStateParams extends ItemHoversBaseMap {
-  color?: HoverParams<string>;
-  letterSpacing?: HoverParams<number>;
-  wordSpacing?: HoverParams<number>;
+export interface RichTextStateParams extends ItemStatesBaseMap {
+  color?: StateParams<string>;
+  letterSpacing?: StateParams<number>;
+  wordSpacing?: StateParams<number>;
 }
 
-
-export interface RectangleHoverStateParams extends ItemHoversBaseMap {
-  radius?: HoverParams<number>;
-  strokeWidth?: HoverParams<number>;
-  fillColor?: HoverParams<string>;
-  strokeColor?: HoverParams<string>;
-  backdropBlur?: HoverParams<number>;
+export interface RectangleStateParams extends ItemStatesBaseMap {
+  radius?: StateParams<number>;
+  strokeWidth?: StateParams<number>;
+  fillColor?: StateParams<string>;
+  strokeColor?: StateParams<string>;
+  backdropBlur?: StateParams<number>;
 }
 
-export interface EmbedHoverStateParams extends ItemHoversBaseMap {
-  radius?: HoverParams<number>;
-  opacity?: HoverParams<number>;
+export interface VideoEmbedStateParams extends ItemStatesBaseMap {
+  radius?: StateParams<number>;
+  opacity?: StateParams<number>;
 }
 
-export interface CustomHoverStateParams extends ItemHoversBaseMap {}
+export interface CustomItemStateParams extends ItemStatesBaseMap {}
 
-export interface GroupHoverStateParams extends ItemHoversBaseMap {
-  opacity?: HoverParams<number>;
+export interface GroupStateParams extends ItemStatesBaseMap {
+  opacity?: StateParams<number>;
 }
 
-export interface CodeEmbedHoverStateParams extends ItemHoversBaseMap {
-  opacity?: HoverParams<number>;
+export interface CodeEmbedHoverStateParams extends ItemStatesBaseMap {
+  opacity?: StateParams<number>;
 }
