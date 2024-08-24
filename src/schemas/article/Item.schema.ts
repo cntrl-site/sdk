@@ -68,9 +68,7 @@ const ImageItemSchema = ItemBaseSchema.extend({
       blur: z.number()
     })
   ),
-  state: z.object({
-    hover: z.record(MediaStateParamsSchema)
-  })
+  state: z.record(z.record(MediaStateParamsSchema))
 }) satisfies ZodType<ImageItem>;
 
 const VideoItemSchema = ItemBaseSchema.extend({
@@ -99,9 +97,7 @@ const VideoItemSchema = ItemBaseSchema.extend({
       blur: z.number()
     })
   ),
-  state: z.object({
-    hover: z.record(MediaStateParamsSchema)
-  })
+  state: z.record(z.record(MediaStateParamsSchema))
 }) satisfies ZodType<VideoItem>;
 
 const RectangleItemSchema = ItemBaseSchema.extend({
@@ -126,9 +122,7 @@ const RectangleItemSchema = ItemBaseSchema.extend({
       blurMode: z.enum(['default', 'backdrop'])
     })
   ),
-  state: z.object({
-    hover: z.record(RectangleStateParamsSchema)
-  })
+  state: z.record(z.record(RectangleStateParamsSchema))
 }) satisfies ZodType<RectangleItem>;
 
 const CustomItemSchema = ItemBaseSchema.extend({
@@ -143,9 +137,7 @@ const CustomItemSchema = ItemBaseSchema.extend({
     }).nullable(),
   ),
   layoutParams: z.record(z.object({})),
-  state: z.object({
-    hover: z.record(CustomItemStateParamsSchema)
-  })
+  state: z.record(z.record(CustomItemStateParamsSchema))
 }) satisfies ZodType<CustomItem>;
 
 const VimeoEmbedItemSchema = ItemBaseSchema.extend({
@@ -173,9 +165,7 @@ const VimeoEmbedItemSchema = ItemBaseSchema.extend({
       opacity: z.number().nonnegative()
     })
   ),
-  state: z.object({
-    hover: z.record(EmbedStateParamsSchema)
-  })
+  state: z.record(z.record(EmbedStateParamsSchema))
 }) satisfies ZodType<VimeoEmbedItem>;
 
 const YoutubeEmbedItemSchema = ItemBaseSchema.extend({
@@ -200,9 +190,7 @@ const YoutubeEmbedItemSchema = ItemBaseSchema.extend({
       opacity: z.number().nonnegative()
     })
   ),
-  state: z.object({
-    hover: z.record(EmbedStateParamsSchema)
-  })
+  state: z.record(z.record(EmbedStateParamsSchema))
 }) satisfies ZodType<YoutubeEmbedItem>;
 
 const CodeEmbedItemSchema =  ItemBaseSchema.extend({
@@ -225,9 +213,7 @@ const CodeEmbedItemSchema =  ItemBaseSchema.extend({
       blur: z.number()
     })
   ),
-  state: z.object({
-    hover: z.record(CodeEmbedStateParamsSchema)
-  })
+  state: z.record(z.record(CodeEmbedStateParamsSchema))
 }) satisfies ZodType<CodeEmbedItem>;
 
 export const ItemSchema: ZodType<ItemAny> = z.lazy(() => z.discriminatedUnion('type', [
@@ -254,8 +240,6 @@ export const ItemSchema: ZodType<ItemAny> = z.lazy(() => z.discriminatedUnion('t
         opacity: z.number().nonnegative()
       })
     ),
-    state: z.object({
-      hover: z.record(GroupStateParamsSchema)
-    })
+    state: z.record(z.record(GroupStateParamsSchema))
   })
 ]));
