@@ -3,7 +3,7 @@ import { Interaction, InteractionTrigger } from '../../types/article/Interaction
 
 const TriggerSchema = z.object({
   itemId: z.string(),
-  type: z.enum(['hover-on', 'hover-on-off', 'click']),
+  type: z.enum(['hover-in', 'hover-out', 'click']),
   from: z.string(),
   to: z.string()
 }) satisfies ZodType<InteractionTrigger>;
