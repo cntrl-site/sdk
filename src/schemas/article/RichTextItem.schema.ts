@@ -61,7 +61,5 @@ export const RichTextItemSchema = ItemBaseSchema.extend({
       fontVariant: z.string()
     })
   ),
-  state: z.object({
-    hover: z.record(RichTextStateParamsSchema)
-  })
+  state: z.record(z.record(RichTextStateParamsSchema))
 }) satisfies ZodType<RichTextItem>;
