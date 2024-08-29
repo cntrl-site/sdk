@@ -3,7 +3,7 @@ import { ArticleItemType } from './ArticleItemType';
 type LayoutId = string;
 type StateId = string;
 
-export type ItemState<T extends ArticleItemType> = Record<StateId, Record<LayoutId, ItemStatesMap[T]>>;
+export type ItemState<T extends ArticleItemType> = Record<LayoutId, Record<StateId, ItemStatesMap[T]>>;
 
 export type ItemStateParams = ItemStatesMap[ArticleItemType];
 
@@ -20,10 +20,17 @@ export interface ItemStatesMap {
 }
 
 export interface StateParams<T> {
-  timing: string;
-  duration: number;
-  delay: number;
   value: T;
+  in: {
+    timing: string;
+    duration: number;
+    delay: number;
+  };
+  out: {
+    timing: string;
+    duration: number;
+    delay: number;
+  };
 }
 
 interface ItemStatesBaseMap {

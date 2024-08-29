@@ -9,12 +9,17 @@ import {
   RichTextStateParams
 } from '../../types/article/ItemState';
 
+const TransitionSchema = z.object({
+  timing: z.string(),
+  duration: z.number(),
+  delay: z.number()
+});
+
 export const getStateParamsSchema = <T extends z.ZodTypeAny>(schema: T) => {
   return z.object({
-    timing: z.string(),
-    duration: z.number(),
-    delay: z.number(),
-    value: schema
+    value: schema,
+    in: TransitionSchema,
+    out: TransitionSchema
   }).optional();
 };
 
