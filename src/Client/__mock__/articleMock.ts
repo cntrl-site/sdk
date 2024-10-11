@@ -11,5 +11,6 @@ export const articleMock: Article = {
       hidden: {},
       color: {}
     }
-  ]
+  ],
+  interactions: []
 };

@@ -1,74 +1,82 @@
 import { z, ZodType } from 'zod';
 import {
-  CodeEmbedHoverStateParams,
-  CustomHoverStateParams, EmbedHoverStateParams, GroupHoverStateParams,
-  MediaHoverStateParams,
-  RectangleHoverStateParams, RichTextHoverStateParams
+  CodeEmbedStateParams,
+  CustomItemStateParams,
+  VideoEmbedStateParams,
+  GroupStateParams,
+  MediaStateParams,
+  RectangleStateParams,
+  RichTextStateParams
 } from '../../types/article/ItemState';
 
-export const getHoverParamsSchema = <T extends z.ZodTypeAny>(schema: T) => {
+const TransitionSchema = z.object({
+  timing: z.string(),
+  duration: z.number(),
+  delay: z.number()
+});
+
+export const getStateParamsSchema = <T extends z.ZodTypeAny>(schema: T) => {
   return z.object({
-    timing: z.string(),
-    duration: z.number(),
-    delay: z.number(),
-    value: schema
+    value: schema,
+    in: TransitionSchema,
+    out: TransitionSchema
   }).optional();
 };
 
-export const ItemHoverStateBaseSchema = z.object({
-  width: getHoverParamsSchema(z.number()),
-  height: getHoverParamsSchema(z.number()),
-  angle: getHoverParamsSchema(z.number()),
-  top: getHoverParamsSchema(z.number()),
-  left: getHoverParamsSchema(z.number()),
-  scale: getHoverParamsSchema(z.number()),
-  blur: getHoverParamsSchema(z.number())
+export const ItemStateBaseSchema = z.object({
+  width: getStateParamsSchema(z.number()),
+  height: getStateParamsSchema(z.number()),
+  angle: getStateParamsSchema(z.number()),
+  top: getStateParamsSchema(z.number()),
+  left: getStateParamsSchema(z.number()),
+  scale: getStateParamsSchema(z.number()),
+  blur: getStateParamsSchema(z.number())
 });
 
-export const MediaHoverStateParamsSchema =
+export const MediaStateParamsSchema =
   z.object({
-    opacity: getHoverParamsSchema(z.number()),
-    radius: getHoverParamsSchema(z.number()),
-    strokeWidth: getHoverParamsSchema(z.number()),
-    strokeColor: getHoverParamsSchema(z.string())
+    opacity: getStateParamsSchema(z.number()),
+    radius: getStateParamsSchema(z.number()),
+    strokeWidth: getStateParamsSchema(z.number()),
+    strokeColor: getStateParamsSchema(z.string())
   })
-    .merge(ItemHoverStateBaseSchema) satisfies ZodType<MediaHoverStateParams>;
+    .merge(ItemStateBaseSchema) satisfies ZodType<MediaStateParams>;
 
-export const RectangleHoverStateParamsSchema = z.object({
-  strokeWidth: getHoverParamsSchema(z.number()),
-  radius: getHoverParamsSchema(z.number()),
-  fillColor: getHoverParamsSchema(z.string()),
-  strokeColor: getHoverParamsSchema(z.string()),
-  backdropBlur: getHoverParamsSchema(z.number())
-}).merge(ItemHoverStateBaseSchema) satisfies ZodType<RectangleHoverStateParams>;
+export const RectangleStateParamsSchema = z.object({
+  strokeWidth: getStateParamsSchema(z.number()),
+  radius: getStateParamsSchema(z.number()),
+  fillColor: getStateParamsSchema(z.string()),
+  strokeColor: getStateParamsSchema(z.string()),
+  backdropBlur: getStateParamsSchema(z.number())
+}).merge(ItemStateBaseSchema) satisfies ZodType<RectangleStateParams>;
 
-export const CustomItemHoverStateParamsSchema = ItemHoverStateBaseSchema satisfies ZodType<CustomHoverStateParams>;
+export const CustomItemStateParamsSchema = ItemStateBaseSchema satisfies ZodType<CustomItemStateParams>;
 
-export const EmbedHoverStateParamsSchema = z.object({
-  radius: getHoverParamsSchema(z.number()),
-  opacity: getHoverParamsSchema(z.number().nonnegative())
-}).merge(ItemHoverStateBaseSchema) satisfies ZodType<EmbedHoverStateParams>;
+export const EmbedStateParamsSchema = z.object({
+  radius: getStateParamsSchema(z.number()),
+  opacity: getStateParamsSchema(z.number().nonnegative())
+}).merge(ItemStateBaseSchema) satisfies ZodType<VideoEmbedStateParams>;
 
-export const RichTextHoverStateParamsSchema = z.object({
-  color: getHoverParamsSchema(z.string()),
-  letterSpacing: getHoverParamsSchema(z.number()),
-  wordSpacing: getHoverParamsSchema(z.number())
-}).merge(ItemHoverStateBaseSchema) satisfies ZodType<RichTextHoverStateParams>;
+export const RichTextStateParamsSchema = z.object({
+  color: getStateParamsSchema(z.string()),
+  letterSpacing: getStateParamsSchema(z.number()),
+  wordSpacing: getStateParamsSchema(z.number())
+}).merge(ItemStateBaseSchema) satisfies ZodType<RichTextStateParams>;
 
-export const GroupHoverStateParamsSchema = z.object({
-  opacity: getHoverParamsSchema(z.number().nonnegative())
-}).merge(ItemHoverStateBaseSchema) satisfies ZodType<GroupHoverStateParams>;
+export const GroupStateParamsSchema = z.object({
+  opacity: getStateParamsSchema(z.number().nonnegative())
+}).merge(ItemStateBaseSchema) satisfies ZodType<GroupStateParams>;
 
-export const CodeEmbedHoverStateParamsSchema = z.object({
-  opacity: getHoverParamsSchema(z.number().nonnegative())
-}).merge(ItemHoverStateBaseSchema) satisfies ZodType<CodeEmbedHoverStateParams>;
+export const CodeEmbedStateParamsSchema = z.object({
+  opacity: getStateParamsSchema(z.number().nonnegative())
+}).merge(ItemStateBaseSchema) satisfies ZodType<CodeEmbedStateParams>;
 
-export const ItemHoverStateParamsSchema = z.union([
-  EmbedHoverStateParamsSchema,
-  MediaHoverStateParamsSchema,
-  RectangleHoverStateParamsSchema,
-  RichTextHoverStateParamsSchema,
-  CustomItemHoverStateParamsSchema,
-  GroupHoverStateParamsSchema,
-  CodeEmbedHoverStateParamsSchema
+export const ItemStateParamsSchema = z.union([
+  EmbedStateParamsSchema,
+  MediaStateParamsSchema,
+  RectangleStateParamsSchema,
+  RichTextStateParamsSchema,
+  CustomItemStateParamsSchema,
+  GroupStateParamsSchema,
+  CodeEmbedStateParamsSchema
 ]);
