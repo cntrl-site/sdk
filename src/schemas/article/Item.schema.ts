@@ -10,7 +10,7 @@ import {
   YoutubeEmbedItem
 } from '../../types/article/Item';
 import {
-  CodeEmbedStateParamsSchema,
+  CodeEmbedStateParamsSchema, CompoundStateParamsSchema,
   CustomItemStateParamsSchema,
   EmbedStateParamsSchema, GroupStateParamsSchema,
   MediaStateParamsSchema,
@@ -241,5 +241,24 @@ export const ItemSchema: ZodType<ItemAny> = z.lazy(() => z.discriminatedUnion('t
       })
     ),
     state: z.record(z.record(GroupStateParamsSchema))
+  }),
+  ItemBaseSchema.extend({
+    type: z.literal(ArticleItemType.Compound),
+    commonParams: z.object({
+      overflow: z.enum(['hidden', 'visible']),
+    }),
+    items: z.array(ItemSchema),
+    sticky: z.record(
+      z.object({
+        from: z.number(),
+        to: z.number().optional()
+      }).nullable(),
+    ),
+    layoutParams: z.record(
+      z.object({
+        opacity: z.number().nonnegative()
+      })
+    ),
+    state: z.record(z.record(CompoundStateParamsSchema))
   })
 ]));

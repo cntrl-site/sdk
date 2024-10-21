@@ -17,7 +17,7 @@ export type { Section, SectionHeight } from './types/article/Section';
 export type {
   Item, ImageItem, ItemAny, CustomItem, ItemCommonParamsMap,
   ItemLayoutParamsMap, RectangleItem, StickyParams, VideoItem, RichTextItem,
-  Link, VimeoEmbedItem, YoutubeEmbedItem, GroupItem, CodeEmbedItem
+  Link, VimeoEmbedItem, YoutubeEmbedItem, GroupItem, CodeEmbedItem, CompoundItem
 } from './types/article/Item';
 export type { RichTextBlock, RichTextEntity, RichTextStyle } from './types/article/RichText';
 export type { ItemArea } from './types/article/ItemArea';
@@ -27,3 +27,4 @@ export type { Layout } from './types/project/Layout';
 export type { Project } from './types/project/Project';
 export type { Meta } from './types/project/Meta';
 export type { KeyframeValueMap, KeyframeAny } from './types/keyframe/Keyframe';
+export type { CompoundSettings } from './types/article/CompoundSettings';

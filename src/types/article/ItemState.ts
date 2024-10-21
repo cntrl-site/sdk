@@ -17,6 +17,7 @@ export interface ItemStatesMap {
   [ArticleItemType.Custom]: CustomItemStateParams;
   [ArticleItemType.Group]: GroupStateParams;
   [ArticleItemType.CodeEmbed]: CodeEmbedStateParams;
+  [ArticleItemType.Compound]: CompoundStateParams;
 }
 
 export interface StateParams<T> {
@@ -72,6 +73,10 @@ export interface VideoEmbedStateParams extends ItemStatesBaseMap {
 export interface CustomItemStateParams extends ItemStatesBaseMap {}
 
 export interface GroupStateParams extends ItemStatesBaseMap {
+  opacity?: StateParams<number>;
+}
+
+export interface CompoundStateParams extends ItemStatesBaseMap {
   opacity?: StateParams<number>;
 }
 

@@ -6,7 +6,7 @@ import {
   GroupStateParams,
   MediaStateParams,
   RectangleStateParams,
-  RichTextStateParams
+  RichTextStateParams, CompoundStateParams
 } from '../../types/article/ItemState';
 
 const TransitionSchema = z.object({
@@ -67,6 +67,10 @@ export const GroupStateParamsSchema = z.object({
   opacity: getStateParamsSchema(z.number().nonnegative())
 }).merge(ItemStateBaseSchema) satisfies ZodType<GroupStateParams>;
 
+export const CompoundStateParamsSchema = z.object({
+  opacity: getStateParamsSchema(z.number().nonnegative())
+}).merge(ItemStateBaseSchema) satisfies ZodType<CompoundStateParams>;
+
 export const CodeEmbedStateParamsSchema = z.object({
   opacity: getStateParamsSchema(z.number().nonnegative())
 }).merge(ItemStateBaseSchema) satisfies ZodType<CodeEmbedStateParams>;
@@ -78,5 +82,6 @@ export const ItemStateParamsSchema = z.union([
   RichTextStateParamsSchema,
   CustomItemStateParamsSchema,
   GroupStateParamsSchema,
+  CompoundStateParamsSchema,
   CodeEmbedStateParamsSchema
 ]);

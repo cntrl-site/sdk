@@ -21,6 +21,11 @@ export enum AreaAnchor {
   BottomRight = 'bottom-right'
 }
 
+export enum DimensionMode {
+  ControlUnits = 'control-units',
+  Relative = 'relative',
+}
+
 export interface ItemArea {
   top: number;
   left: number;

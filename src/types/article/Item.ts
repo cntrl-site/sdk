@@ -3,7 +3,7 @@ import { ArticleItemType } from './ArticleItemType';
 import { AreaAnchor, ItemArea } from './ItemArea';
 import { ItemState } from './ItemState';
 import { FXControlAny, FXCursor } from './FX';
-import { z } from 'zod';
+import { CompoundSettings } from './CompoundSettings';
 
 export type ItemAny = Item<ArticleItemType>;
 
@@ -13,8 +13,9 @@ export interface Item<T extends ArticleItemType> {
   area: Record<LayoutIdentifier, ItemArea>;
   hidden: Record<LayoutIdentifier, boolean>;
   link?: Link;
-  items?: T extends ArticleItemType.Group ? ItemAny[] : never;
+  items?: T extends (ArticleItemType.Group | ArticleItemType.Compound) ? ItemAny[] : never;
   sticky: Record<LayoutIdentifier, StickyParams | null>;
+  compoundSettings?: Record<LayoutIdentifier, CompoundSettings>;
   commonParams: ItemCommonParamsMap[T];
   state: ItemState<T>;
   layoutParams: Record<LayoutIdentifier, ItemLayoutParamsMap[T]>;
@@ -29,6 +30,7 @@ export interface ItemCommonParamsMap {
   [ArticleItemType.YoutubeEmbed]: YoutubeEmbedCommonParams;
   [ArticleItemType.Custom]: CustomCommonParams;
   [ArticleItemType.Group]: GroupCommonParams;
+  [ArticleItemType.Compound]: CompoundCommonParams;
   [ArticleItemType.CodeEmbed]: CodeEmbedCommonParams
 }
 
@@ -41,6 +43,7 @@ export interface ItemLayoutParamsMap {
   [ArticleItemType.YoutubeEmbed]: YoutubeEmbedLayoutParams;
   [ArticleItemType.Custom]: CustomLayoutParams;
   [ArticleItemType.Group]: GroupLayoutParams;
+  [ArticleItemType.Compound]: CompoundLayoutParams;
   [ArticleItemType.CodeEmbed]: CodeEmbedLayoutParams;
 }
 
@@ -73,6 +76,10 @@ interface CustomCommonParams {
 }
 
 interface GroupCommonParams {}
+
+interface CompoundCommonParams {
+  overflow: 'hidden' | 'visible';
+}
 
 interface CodeEmbedCommonParams {
   html: string;
@@ -109,6 +116,10 @@ interface MediaLayoutParams {
 interface CustomLayoutParams {}
 
 interface GroupLayoutParams {
+  opacity: number;
+}
+
+interface CompoundLayoutParams {
   opacity: number;
 }
 
@@ -191,3 +202,4 @@ export type YoutubeEmbedItem = Item<ArticleItemType.YoutubeEmbed>;
 export type CustomItem = Item<ArticleItemType.Custom>;
 export type GroupItem = Item<ArticleItemType.Group>;
 export type CodeEmbedItem = Item<ArticleItemType.CodeEmbed>;
+export type CompoundItem = Item<ArticleItemType.Compound>;
