@@ -40,19 +40,21 @@ export const FXControlSchema = z.discriminatedUnion('type',[
   })
 ]) satisfies ZodType<FXControlAny>;
 
+const FXParams = z.object({
+  url: z.string().min(1),
+  hasGLEffect: z.boolean().optional(),
+  fragmentShader: z.string().nullable(),
+  FXCursor: z.object({
+    type: z.enum(['mouse', 'manual']),
+    x: z.number(),
+    y: z.number()
+  }).nullable(),
+  FXControls: z.array(FXControlSchema).optional()
+});
+
 const ImageItemSchema = ItemBaseSchema.extend({
   type: z.literal(ArticleItemType.Image),
-  commonParams: z.object({
-    url: z.string().min(1),
-    hasGLEffect: z.boolean().optional(),
-    fragmentShader: z.string().nullable(),
-    FXCursor: z.object({
-      type: z.enum(['mouse', 'manual']),
-      x: z.number(),
-      y: z.number()
-    }).nullable(),
-    FXControls: z.array(FXControlSchema).optional()
-  }),
+  commonParams: FXParams,
   sticky: z.record(
     z.object({
       from: z.number(),
@@ -74,9 +76,8 @@ const ImageItemSchema = ItemBaseSchema.extend({
 const VideoItemSchema = ItemBaseSchema.extend({
   type: z.literal(ArticleItemType.Video),
   commonParams: z.object({
-    url: z.string().min(1),
     coverUrl: z.string().nullable()
-  }),
+  }).merge(FXParams),
   sticky: z.record(
     z.object({
       from: z.number(),

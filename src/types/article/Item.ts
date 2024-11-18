@@ -49,18 +49,17 @@ export interface ItemLayoutParamsMap {
 
 interface MediaCommonParams {
   url: string;
+  hasGLEffect?: boolean;
+  fragmentShader: string | null;
+  FXCursor: FXCursor | null;
+  FXControls?: FXControlAny[];
 }
 
 interface VideoCommonParams extends MediaCommonParams {
   coverUrl: string | null;
 }
 
-interface ImageCommonParams extends MediaCommonParams {
-  hasGLEffect?: boolean;
-  fragmentShader: string | null;
-  FXCursor: FXCursor | null;
-  FXControls?: FXControlAny[];
-}
+interface ImageCommonParams extends MediaCommonParams {}
 
 interface RichTextCommonParams {
   text: string;
