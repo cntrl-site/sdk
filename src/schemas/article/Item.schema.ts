@@ -22,6 +22,8 @@ import { ArticleItemType } from '../../types/article/ArticleItemType';
 import { FXControlAny } from '../../types/article/FX';
 import { AreaAnchor } from '../../types/article/ItemArea';
 
+const pointerEvents = z.enum(['never', 'when_visible', 'always']).optional();
+
 export const FXControlSchema = z.discriminatedUnion('type',[
   z.object({
     type: z.literal('float'),
@@ -76,7 +78,8 @@ const ImageItemSchema = ItemBaseSchema.extend({
 const VideoItemSchema = ItemBaseSchema.extend({
   type: z.literal(ArticleItemType.Video),
   commonParams: z.object({
-    coverUrl: z.string().nullable()
+    coverUrl: z.string().nullable(),
+    pointerEvents
   }).merge(FXParams),
   sticky: z.record(
     z.object({
@@ -104,7 +107,8 @@ const VideoItemSchema = ItemBaseSchema.extend({
 const RectangleItemSchema = ItemBaseSchema.extend({
   type: z.literal(ArticleItemType.Rectangle),
   commonParams: z.object({
-    ratioLock: z.boolean()
+    ratioLock: z.boolean(),
+    pointerEvents
   }),
   sticky: z.record(
     z.object({
@@ -129,7 +133,8 @@ const RectangleItemSchema = ItemBaseSchema.extend({
 const CustomItemSchema = ItemBaseSchema.extend({
   type: z.literal(ArticleItemType.Custom),
   commonParams: z.object({
-    name: z.string()
+    name: z.string(),
+    pointerEvents
   }),
   sticky: z.record(
     z.object({
@@ -151,7 +156,8 @@ const VimeoEmbedItemSchema = ItemBaseSchema.extend({
     pictureInPicture: z.boolean(),
     url: z.string().min(1),
     coverUrl: z.string().nullable(),
-    ratioLock: z.boolean()
+    ratioLock: z.boolean(),
+    pointerEvents
   }),
   sticky: z.record(
     z.object({
@@ -176,7 +182,8 @@ const YoutubeEmbedItemSchema = ItemBaseSchema.extend({
     controls: z.boolean(),
     loop: z.boolean(),
     url: z.string().min(1),
-    coverUrl: z.string().nullable()
+    coverUrl: z.string().nullable(),
+    pointerEvents
   }),
   sticky: z.record(
     z.object({
@@ -199,7 +206,8 @@ const CodeEmbedItemSchema =  ItemBaseSchema.extend({
   commonParams: z.object({
     html: z.string(),
     scale: z.boolean(),
-    iframe: z.boolean()
+    iframe: z.boolean(),
+    pointerEvents
   }),
   sticky: z.record(
     z.object({
@@ -228,7 +236,9 @@ export const ItemSchema: ZodType<ItemAny> = z.lazy(() => z.discriminatedUnion('t
   CodeEmbedItemSchema,
   ItemBaseSchema.extend({
     type: z.literal(ArticleItemType.Group),
-    commonParams: z.object({}),
+    commonParams: z.object({
+      pointerEvents
+    }),
     items: z.array(ItemSchema),
     sticky: z.record(
       z.object({
@@ -247,6 +257,7 @@ export const ItemSchema: ZodType<ItemAny> = z.lazy(() => z.discriminatedUnion('t
     type: z.literal(ArticleItemType.Compound),
     commonParams: z.object({
       overflow: z.enum(['hidden', 'visible']),
+      pointerEvents,
     }),
     items: z.array(ItemSchema),
     sticky: z.record(

@@ -7,10 +7,6 @@ export const Link = z.object({
   target: z.string().min(1)
 });
 
-const CommonParamsBase = z.object({
-  sizing: z.string().min(1)
-});
-
 export const CompoundSettingsSchema = z.object({
   positionAnchor: z.nativeEnum(AreaAnchor),
   widthMode: z.nativeEnum(DimensionMode),
@@ -22,7 +18,6 @@ export const ItemBaseSchema = z.object({
   area: z.record(ItemAreaSchema),
   hidden: z.record(z.boolean()),
   link: Link.optional(),
-  commonParams: CommonParamsBase,
   compoundSettings: z.record(CompoundSettingsSchema).optional(),
   layoutParams: z.record(z.any()).optional()
 });
