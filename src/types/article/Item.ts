@@ -47,7 +47,11 @@ export interface ItemLayoutParamsMap {
   [ArticleItemType.CodeEmbed]: CodeEmbedLayoutParams;
 }
 
-interface MediaCommonParams {
+interface CommonParamsBase {
+  pointerEvents?: 'never' | 'when_visible' | 'always';
+}
+
+interface MediaCommonParams extends CommonParamsBase {
   url: string;
   hasGLEffect?: boolean;
   fragmentShader: string | null;
@@ -61,32 +65,32 @@ interface VideoCommonParams extends MediaCommonParams {
 
 interface ImageCommonParams extends MediaCommonParams {}
 
-interface RichTextCommonParams {
+interface RichTextCommonParams extends CommonParamsBase {
   text: string;
   blocks?: RichTextBlock[];
 }
 
-interface RectangleCommonParams {
+interface RectangleCommonParams extends CommonParamsBase {
   ratioLock: boolean;
 }
 
-interface CustomCommonParams {
+interface CustomCommonParams extends CommonParamsBase {
   name: string;
 }
 
-interface GroupCommonParams {}
+interface GroupCommonParams extends CommonParamsBase {}
 
-interface CompoundCommonParams {
+interface CompoundCommonParams extends CommonParamsBase {
   overflow: 'hidden' | 'visible';
 }
 
-interface CodeEmbedCommonParams {
+interface CodeEmbedCommonParams extends CommonParamsBase {
   html: string;
   scale: boolean;
   iframe: boolean;
 }
 
-interface VimeoEmbedCommonParams {
+interface VimeoEmbedCommonParams extends CommonParamsBase {
   play: 'on-hover' | 'on-click' | 'auto';
   controls: boolean;
   loop: boolean;
@@ -96,7 +100,7 @@ interface VimeoEmbedCommonParams {
   coverUrl: string | null;
 }
 
-interface YoutubeEmbedCommonParams {
+interface YoutubeEmbedCommonParams extends CommonParamsBase {
   play: 'on-hover' | 'on-click' | 'auto';
   controls: boolean;
   loop: boolean;

@@ -5,6 +5,8 @@ import { ArticleItemType } from '../../types/article/ArticleItemType';
 import { RichTextStateParamsSchema } from './ItemState.schema';
 import { RichTextItem } from '../../types/article/Item';
 
+const pointerEvents = z.enum(['never', 'when_visible', 'always']).optional();
+
 export const RichTextEntitySchema = z.object({
   start: z.number().nonnegative(),
   end: z.number().nonnegative(),
@@ -34,7 +36,8 @@ export const RichTextItemSchema = ItemBaseSchema.extend({
   type: z.literal(ArticleItemType.RichText),
   commonParams: z.object({
     text: z.string(),
-    blocks: z.array(RichTextBlockSchema).optional()
+    blocks: z.array(RichTextBlockSchema).optional(),
+    pointerEvents
   }),
   sticky: z.record(
     z.object({
