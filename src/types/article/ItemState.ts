@@ -68,6 +68,7 @@ export interface RectangleStateParams extends ItemStatesBaseMap {
 export interface VideoEmbedStateParams extends ItemStatesBaseMap {
   radius?: StateParams<number>;
   opacity?: StateParams<number>;
+  action?: StateParams<'play'| 'pause'>;
 }
 
 export interface CustomItemStateParams extends ItemStatesBaseMap {}
