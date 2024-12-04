@@ -12,8 +12,14 @@ export interface InteractionTrigger {
   to: StateId;
 }
 
+export type VideoInteractionAction = {
+  type: 'play' | 'pause';
+  itemId: string;
+}
+
 export interface InteractionState {
   id: StateId;
+  actions?: VideoInteractionAction[];
 }
 
 type StateId = string;

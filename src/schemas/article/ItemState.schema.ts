@@ -54,8 +54,7 @@ export const CustomItemStateParamsSchema = ItemStateBaseSchema satisfies ZodType
 
 export const EmbedStateParamsSchema = z.object({
   radius: getStateParamsSchema(z.number()),
-  opacity: getStateParamsSchema(z.number().nonnegative()),
-  action: getStateParamsSchema(z.enum(['play', 'pause'])).optional()
+  opacity: getStateParamsSchema(z.number().nonnegative())
 }).merge(ItemStateBaseSchema) satisfies ZodType<VideoEmbedStateParams>;
 
 export const RichTextStateParamsSchema = z.object({
