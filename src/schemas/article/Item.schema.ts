@@ -250,7 +250,8 @@ export const ItemSchema: ZodType<ItemAny> = z.lazy(() => z.discriminatedUnion('t
     ),
     layoutParams: z.record(
       z.object({
-        opacity: z.number().nonnegative()
+        opacity: z.number().nonnegative(),
+        blur: z.number()
       })
     ),
     state: z.record(z.record(GroupStateParamsSchema))

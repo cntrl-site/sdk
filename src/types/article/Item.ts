@@ -120,6 +120,7 @@ interface CustomLayoutParams {}
 
 interface GroupLayoutParams {
   opacity: number;
+  blur: number;
 }
 
 interface CompoundLayoutParams {

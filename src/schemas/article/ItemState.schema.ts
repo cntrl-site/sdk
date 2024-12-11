@@ -64,7 +64,8 @@ export const RichTextStateParamsSchema = z.object({
 }).merge(ItemStateBaseSchema) satisfies ZodType<RichTextStateParams>;
 
 export const GroupStateParamsSchema = z.object({
-  opacity: getStateParamsSchema(z.number().nonnegative())
+  opacity: getStateParamsSchema(z.number().nonnegative()),
+  blur: getStateParamsSchema(z.number().nonnegative())
 }).merge(ItemStateBaseSchema) satisfies ZodType<GroupStateParams>;
 
 export const CompoundStateParamsSchema = z.object({
