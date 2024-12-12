@@ -71,7 +71,8 @@ const ImageItemSchema = ItemBaseSchema.extend({
       radius: z.number(),
       strokeWidth: z.number(),
       strokeColor: z.string(),
-      blur: z.number()
+      blur: z.number(),
+      isDraggable: z.boolean().optional()
     })
   ),
   state: z.record(z.record(MediaStateParamsSchema))
@@ -100,7 +101,8 @@ const VideoItemSchema = ItemBaseSchema.extend({
       radius: z.number(),
       strokeWidth: z.number(),
       strokeColor: z.string(),
-      blur: z.number()
+      blur: z.number(),
+      isDraggable: z.boolean().optional()
     })
   ),
   state: z.record(z.record(MediaStateParamsSchema))
@@ -126,7 +128,8 @@ const RectangleItemSchema = ItemBaseSchema.extend({
       strokeColor: z.string().min(1),
       blur: z.number(),
       backdropBlur: z.number(),
-      blurMode: z.enum(['default', 'backdrop'])
+      blurMode: z.enum(['default', 'backdrop']),
+      isDraggable: z.boolean().optional()
     })
   ),
   state: z.record(z.record(RectangleStateParamsSchema))
@@ -144,7 +147,9 @@ const CustomItemSchema = ItemBaseSchema.extend({
       to: z.number().optional()
     }).nullable(),
   ),
-  layoutParams: z.record(z.object({})),
+  layoutParams: z.record(z.object({
+    isDraggable: z.boolean().optional()
+  })),
   state: z.record(z.record(CustomItemStateParamsSchema))
 }) satisfies ZodType<CustomItem>;
 
@@ -221,7 +226,8 @@ const CodeEmbedItemSchema =  ItemBaseSchema.extend({
     z.object({
       areaAnchor:  z.nativeEnum(AreaAnchor),
       opacity: z.number().nonnegative(),
-      blur: z.number()
+      blur: z.number(),
+      isDraggable: z.boolean().optional()
     })
   ),
   state: z.record(z.record(CodeEmbedStateParamsSchema))
