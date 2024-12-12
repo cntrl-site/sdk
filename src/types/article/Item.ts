@@ -55,7 +55,6 @@ interface MediaCommonParams extends CommonParamsBase {
   url: string;
   hasGLEffect?: boolean;
   fragmentShader: string | null;
-  FXCursor: FXCursor | null;
   FXControls?: FXControlAny[];
 }
 
