@@ -62,7 +62,7 @@ export const RichTextItemSchema = ItemBaseSchema.extend({
       fontStyle: z.string(),
       fontWeight: z.number(),
       fontVariant: z.string(),
-      isDraggable: z.boolean()
+      isDraggable: z.boolean().optional()
     })
   ),
   state: z.record(z.record(RichTextStateParamsSchema))
