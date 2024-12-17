@@ -108,6 +108,11 @@ const WordSpacingKeyframeSchema = KeyframesBaseSchema.extend({
   })
 });
 
+const FXParamsKeyframeSchema = KeyframesBaseSchema.extend({
+  type: z.literal(KeyframeType.FXParams),
+  value: z.record(z.string(), z.number())
+});
+
 export const KeyframeSchema = z.discriminatedUnion('type', [
   DimensionsKeyframeSchema,
   PositionKeyframeSchema,

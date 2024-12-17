@@ -23,7 +23,8 @@ export enum KeyframeType {
   LetterSpacing = 'letter-spacing',
   WordSpacing = 'word-spacing',
   Blur = 'blur',
-  BackdropBlur = 'backdrop-blur'
+  BackdropBlur = 'backdrop-blur',
+  FXParams = 'fx-params'
 }
 
 export interface KeyframeValueMap {
@@ -41,6 +42,7 @@ export interface KeyframeValueMap {
   [KeyframeType.TextColor]: TextColorValue;
   [KeyframeType.LetterSpacing]: LetterSpacingValue;
   [KeyframeType.WordSpacing]: WordSpacingValue;
+  [KeyframeType.FXParams]: FXParamsValue;
 }
 
 interface DimensionsValue {
@@ -100,3 +102,5 @@ interface LetterSpacingValue {
 interface WordSpacingValue {
   wordSpacing: number;
 }
+
+type FXParamsValue = Record<string, number>;
