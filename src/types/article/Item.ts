@@ -113,23 +113,29 @@ interface MediaLayoutParams {
   strokeWidth: number;
   strokeColor: string;
   blur: number;
+  isDraggable?: boolean;
 }
 
-interface CustomLayoutParams {}
+interface CustomLayoutParams {
+  isDraggable?: boolean;
+}
 
 interface GroupLayoutParams {
   opacity: number;
   blur: number;
+  isDraggable?: boolean;
 }
 
 interface CompoundLayoutParams {
   opacity: number;
+  isDraggable?: boolean;
 }
 
 interface CodeEmbedLayoutParams {
   areaAnchor: AreaAnchor;
   opacity: number;
   blur: number;
+  isDraggable?: boolean;
 }
 
 interface VimeoEmbedLayoutParams {
@@ -167,6 +173,7 @@ interface RichTextLayoutParams {
   fontStyle: string;
   fontWeight: number;
   fontVariant: string;
+  isDraggable?: boolean;
 }
 
 interface RectangleLayoutParams {
@@ -177,6 +184,7 @@ interface RectangleLayoutParams {
   blur: number;
   backdropBlur: number;
   blurMode: 'default' | 'backdrop';
+  isDraggable?: boolean;
 }
 
 export interface ScrollPlaybackParams {
