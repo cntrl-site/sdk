@@ -127,7 +127,8 @@ export const KeyframeSchema = z.discriminatedUnion('type', [
   BackdropBlurKeyframeSchema,
   TextColorKeyframeSchema,
   LetterSpacingKeyframeSchema,
-  WordSpacingKeyframeSchema
+  WordSpacingKeyframeSchema,
+  FXParamsKeyframeSchema
 ]);
 
 export const KeyframesSchema = z.array(KeyframeSchema);
