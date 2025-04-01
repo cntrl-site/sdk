@@ -19,4 +19,10 @@ export interface Section {
   items: ItemAny[];
   position: Record<string, number>;
   color: Record<string, string | null>;
+  background?: Record<string, {
+    url: string;
+    size: string;
+    position: string;
+    percentage: number;
+  } | null>;
 }

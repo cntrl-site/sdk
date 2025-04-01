@@ -15,5 +15,11 @@ export const SectionSchema = z.object({
   height: z.record(SectionHeightSchema),
   position: z.record(z.number()),
   hidden: z.record(z.boolean()),
-  color: z.record(z.nullable(z.string()))
+  color: z.record(z.nullable(z.string())),
+  background: z.record(z.nullable(z.object({
+    url: z.string(),
+    size: z.string(),
+    position: z.string(),
+    percentage: z.number()
+  }))).optional()
 });
