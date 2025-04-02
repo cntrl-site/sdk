@@ -16,7 +16,7 @@ export const SectionSchema = z.object({
   position: z.record(z.number()),
   hidden: z.record(z.boolean()),
   color: z.record(z.nullable(z.string())),
-  background: z.record(z.nullable(z.object({
+  media: z.record(z.nullable(z.object({
     url: z.string(),
     size: z.string(),
     position: z.string(),
