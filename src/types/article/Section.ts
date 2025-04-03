@@ -23,6 +23,5 @@ export interface Section {
     url: string;
     size: string;
     position: string;
-    percentage: number;
   } | null>;
 }

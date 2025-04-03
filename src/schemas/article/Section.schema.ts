@@ -20,6 +20,5 @@ export const SectionSchema = z.object({
     url: z.string(),
     size: z.string(),
     position: z.string(),
-    percentage: z.number()
   }))).optional()
 });
