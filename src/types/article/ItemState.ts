@@ -74,6 +74,7 @@ export interface CustomItemStateParams extends ItemStatesBaseMap {}
 
 export interface GroupStateParams extends ItemStatesBaseMap {
   opacity?: StateParams<number>;
+  blur?: StateParams<number>;
 }
 
 export interface CompoundStateParams extends ItemStatesBaseMap {

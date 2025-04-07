@@ -19,4 +19,9 @@ export interface Section {
   items: ItemAny[];
   position: Record<string, number>;
   color: Record<string, string | null>;
+  media?: Record<string, {
+    url: string;
+    size: string;
+    position: string;
+  }>;
 }

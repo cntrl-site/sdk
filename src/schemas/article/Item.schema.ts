@@ -22,6 +22,8 @@ import { ArticleItemType } from '../../types/article/ArticleItemType';
 import { FXControlAny } from '../../types/article/FX';
 import { AreaAnchor } from '../../types/article/ItemArea';
 
+const pointerEvents = z.enum(['never', 'when_visible', 'always']).optional();
+
 export const FXControlSchema = z.discriminatedUnion('type',[
   z.object({
     type: z.literal('float'),
@@ -40,19 +42,18 @@ export const FXControlSchema = z.discriminatedUnion('type',[
   })
 ]) satisfies ZodType<FXControlAny>;
 
+const FXParams = z.object({
+  url: z.string().min(1),
+  hasGLEffect: z.boolean().optional(),
+  fragmentShader: z.string().nullable(),
+  FXControls: z.array(FXControlSchema).optional()
+});
+
 const ImageItemSchema = ItemBaseSchema.extend({
   type: z.literal(ArticleItemType.Image),
   commonParams: z.object({
-    url: z.string().min(1),
-    hasGLEffect: z.boolean().optional(),
-    fragmentShader: z.string().nullable(),
-    FXCursor: z.object({
-      type: z.enum(['mouse', 'manual']),
-      x: z.number(),
-      y: z.number()
-    }).nullable(),
-    FXControls: z.array(FXControlSchema).optional()
-  }),
+    pointerEvents
+  }).merge(FXParams),
   sticky: z.record(
     z.object({
       from: z.number(),
@@ -65,7 +66,8 @@ const ImageItemSchema = ItemBaseSchema.extend({
       radius: z.number(),
       strokeWidth: z.number(),
       strokeColor: z.string(),
-      blur: z.number()
+      blur: z.number(),
+      isDraggable: z.boolean().optional()
     })
   ),
   state: z.record(z.record(MediaStateParamsSchema))
@@ -74,9 +76,9 @@ const ImageItemSchema = ItemBaseSchema.extend({
 const VideoItemSchema = ItemBaseSchema.extend({
   type: z.literal(ArticleItemType.Video),
   commonParams: z.object({
-    url: z.string().min(1),
-    coverUrl: z.string().nullable()
-  }),
+    coverUrl: z.string().nullable(),
+    pointerEvents
+  }).merge(FXParams),
   sticky: z.record(
     z.object({
       from: z.number(),
@@ -94,7 +96,8 @@ const VideoItemSchema = ItemBaseSchema.extend({
       radius: z.number(),
       strokeWidth: z.number(),
       strokeColor: z.string(),
-      blur: z.number()
+      blur: z.number(),
+      isDraggable: z.boolean().optional()
     })
   ),
   state: z.record(z.record(MediaStateParamsSchema))
@@ -103,7 +106,8 @@ const VideoItemSchema = ItemBaseSchema.extend({
 const RectangleItemSchema = ItemBaseSchema.extend({
   type: z.literal(ArticleItemType.Rectangle),
   commonParams: z.object({
-    ratioLock: z.boolean()
+    ratioLock: z.boolean(),
+    pointerEvents
   }),
   sticky: z.record(
     z.object({
@@ -119,7 +123,8 @@ const RectangleItemSchema = ItemBaseSchema.extend({
       strokeColor: z.string().min(1),
       blur: z.number(),
       backdropBlur: z.number(),
-      blurMode: z.enum(['default', 'backdrop'])
+      blurMode: z.enum(['default', 'backdrop']),
+      isDraggable: z.boolean().optional()
     })
   ),
   state: z.record(z.record(RectangleStateParamsSchema))
@@ -128,7 +133,8 @@ const RectangleItemSchema = ItemBaseSchema.extend({
 const CustomItemSchema = ItemBaseSchema.extend({
   type: z.literal(ArticleItemType.Custom),
   commonParams: z.object({
-    name: z.string()
+    name: z.string(),
+    pointerEvents
   }),
   sticky: z.record(
     z.object({
@@ -136,7 +142,9 @@ const CustomItemSchema = ItemBaseSchema.extend({
       to: z.number().optional()
     }).nullable(),
   ),
-  layoutParams: z.record(z.object({})),
+  layoutParams: z.record(z.object({
+    isDraggable: z.boolean().optional()
+  })),
   state: z.record(z.record(CustomItemStateParamsSchema))
 }) satisfies ZodType<CustomItem>;
 
@@ -150,7 +158,8 @@ const VimeoEmbedItemSchema = ItemBaseSchema.extend({
     pictureInPicture: z.boolean(),
     url: z.string().min(1),
     coverUrl: z.string().nullable(),
-    ratioLock: z.boolean()
+    ratioLock: z.boolean(),
+    pointerEvents
   }),
   sticky: z.record(
     z.object({
@@ -175,7 +184,8 @@ const YoutubeEmbedItemSchema = ItemBaseSchema.extend({
     controls: z.boolean(),
     loop: z.boolean(),
     url: z.string().min(1),
-    coverUrl: z.string().nullable()
+    coverUrl: z.string().nullable(),
+    pointerEvents
   }),
   sticky: z.record(
     z.object({
@@ -198,7 +208,8 @@ const CodeEmbedItemSchema =  ItemBaseSchema.extend({
   commonParams: z.object({
     html: z.string(),
     scale: z.boolean(),
-    iframe: z.boolean()
+    iframe: z.boolean(),
+    pointerEvents
   }),
   sticky: z.record(
     z.object({
@@ -210,7 +221,8 @@ const CodeEmbedItemSchema =  ItemBaseSchema.extend({
     z.object({
       areaAnchor:  z.nativeEnum(AreaAnchor),
       opacity: z.number().nonnegative(),
-      blur: z.number()
+      blur: z.number(),
+      isDraggable: z.boolean().optional()
     })
   ),
   state: z.record(z.record(CodeEmbedStateParamsSchema))
@@ -227,7 +239,9 @@ export const ItemSchema: ZodType<ItemAny> = z.lazy(() => z.discriminatedUnion('t
   CodeEmbedItemSchema,
   ItemBaseSchema.extend({
     type: z.literal(ArticleItemType.Group),
-    commonParams: z.object({}),
+    commonParams: z.object({
+      pointerEvents
+    }),
     items: z.array(ItemSchema),
     sticky: z.record(
       z.object({
@@ -237,7 +251,8 @@ export const ItemSchema: ZodType<ItemAny> = z.lazy(() => z.discriminatedUnion('t
     ),
     layoutParams: z.record(
       z.object({
-        opacity: z.number().nonnegative()
+        opacity: z.number().nonnegative(),
+        blur: z.number()
       })
     ),
     state: z.record(z.record(GroupStateParamsSchema))
@@ -246,6 +261,7 @@ export const ItemSchema: ZodType<ItemAny> = z.lazy(() => z.discriminatedUnion('t
     type: z.literal(ArticleItemType.Compound),
     commonParams: z.object({
       overflow: z.enum(['hidden', 'visible']),
+      pointerEvents,
     }),
     items: z.array(ItemSchema),
     sticky: z.record(

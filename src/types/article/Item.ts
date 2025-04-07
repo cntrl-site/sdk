@@ -47,47 +47,49 @@ export interface ItemLayoutParamsMap {
   [ArticleItemType.CodeEmbed]: CodeEmbedLayoutParams;
 }
 
-interface MediaCommonParams {
+interface CommonParamsBase {
+  pointerEvents?: 'never' | 'when_visible' | 'always';
+}
+
+interface MediaCommonParams extends CommonParamsBase {
   url: string;
+  hasGLEffect?: boolean;
+  fragmentShader: string | null;
+  FXControls?: FXControlAny[];
 }
 
 interface VideoCommonParams extends MediaCommonParams {
   coverUrl: string | null;
 }
 
-interface ImageCommonParams extends MediaCommonParams {
-  hasGLEffect?: boolean;
-  fragmentShader: string | null;
-  FXCursor: FXCursor | null;
-  FXControls?: FXControlAny[];
-}
+interface ImageCommonParams extends MediaCommonParams {}
 
-interface RichTextCommonParams {
+interface RichTextCommonParams extends CommonParamsBase {
   text: string;
   blocks?: RichTextBlock[];
 }
 
-interface RectangleCommonParams {
+interface RectangleCommonParams extends CommonParamsBase {
   ratioLock: boolean;
 }
 
-interface CustomCommonParams {
+interface CustomCommonParams extends CommonParamsBase {
   name: string;
 }
 
-interface GroupCommonParams {}
+interface GroupCommonParams extends CommonParamsBase {}
 
-interface CompoundCommonParams {
+interface CompoundCommonParams extends CommonParamsBase {
   overflow: 'hidden' | 'visible';
 }
 
-interface CodeEmbedCommonParams {
+interface CodeEmbedCommonParams extends CommonParamsBase {
   html: string;
   scale: boolean;
   iframe: boolean;
 }
 
-interface VimeoEmbedCommonParams {
+interface VimeoEmbedCommonParams extends CommonParamsBase {
   play: 'on-hover' | 'on-click' | 'auto';
   controls: boolean;
   loop: boolean;
@@ -97,7 +99,7 @@ interface VimeoEmbedCommonParams {
   coverUrl: string | null;
 }
 
-interface YoutubeEmbedCommonParams {
+interface YoutubeEmbedCommonParams extends CommonParamsBase {
   play: 'on-hover' | 'on-click' | 'auto';
   controls: boolean;
   loop: boolean;
@@ -111,22 +113,29 @@ interface MediaLayoutParams {
   strokeWidth: number;
   strokeColor: string;
   blur: number;
+  isDraggable?: boolean;
 }
 
-interface CustomLayoutParams {}
+interface CustomLayoutParams {
+  isDraggable?: boolean;
+}
 
 interface GroupLayoutParams {
   opacity: number;
+  blur: number;
+  isDraggable?: boolean;
 }
 
 interface CompoundLayoutParams {
   opacity: number;
+  isDraggable?: boolean;
 }
 
 interface CodeEmbedLayoutParams {
   areaAnchor: AreaAnchor;
   opacity: number;
   blur: number;
+  isDraggable?: boolean;
 }
 
 interface VimeoEmbedLayoutParams {
@@ -164,6 +173,7 @@ interface RichTextLayoutParams {
   fontStyle: string;
   fontWeight: number;
   fontVariant: string;
+  isDraggable?: boolean;
 }
 
 interface RectangleLayoutParams {
@@ -174,6 +184,7 @@ interface RectangleLayoutParams {
   blur: number;
   backdropBlur: number;
   blurMode: 'default' | 'backdrop';
+  isDraggable?: boolean;
 }
 
 export interface ScrollPlaybackParams {
