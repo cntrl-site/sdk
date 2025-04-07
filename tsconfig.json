@@ -1,6 +1,14 @@
 {
   "extends": "@tsconfig/recommended/tsconfig.json",
   "compilerOptions": {
-    "target": "ES2015"
-  }
+    "target": "ES2015",
+    "jsx": "react",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "allowJs": true,
+    "types": ["jest", "node"],
+    "typeRoots": ["node_modules/@types", "src/types"]
+  },
+  // "include": ["src/**/*"],
+  // "files": ["src/types/scss.d.ts"]
 }

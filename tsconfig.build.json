@@ -1,7 +1,7 @@
 {
   "extends": "@tsconfig/node16",
   "compilerOptions": {
-    "outDir": "./lib",
+    "outDir": "./dist",
     "moduleResolution": "Node",
     "module": "CommonJS",
     "target": "ES2015",
@@ -11,6 +11,7 @@
     "./src/**.ts"
   ],
   "exclude": [
-    "./src/**.test.ts"
+    "./src/**.test.ts",
+    "./src/components.ts"
   ]
 }
