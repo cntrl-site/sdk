@@ -1,6 +1,6 @@
 {
   "name": "@cntrl-site/sdk",
-  "version": "1.20.0",
+  "version": "1.20.1",
   "description": "Generic SDK for use in public websites.",
   "main": "lib/index.js",
   "types": "src/index.ts",
