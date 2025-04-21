@@ -3,8 +3,9 @@ import styles from './ControlSlider.module.scss';
 import { Splide, SplideSlide, SplideProps } from '@splidejs/react-splide';
 import '@splidejs/react-splide/css/core';
 import cn from 'classnames';
-import { RichTextRenderer } from '../RichTextRenderer/RichTextRenderer';
+import { RichTextRenderer } from '../helpers/RichTextRenderer/RichTextRenderer';
 import { scalingValue } from '../utils/scalingValue';
+import { SvgImage } from '../helpers/SvgImage';
 
 interface SliderItem {
   image: {
@@ -176,10 +177,11 @@ export function ControlSlider({ settings, content, styles: sliderStyles, isEdito
                   data-styles="caption"
                   className={styles.captionTextInner}
                   style={{
+                    '--link-hover-color': settings.caption.hover,
                     position: 'relative',
                     top: scalingValue(settings.caption.offset.y, isEditor),
                     left: scalingValue(settings.caption.offset.x, isEditor)
-                  }}
+                  } as React.CSSProperties}
                 >
                   <RichTextRenderer content={item.imageCaption} />
                 </div>
@@ -242,7 +244,7 @@ export function ControlSlider({ settings, content, styles: sliderStyles, isEdito
               }}
             >
               {settings.controls.arrowsImgUrl && (
-                <img src={settings.controls.arrowsImgUrl} alt="arrow" className={styles.arrowImg} />
+                <SvgImage url={settings.controls.arrowsImgUrl} fill={settings.controls.color} hoverFill={settings.controls.hover} className={styles.arrowImg} />
               )}
               {!settings.controls.arrowsImgUrl && (
                 <ArrowIcon color={settings.controls.color} className={cn(styles.arrowIcon)} />
@@ -267,7 +269,7 @@ export function ControlSlider({ settings, content, styles: sliderStyles, isEdito
               }}
             >
               {settings.controls.arrowsImgUrl && (
-                <img src={settings.controls.arrowsImgUrl} alt="arrow" className={styles.arrowImg} />
+                <SvgImage url={settings.controls.arrowsImgUrl} fill={settings.controls.color} hoverFill={settings.controls.hover} className={styles.arrowImg} />
               )}
               {!settings.controls.arrowsImgUrl && (
                 <ArrowIcon color={settings.controls.color} className={cn(styles.arrowIcon)} />
