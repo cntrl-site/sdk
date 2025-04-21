@@ -27,7 +27,6 @@ program
 
       const compiledTemplate = ejs.compile(scssTemplate);
       const renderedTemplate = compiledTemplate({ ranges });
-
       const outputFilePath = path.resolve(process.cwd(), options.output);
       fs.writeFileSync(outputFilePath, renderedTemplate);
 

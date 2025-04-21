@@ -8,5 +8,6 @@ export enum ArticleItemType {
   Custom = 'custom',
   Group = 'group',
   CodeEmbed = 'code-embed',
-  Compound = 'compound'
+  Compound = 'compound',
+  Component = 'component'
 }

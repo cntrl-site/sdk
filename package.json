@@ -1,10 +1,23 @@
 {
   "name": "@cntrl-site/sdk",
-  "version": "1.20.0",
+  "version": "1.20.10",
   "description": "Generic SDK for use in public websites.",
-  "main": "dist/index.cjs.js",
-  "module": "dist/index.es.js",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
+  "style": "dist/sdk.css",
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./style/sdk.css": {
+      "default": "./dist/sdk.css"
+    }
+  },
   "scripts": {
     "test": "jest",
     "prebuild": "rm -rf ./dist",
@@ -12,7 +25,7 @@
     "prepublishOnly": "NODE_ENV=production npm run build"
   },
   "bin": {
-    "cntrl-sdk": "lib/cli.js"
+    "cntrl-sdk": "dist/cli.js"
   },
   "files": [
     "dist"
@@ -28,9 +41,10 @@
   },
   "homepage": "https://github.com/cntrl-site/sdk#readme",
   "directories": {
-    "lib": "lib"
+    "lib": "dist"
   },
   "dependencies": {
+    "@splidejs/react-splide": "^0.7.12",
     "@types/ejs": "^3.1.2",
     "@types/isomorphic-fetch": "^0.0.36",
     "@types/ua-parser-js": "^0.7.39",

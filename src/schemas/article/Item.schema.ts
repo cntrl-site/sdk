@@ -1,6 +1,7 @@
 import { z, ZodType } from 'zod';
 import {
   CodeEmbedItem,
+  ComponentItem,
   CustomItem,
   ImageItem,
   ItemAny,
@@ -10,7 +11,9 @@ import {
   YoutubeEmbedItem
 } from '../../types/article/Item';
 import {
-  CodeEmbedStateParamsSchema, CompoundStateParamsSchema,
+  CodeEmbedStateParamsSchema,
+   ComponentStateParamsSchema,
+    CompoundStateParamsSchema,
   CustomItemStateParamsSchema,
   EmbedStateParamsSchema, GroupStateParamsSchema,
   MediaStateParamsSchema,
@@ -228,6 +231,26 @@ const CodeEmbedItemSchema =  ItemBaseSchema.extend({
   state: z.record(z.record(CodeEmbedStateParamsSchema))
 }) satisfies ZodType<CodeEmbedItem>;
 
+const ComponentItemSchema = ItemBaseSchema.extend({
+  type: z.literal(ArticleItemType.Component),
+  commonParams: z.object({
+    componentId: z.string(),
+    content: z.any().optional()
+  }),
+  sticky: z.record(
+    z.object({
+      from: z.number(),
+      to: z.number().optional()
+    }).nullable(),
+  ),
+  layoutParams: z.record(z.object({
+    parameters: z.any().optional(),
+    opacity: z.number().nonnegative(),
+    blur: z.number()
+  })),
+  state: z.record(z.record(ComponentStateParamsSchema))
+}) satisfies ZodType<ComponentItem>;
+
 export const ItemSchema: ZodType<ItemAny> = z.lazy(() => z.discriminatedUnion('type', [
   ImageItemSchema,
   VideoItemSchema,
@@ -237,6 +260,7 @@ export const ItemSchema: ZodType<ItemAny> = z.lazy(() => z.discriminatedUnion('t
   VimeoEmbedItemSchema,
   YoutubeEmbedItemSchema,
   CodeEmbedItemSchema,
+  ComponentItemSchema,
   ItemBaseSchema.extend({
     type: z.literal(ArticleItemType.Group),
     commonParams: z.object({

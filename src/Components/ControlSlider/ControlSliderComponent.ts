@@ -3,7 +3,7 @@ import { ControlSlider } from './ControlSlider';
 export const ControlSliderComponent = {
   element: ControlSlider,
   id: 'control-slider',
-  name: 'Slider No Caption',
+  name: 'Slider',
   defaultSize: {
     width: 400,
     height: 400
@@ -82,8 +82,8 @@ export const ControlSliderComponent = {
               scale: {
                 type: 'number',
                 name: 'scale',
-                min: 20,
-                max: 220,
+                min: 40,
+                max: 300,
                 display: {
                   type: 'range-control',
                 },
@@ -144,7 +144,7 @@ export const ControlSliderComponent = {
                 type: 'number',
                 name: 'scale',
                 min: 50,
-                max: 150,
+                max: 200,
                 display: {
                   type: 'range-control',
                 },
@@ -300,15 +300,9 @@ export const ControlSliderComponent = {
               required: ['url', 'name']
             },
             imageCaption: {
-              type: 'object',
               display: {
-                type: 'text-input',
+                type: 'rich-text',
                 placeholder: 'Add Caption...',
-              },
-              properties: {
-                text: {
-                  type: 'string'
-                }
               }
             },
             link: {
@@ -329,21 +323,39 @@ export const ControlSliderComponent = {
         default: [
           {
             image: {
-              url: 'https://cdn.cntrl.site/projects/01GJ2SMPPCQ7JSNGVXZ2DHWXWF/articles-assets/01JNR7A49R6FDFGSP4H0TGAS8H.webp',
-              name: 'Image 1.webp'
+              url: 'https://cdn.cntrl.site/projects/01GJ2SMPPCQ7JSNGVXZ2DHWXWF/articles-assets/01JRZ15T247392621FNTTRCW9D.jpeg',
+              name: 'Slider-1.jpeg'
             },
-            imageCaption: {
-              text: 'Hello World',
-            }
+            imageCaption: [
+              {
+                type: 'paragraph',
+                children: [{ text: '' }]
+              }
+            ]
           },
           {
             image: {
-              url: 'https://cdn.cntrl.site/projects/01GJ2SMPPCQ7JSNGVXZ2DHWXWF/articles-assets/01JNR7CCESJ2GGGPSC5RJ15N36.png',
-              name: 'Image 2.webp'
+              url: 'https://cdn.cntrl.site/projects/01GJ2SMPPCQ7JSNGVXZ2DHWXWF/articles-assets/01JRZ17S8TS9T62P7NKTNNEB64.jpeg',
+              name: 'Slider-2.jpeg'
             },
-            imageCaption: {
-              text: 'Hello World'
-            }
+            imageCaption: [
+              {
+                type: 'paragraph',
+                children: [{ text: '' }]
+              }
+            ]
+          },
+          {
+            image: {
+              url: 'https://cdn.cntrl.site/projects/01GJ2SMPPCQ7JSNGVXZ2DHWXWF/articles-assets/01JRZ197S89RNT6RA7ZJSX3Z38.jpeg',
+              name: 'Slider-3.jpeg'
+            },
+            imageCaption: [
+              {
+                type: 'paragraph',
+                children: [{ text: '' }]
+              }
+            ]
           }
         ]
       },
@@ -460,8 +472,8 @@ export const ControlSliderComponent = {
               fontStyle: 'normal',
             },
             fontSizeLineHeight: {
-              fontSize: 30,
-              lineHeight: 30
+              fontSize: 0.02,
+              lineHeight: 0.02
             },
             letterSpacing: 0,
             wordSpacing: 0,

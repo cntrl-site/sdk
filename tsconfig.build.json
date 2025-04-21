@@ -8,10 +8,6 @@
     "lib": ["dom"]
   },
   "include": [
-    "./src/**.ts"
-  ],
-  "exclude": [
-    "./src/**.test.ts",
-    "./src/components.ts"
+    "./src/cli.ts"
   ]
 }

@@ -1,19 +1,17 @@
-import { useState, useEffect } from 'react';
-// @ts-ignore
+import React, { useState, useEffect } from 'react';
 import styles from './ControlSlider.module.scss';
 import { Splide, SplideSlide, SplideProps } from '@splidejs/react-splide';
 import '@splidejs/react-splide/css/core';
 import cn from 'classnames';
-import React from 'react';
+import { RichTextRenderer } from '../RichTextRenderer/RichTextRenderer';
+import { scalingValue } from '../utils/scalingValue';
 
 interface SliderItem {
   image: {
     url: string;
     name?: string;
   };
-  imageCaption: {
-    text: string;
-  };
+  imageCaption: any[];
 }
 
 type Offset = {
@@ -48,11 +46,20 @@ interface SliderCaption {
   offset: Offset;
   hover: string;
 }
+
+type Trigers = {
+  trigersList: {
+    click: boolean;
+    drag: boolean;
+    auto: boolean;
+  };
+};
 interface SliderSettings {
   controls: SliderControls;
   pagination: SliderPagination;
   direction: 'horizontal' | 'vertical';
   caption: SliderCaption;
+  trigers: Trigers;
 }
 
 interface CaptionStyles {
@@ -88,6 +95,7 @@ interface SliderProps {
   settings: SliderSettings;
   content: SliderItem[];
   styles: SliderStyles;
+  isEditor?: boolean;
 }
 
 type Dimensions = {
@@ -107,8 +115,9 @@ const alignmentClassName: Record<Alignment, string> = {
   'bottom-right': styles.bottomRightAlignment,
 };
 
-export function ControlSlider({ settings, content, styles: sliderStyles }: SliderProps) {
+export function ControlSlider({ settings, content, styles: sliderStyles, isEditor }: SliderProps) {
   const [sliderRef, setSliderRef] = useState<Splide | null>(null);
+  const { widthSettings, fontSettings, letterSpacing, textAlign, wordSpacing, fontSizeLineHeight, textAppearance, color } = sliderStyles.caption;
   const [sliderDimensions, setSliderDimensions] = useState<Dimensions | undefined>(undefined);
   const [wrapperRef, setWrapperRef] = useState<HTMLDivElement | null>(null);
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
@@ -134,7 +143,7 @@ export function ControlSlider({ settings, content, styles: sliderStyles }: Slide
   }, [wrapperRef]);
 
   return (
-    <div className={styles.wrapper} ref={setWrapperRef}>
+    <div className={cn(styles.wrapper, { [styles.editor]: isEditor })} ref={setWrapperRef}>
       {settings.caption.isActive && (
         <div
           className={cn(styles.captionBlock)}
@@ -143,38 +152,38 @@ export function ControlSlider({ settings, content, styles: sliderStyles }: Slide
             className={styles.captionTextWrapper}
           >
             {content.map((item, index) => (
-              <span
+              <div
                 key={index}
-                data-styles="caption"
-                className={cn(styles.captionText, alignmentClassName[settings.caption.alignment])}
+                className={cn(styles.captionText, alignmentClassName[settings.caption.alignment], { [styles.withPointerEvents]: index === currentSlideIndex && isEditor })}
                 style={{
-                  fontFamily: sliderStyles.caption.fontSettings.fontFamily,
-                  fontWeight: sliderStyles.caption.fontSettings.fontWeight,
-                  fontStyle: sliderStyles.caption.fontSettings.fontStyle,
-                  width: sliderStyles.caption.widthSettings.sizing === 'auto' ? 'max-content' : sliderStyles.caption.widthSettings.width,
-                  letterSpacing: `${sliderStyles.caption.letterSpacing}px`,
-                  wordSpacing: `${sliderStyles.caption.wordSpacing}px`,
-                  textAlign: sliderStyles.caption.textAlign,
-                  fontSize: `${sliderStyles.caption.fontSizeLineHeight.fontSize}px`,
-                  lineHeight: `${sliderStyles.caption.fontSizeLineHeight.lineHeight}px`,
-                  textTransform: sliderStyles.caption.textAppearance.textTransform ?? 'none',
-                  textDecoration: sliderStyles.caption.textAppearance.textDecoration ?? 'none',
-                  fontVariant: sliderStyles.caption.textAppearance.fontVariant ?? 'normal',
-                  color: sliderStyles.caption.color,
-                  pointerEvents: index === currentSlideIndex ? 'auto' : 'none',
-                  opacity: index === currentSlideIndex ? 1 : 0
+                  fontFamily: fontSettings.fontFamily,
+                  fontWeight: fontSettings.fontWeight,
+                  fontStyle: fontSettings.fontStyle,
+                  width: widthSettings.sizing === 'auto' ? 'max-content' : widthSettings.width,
+                  letterSpacing: scalingValue(letterSpacing, isEditor),
+                  wordSpacing: scalingValue(wordSpacing, isEditor),
+                  textAlign,
+                  fontSize: scalingValue(fontSizeLineHeight.fontSize, isEditor),
+                  lineHeight: scalingValue(fontSizeLineHeight.lineHeight, isEditor),
+                  textTransform: textAppearance.textTransform ?? 'none',
+                  textDecoration: textAppearance.textDecoration ?? 'none',
+                  fontVariant: textAppearance.fontVariant ?? 'normal',
+                  color,
+                  opacity: index === currentSlideIndex ? 1 : 0,
                 }}
               >
-                <span
+                <div
+                  data-styles="caption"
+                  className={styles.captionTextInner}
                   style={{
                     position: 'relative',
-                    top: settings.caption.offset.y,
-                    left: settings.caption.offset.x
+                    top: scalingValue(settings.caption.offset.y, isEditor),
+                    left: scalingValue(settings.caption.offset.x, isEditor)
                   }}
                 >
-                  {item.imageCaption.text}
-                </span>
-              </span>
+                  <RichTextRenderer content={item.imageCaption} />
+                </div>
+              </div>
             ))}
           </div>
         </div>
@@ -186,6 +195,7 @@ export function ControlSlider({ settings, content, styles: sliderStyles }: Slide
         ref={setSliderRef}
         options={{
           arrows: false,
+          autoplay: isEditor ? false : settings.trigers.trigersList.auto,
           direction: direction === 'horizontal' ? 'ltr' : 'ttb',
           pagination: false,
           perPage: 1,
@@ -213,22 +223,22 @@ export function ControlSlider({ settings, content, styles: sliderStyles }: Slide
       </Splide>
       {settings.controls.isActive && (
         <>
-          <button
+          <div
             className={cn(styles.arrow, {
               [styles.arrowVertical]: settings.direction === 'vertical'
             })}
-            onClick={() => {
-              handleArrowClick('-1');
-            }}
             style={{
               color: settings.controls.color,
               ['--arrow-hover-color' as string]: settings.controls.hover
             }}
           >
-            <div
+            <button
+              onClick={() => {
+                handleArrowClick('-1');
+              }}
               className={styles.arrowInner}
               style={{
-                transform: `translate(${controlsOffsetX}px, ${controlsOffsetY * (direction === 'horizontal' ? 1 : -1)}px) scale(${settings.controls.scale / 100}) rotate(${direction === 'horizontal' ? '180deg' : '-90deg'})`,
+                transform: `translate(${scalingValue(controlsOffsetX, isEditor)}, ${scalingValue(controlsOffsetY * (direction === 'horizontal' ? 1 : -1), isEditor)}) scale(${settings.controls.scale / 100}) rotate(${direction === 'horizontal' ? '180deg' : '-90deg'})`,
               }}
             >
               {settings.controls.arrowsImgUrl && (
@@ -237,22 +247,23 @@ export function ControlSlider({ settings, content, styles: sliderStyles }: Slide
               {!settings.controls.arrowsImgUrl && (
                 <ArrowIcon color={settings.controls.color} className={cn(styles.arrowIcon)} />
               )}
-            </div>
-          </button>
-          <button
+            </button>
+          </div>
+          <div
             className={cn(styles.arrow, styles.nextArrow, {
               [styles.arrowVertical]: settings.direction === 'vertical'
             })}
-            onClick={() => handleArrowClick('+1')}
+
             style={{
               color: settings.controls.color,
               ['--arrow-hover-color' as string]: settings.controls.hover
             }}
           >
-            <div
+            <button
               className={styles.arrowInner}
+              onClick={() => handleArrowClick('+1')}
               style={{
-                transform: `translate(${controlsOffsetX * (direction === 'horizontal' ? -1 : 1)}px, ${controlsOffsetY}px) scale(${settings.controls.scale / 100}) rotate(${direction === 'horizontal' ? '0deg' : '90deg'})`,
+                transform: `translate(${scalingValue(controlsOffsetX * (direction === 'horizontal' ? -1 : 1), isEditor)}, ${scalingValue(controlsOffsetY, isEditor)}) scale(${settings.controls.scale / 100}) rotate(${direction === 'horizontal' ? '0deg' : '90deg'})`,
               }}
             >
               {settings.controls.arrowsImgUrl && (
@@ -261,9 +272,19 @@ export function ControlSlider({ settings, content, styles: sliderStyles }: Slide
               {!settings.controls.arrowsImgUrl && (
                 <ArrowIcon color={settings.controls.color} className={cn(styles.arrowIcon)} />
               )}
-            </div>
-          </button>
+            </button>
+          </div>
         </>
+      )}
+      {settings.trigers.trigersList.click && (
+        <div
+          className={styles.clickOverlay}
+          onClick={() => {
+            if (sliderRef) {
+              sliderRef.go('+1');
+            }
+          }}
+        />
       )}
       {settings.pagination.isActive && (
         <div
@@ -283,7 +304,7 @@ export function ControlSlider({ settings, content, styles: sliderStyles }: Slide
             className={styles.paginationInner}
             style={{
               backgroundColor: settings.pagination.colors[0],
-              transform: `scale(${settings.pagination.scale / 100}) translate(${settings.pagination.offset.x}px, ${settings.pagination.offset.y}px) rotate(${settings.direction === 'horizontal' ? '0deg' : '90deg'})`,
+              transform: `scale(${settings.pagination.scale / 100}) translate(${scalingValue(settings.pagination.offset.x, isEditor)}, ${scalingValue(settings.pagination.offset.y, isEditor)}) rotate(${settings.direction === 'horizontal' ? '0deg' : '90deg'})`,
             }}
           >
             {content.map((_, index) => (

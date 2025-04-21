@@ -18,6 +18,7 @@ export interface ItemStatesMap {
   [ArticleItemType.Group]: GroupStateParams;
   [ArticleItemType.CodeEmbed]: CodeEmbedStateParams;
   [ArticleItemType.Compound]: CompoundStateParams;
+  [ArticleItemType.Component]: ComponentStateParams;
 }
 
 export interface StateParams<T> {
@@ -82,5 +83,9 @@ export interface CompoundStateParams extends ItemStatesBaseMap {
 }
 
 export interface CodeEmbedStateParams extends ItemStatesBaseMap {
+  opacity?: StateParams<number>;
+}
+
+export interface ComponentStateParams extends ItemStatesBaseMap {
   opacity?: StateParams<number>;
 }

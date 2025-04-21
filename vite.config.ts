@@ -7,15 +7,12 @@ export default defineConfig({
   plugins: [react(), dts()],
   build: {
     lib: {
-      entry: path.resolve(__dirname, "src/components.ts"),
+      entry: path.resolve(__dirname, "src/index.ts"),
       name: "CntrlSDK",
       fileName: (format) => `index.${format}.js`,
       formats: ["es", "cjs"],
     },
     rollupOptions: {
-      // input: {
-      //   main: path.resolve(__dirname, 'src/components.ts')
-      // },
       external: ["react", "react-dom", "classnames"],
       output: {
         preserveModules: false,
@@ -24,7 +21,7 @@ export default defineConfig({
     },
     outDir: "dist",
     emptyOutDir: true,
-    sourcemap: true,
+    ssr: true,
   },
   css: {
     modules: {
