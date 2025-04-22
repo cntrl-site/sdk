@@ -28,7 +28,8 @@
     "cntrl-sdk": "dist/cli.js"
   },
   "files": [
-    "dist"
+    "dist",
+    "resources"
   ],
   "repository": {
     "type": "git",
