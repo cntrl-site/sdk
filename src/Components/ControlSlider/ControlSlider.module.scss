@@ -98,8 +98,6 @@
 }
 
 .paginationInner {
-  width: 100%;
-  height: 100%;
   display: flex;
   @include size(gap, 8);
   @include size(padding-top, 5);
