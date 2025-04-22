@@ -5,7 +5,7 @@ import '@splidejs/react-splide/css/core';
 import cn from 'classnames';
 import { RichTextRenderer } from '../helpers/RichTextRenderer/RichTextRenderer';
 import { scalingValue } from '../utils/scalingValue';
-import { SvgImage } from '../helpers/SvgImage';
+import { SvgImage } from '../helpers/SvgImage/SvgImage';
 
 interface SliderItem {
   image: {
