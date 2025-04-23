@@ -10,7 +10,17 @@ interface SvgImageProps {
 }
 
 export const SvgImage: FC<SvgImageProps> = ({ url, fill = '#000000', hoverFill = '#CCCCCC', className = '' }) => {
-  if (!url.endsWith('.svg')) {
+
+  const [supportsMask, setSupportsMask] = useState(true);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.CSS) {
+      const supported = CSS.supports('mask-image', 'url("")') || CSS.supports('-webkit-mask-image', 'url("")');
+      setSupportsMask(supported);
+    }
+  }, []);
+
+  if (!url.endsWith('.svg') || !supportsMask) {
     return <img src={url} alt="" className={cn(styles.img, className)} />;
   }
 
