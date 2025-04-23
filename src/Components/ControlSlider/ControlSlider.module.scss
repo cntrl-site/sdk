@@ -105,12 +105,12 @@
 
 .paginationInner {
   display: flex;
-  @include size(gap, 8);
-  @include size(padding-top, 5);
-  @include size(padding-bottom, 5);
-  @include size(padding-left, 9);
-  @include size(padding-right, 9);
-  @include size(border-radius, 17);
+  @include size(gap, 16);
+  @include size(padding-top, 10);
+  @include size(padding-bottom, 10);
+  @include size(padding-left, 18);
+  @include size(padding-right, 18);
+  @include size(border-radius, 34);
 }
 
 .paginationVertical {
@@ -119,8 +119,8 @@
 
 .paginationItem {
   all: unset;
-  @include size(width, 8);
-  @include size(height, 8);
+  @include size(width, 16);
+  @include size(height, 16);
   flex-shrink: 0;
   position: relative;
   cursor: pointer;
@@ -130,8 +130,8 @@
 }
 
 .dot {
-  @include size(width, 8);
-  @include size(height, 8);
+  @include size(width, 16);
+  @include size(height, 16);
   border-radius: 50%;
   scale: 0.5;
   transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
@@ -142,7 +142,7 @@
 }
 
 .paginationInsideBottom {
-  @include size(bottom, 10);
+  bottom: 0;
   left: 50%;
   transform: translateX(-50%);
 }
@@ -150,43 +150,43 @@
 .paginationInsideTop {
   left: 50%;
   transform: translateX(-50%);
-  @include size(top, 10);
+  top: 0;
 }
 
 .paginationOutsideBottom {
   left: 50%;
   transform: translateX(-50%);
-  @include size(bottom, -29);
+  @include size(bottom, -35);
 }
 
 .paginationOutsideTop {
   left: 50%;
   transform: translateX(-50%);
-  @include size(top, -29);
+  @include size(top, -35);
 }
 
 .paginationInsideLeft {
   top: 50%;
   transform: translateY(-50%);
-  @include size(left, -3);
+  @include size(left, -35);
 }
 
 .paginationInsideRight {
   top: 50%;
   transform: translateY(-50%);
-  @include size(right, -3);
+  @include size(right, -35);
 }
 
 .paginationOutsideLeft {
   top: 50%;
   transform: translateY(-50%);
-  @include size(left, -37);
+  @include size(left, -79);
 }
 
 .paginationOutsideRight {
   top: 50%;
   transform: translateY(-50%);
-  @include size(right, -37);
+  @include size(right, -79);
 }
 
 .imgWrapper {
