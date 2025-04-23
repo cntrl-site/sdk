@@ -10,7 +10,6 @@ interface SvgImageProps {
 }
 
 export const SvgImage: FC<SvgImageProps> = ({ url, fill = '#000000', hoverFill = '#CCCCCC', className = '' }) => {
-
   const [supportsMask, setSupportsMask] = useState(true);
 
   useEffect(() => {
@@ -26,6 +25,7 @@ export const SvgImage: FC<SvgImageProps> = ({ url, fill = '#000000', hoverFill =
 
   return (
     <span
+      data-supports-mask={supportsMask}
       className={cn(styles.svg, className)}
       style={{
         '--svg': `url(${url})`,
