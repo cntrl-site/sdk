@@ -15,12 +15,12 @@ export const ControlSliderComponent = {
         layoutBased: true,
         type: 'object',
         properties: {
-          trigers: {
-            name: 'trigers',
+          triggers: {
+            name: 'triggers',
             icon: 'target',
             type: 'object',
             properties: {
-              trigersList: {
+              triggersList: {
                 type: 'object',
                 display: {
                   type: 'checkbox-group',
@@ -82,8 +82,8 @@ export const ControlSliderComponent = {
               scale: {
                 type: 'number',
                 name: 'scale',
-                min: 40,
-                max: 300,
+                min: 50,
+                max: 600,
                 display: {
                   type: 'range-control',
                 },
@@ -143,8 +143,8 @@ export const ControlSliderComponent = {
               scale: {
                 type: 'number',
                 name: 'scale',
-                min: 50,
-                max: 200,
+                min: 10,
+                max: 400,
                 display: {
                   type: 'range-control',
                 },
@@ -215,8 +215,8 @@ export const ControlSliderComponent = {
           }
         },
         default: {
-          trigers: {
-            trigersList: {
+          triggers: {
+            triggersList: {
               click: true,
               drag: true,
               auto: false,
@@ -235,7 +235,7 @@ export const ControlSliderComponent = {
           },
           pagination: {
             isActive: true,
-            scale: 100,
+            scale: 50,
             position: 'outside-1',
             offset: {
               x: 0,

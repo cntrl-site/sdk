@@ -48,8 +48,8 @@ interface SliderCaption {
   hover: string;
 }
 
-type Trigers = {
-  trigersList: {
+type Triggers = {
+  triggersList: {
     click: boolean;
     drag: boolean;
     auto: boolean;
@@ -60,7 +60,7 @@ interface SliderSettings {
   pagination: SliderPagination;
   direction: 'horizontal' | 'vertical';
   caption: SliderCaption;
-  trigers: Trigers;
+  triggers: Triggers;
 }
 
 interface CaptionStyles {
@@ -197,7 +197,7 @@ export function ControlSlider({ settings, content, styles: sliderStyles, isEdito
         ref={setSliderRef}
         options={{
           arrows: false,
-          autoplay: isEditor ? false : settings.trigers.trigersList.auto,
+          autoplay: isEditor ? false : settings.triggers.triggersList.auto,
           direction: direction === 'horizontal' ? 'ltr' : 'ttb',
           pagination: false,
           perPage: 1,
@@ -247,7 +247,7 @@ export function ControlSlider({ settings, content, styles: sliderStyles, isEdito
                 <SvgImage url={settings.controls.arrowsImgUrl} fill={settings.controls.color} hoverFill={settings.controls.hover} className={styles.arrowImg} />
               )}
               {!settings.controls.arrowsImgUrl && (
-                <ArrowIcon color={settings.controls.color} className={cn(styles.arrowIcon)} />
+                <ArrowIcon color={settings.controls.color} className={cn(styles.arrowIcon, styles.arrowImg)} />
               )}
             </button>
           </div>
@@ -272,13 +272,13 @@ export function ControlSlider({ settings, content, styles: sliderStyles, isEdito
                 <SvgImage url={settings.controls.arrowsImgUrl} fill={settings.controls.color} hoverFill={settings.controls.hover} className={styles.arrowImg} />
               )}
               {!settings.controls.arrowsImgUrl && (
-                <ArrowIcon color={settings.controls.color} className={cn(styles.arrowIcon)} />
+                <ArrowIcon color={settings.controls.color} className={cn(styles.arrowIcon, styles.arrowImg)} />
               )}
             </button>
           </div>
         </>
       )}
-      {settings.trigers.trigersList.click && (
+      {settings.triggers.triggersList.click && (
         <div
           className={styles.clickOverlay}
           onClick={() => {
