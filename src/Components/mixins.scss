@@ -1,5 +1,3 @@
-
-
 @mixin size($property, $value) {
   $vw: ($value / 1440) * 100;
 

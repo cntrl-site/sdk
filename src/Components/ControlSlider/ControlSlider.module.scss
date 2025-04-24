@@ -119,10 +119,10 @@
 
 .paginationItem {
   all: unset;
-  @include size(width, 16);
-  @include size(height, 16);
   flex-shrink: 0;
   position: relative;
+  @include size(width, 16);
+  @include size(height, 16);
   cursor: pointer;
   &:hover .dot {
     background-color: var(--pagination-hover-color) !important;
@@ -130,11 +130,11 @@
 }
 
 .dot {
-  @include size(width, 16);
-  @include size(height, 16);
   border-radius: 50%;
   scale: 0.5;
   transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+  @include size(width, 16);
+  @include size(height, 16);
 }
 
 .activeDot {
@@ -291,7 +291,3 @@
   height: 100%;
   cursor: pointer;
 }
-
-
-
-

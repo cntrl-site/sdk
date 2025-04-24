@@ -29,16 +29,16 @@ export const RichTextRenderer: FC<Props> = ({ content }) => {
   );
 };
 
-function getLeafCss(leaf: any) {
-  const css: CSSProperties = {};
-  if (leaf.fontWeight) css.fontWeight = leaf.fontWeight;
-  if (leaf.fontStyle) css.fontStyle = leaf.fontStyle;
-  if (leaf.textDecoration) css.textDecoration = leaf.textDecoration;
-  if (leaf.textTransform) css.textTransform = leaf.textTransform;
-  if (leaf.fontVariant) css.fontVariant = leaf.fontVariant;
-  if (leaf.verticalAlign) {
-    css.verticalAlign = leaf.verticalAlign;
-    css.lineHeight = '0px';
-  }
-  return css;
+function getLeafCss(leaf: any): CSSProperties {
+  return {
+    ...(leaf.fontWeight && { fontWeight: leaf.fontWeight }),
+    ...(leaf.fontStyle && { fontStyle: leaf.fontStyle }),
+    ...(leaf.textDecoration && { textDecoration: leaf.textDecoration }),
+    ...(leaf.textTransform && { textTransform: leaf.textTransform }),
+    ...(leaf.fontVariant && { fontVariant: leaf.fontVariant }),
+    ...(leaf.verticalAlign && {
+      verticalAlign: leaf.verticalAlign,
+      lineHeight: '0px',
+    }),
+  };
 }
