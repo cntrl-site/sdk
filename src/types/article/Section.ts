@@ -23,5 +23,6 @@ export interface Section {
     url: string;
     size: string;
     position: string;
+    offsetX: number | null;
   }>;
 }
