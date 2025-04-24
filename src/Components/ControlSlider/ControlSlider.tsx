@@ -7,11 +7,101 @@ import { RichTextRenderer } from '../helpers/RichTextRenderer/RichTextRenderer';
 import { scalingValue } from '../utils/scalingValue';
 import { SvgImage } from '../helpers/SvgImage/SvgImage';
 
+interface SliderItem {
+  image: {
+    url: string;
+    name?: string;
+  };
+  imageCaption: any[];
+}
+
+type Offset = {
+  x: number;
+  y: number;
+}
+
+interface SliderControls {
+  arrowsImgUrl: string | null;
+  isActive: boolean;
+  color: string;
+  hover: string;
+  offset: Offset;
+  scale: number;
+}
+
+interface SliderPagination {
+  position: 'outside-1' | 'outside-2' | 'inside-1' | 'inside-2';
+  isActive: boolean;
+  scale: number;
+  offset: Offset;
+  colors: string[];
+  hover: string;
+}
+
+type Alignment = 'top-left' | 'top-center' | 'top-right' | 'middle-left' | 'middle-center' | 'middle-right' | 'bottom-left' | 'bottom-center' | 'bottom-right';
+
+interface SliderCaption {
+  alignment: Alignment;
+  isActive: boolean;
+  color: string;
+  offset: Offset;
+  hover: string;
+}
+
+type Triggers = {
+  triggersList: {
+    click: boolean;
+    drag: boolean;
+    auto: boolean;
+  };
+};
+interface SliderSettings {
+  controls: SliderControls;
+  pagination: SliderPagination;
+  direction: 'horizontal' | 'vertical';
+  caption: SliderCaption;
+  triggers: Triggers;
+}
+
+interface CaptionStyles {
+  fontSettings: {
+    fontFamily: string;
+    fontWeight: number;
+    fontStyle: string;
+  },
+  widthSettings: {
+    width: number;
+    sizing: 'auto' | 'manual';
+  };
+  letterSpacing: number;
+  textAlign: 'left' | 'center' | 'right';
+  wordSpacing: number;
+  fontSizeLineHeight: {
+    fontSize: number;
+    lineHeight: number;
+  };
+  textAppearance: {
+    textTransform: 'none' | 'uppercase' | 'lowercase';
+    textDecoration: 'none' | 'underline';
+    fontVariant: 'normal' | 'small-caps';
+  };
+  color: string;
+}
+
+interface SliderStyles {
+  caption: CaptionStyles;
+}
+
 interface SliderProps {
   settings: SliderSettings;
   content: SliderItem[];
   styles: SliderStyles;
   isEditor?: boolean;
+}
+
+type Dimensions = {
+  width: number;
+  height: number;
 }
 
 const alignmentClassName: Record<Alignment, string> = {
@@ -65,9 +155,7 @@ export function ControlSlider({ settings, content, styles: sliderStyles, isEdito
             {content.map((item, index) => (
               <div
                 key={index}
-                className={cn(styles.captionText, alignmentClassName[settings.caption.alignment], { 
-                  [styles.withPointerEvents]: index === currentSlideIndex && isEditor
-                })}
+                className={cn(styles.captionText, alignmentClassName[settings.caption.alignment], { [styles.withPointerEvents]: index === currentSlideIndex && isEditor })}
                 style={{
                   fontFamily: fontSettings.fontFamily,
                   fontWeight: fontSettings.fontWeight,
@@ -156,12 +244,7 @@ export function ControlSlider({ settings, content, styles: sliderStyles, isEdito
               }}
             >
               {settings.controls.arrowsImgUrl && (
-                <SvgImage
-                  url={settings.controls.arrowsImgUrl}
-                  fill={settings.controls.color}
-                  hoverFill={settings.controls.hover}
-                  className={styles.arrowImg}
-                />
+                <SvgImage url={settings.controls.arrowsImgUrl} fill={settings.controls.color} hoverFill={settings.controls.hover} className={styles.arrowImg} />
               )}
               {!settings.controls.arrowsImgUrl && (
                 <ArrowIcon color={settings.controls.color} className={cn(styles.arrowIcon, styles.arrowImg)} />
@@ -172,6 +255,7 @@ export function ControlSlider({ settings, content, styles: sliderStyles, isEdito
             className={cn(styles.arrow, styles.nextArrow, {
               [styles.arrowVertical]: settings.direction === 'vertical'
             })}
+
             style={{
               color: settings.controls.color,
               ['--arrow-hover-color' as string]: settings.controls.hover
@@ -185,12 +269,7 @@ export function ControlSlider({ settings, content, styles: sliderStyles, isEdito
               }}
             >
               {settings.controls.arrowsImgUrl && (
-                <SvgImage
-                  url={settings.controls.arrowsImgUrl}
-                  fill={settings.controls.color}
-                  hoverFill={settings.controls.hover}
-                  className={styles.arrowImg}
-                />
+                <SvgImage url={settings.controls.arrowsImgUrl} fill={settings.controls.color} hoverFill={settings.controls.hover} className={styles.arrowImg} />
               )}
               {!settings.controls.arrowsImgUrl && (
                 <ArrowIcon color={settings.controls.color} className={cn(styles.arrowIcon, styles.arrowImg)} />
@@ -258,101 +337,15 @@ export function ControlSlider({ settings, content, styles: sliderStyles, isEdito
   );
 }
 
-function ArrowIcon({ color, className }: { color: string, className: string }) {
+type ArrowIconProps = {
+  color: string;
+  className: string;
+}
+
+function ArrowIcon({ color, className }: ArrowIconProps) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21 51" className={className}>
       <path fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" transform="matrix(-1 0 0 1 18.6055 1.13037)" d="M17.472713 0L0 23L17.472713 47" fillRule="evenodd" />
     </svg>
   );
-}
-
-type SliderItem = {
-  image: {
-    url: string;
-    name?: string;
-  };
-  imageCaption: any[];
-};
-
-type Offset = {
-  x: number;
-  y: number;
-}
-
-type SliderControls = {
-  arrowsImgUrl: string | null;
-  isActive: boolean;
-  color: string;
-  hover: string;
-  offset: Offset;
-  scale: number;
-};
-
-type SliderPagination = {
-  position: 'outside-1' | 'outside-2' | 'inside-1' | 'inside-2';
-  isActive: boolean;
-  scale: number;
-  offset: Offset;
-  colors: string[];
-  hover: string;
-};
-
-type Alignment = 'top-left' | 'top-center' | 'top-right' | 'middle-left' | 'middle-center' | 'middle-right' | 'bottom-left' | 'bottom-center' | 'bottom-right';
-
-type SliderCaption = {
-  alignment: Alignment;
-  isActive: boolean;
-  color: string;
-  offset: Offset;
-  hover: string;
-};
-
-type Triggers = {
-  triggersList: {
-    click: boolean;
-    drag: boolean;
-    auto: boolean;
-  };
-};
-
-type SliderSettings = {
-  controls: SliderControls;
-  pagination: SliderPagination;
-  direction: 'horizontal' | 'vertical';
-  caption: SliderCaption;
-  triggers: Triggers;
-};
-
-type CaptionStyles = {
-  fontSettings: {
-    fontFamily: string;
-    fontWeight: number;
-    fontStyle: string;
-  },
-  widthSettings: {
-    width: number;
-    sizing: 'auto' | 'manual';
-  };
-  letterSpacing: number;
-  textAlign: 'left' | 'center' | 'right';
-  wordSpacing: number;
-  fontSizeLineHeight: {
-    fontSize: number;
-    lineHeight: number;
-  };
-  textAppearance: {
-    textTransform: 'none' | 'uppercase' | 'lowercase';
-    textDecoration: 'none' | 'underline';
-    fontVariant: 'normal' | 'small-caps';
-  };
-  color: string;
-};
-
-type SliderStyles = {
-  caption: CaptionStyles;
-}
-
-type Dimensions = {
-  width: number;
-  height: number;
 }
