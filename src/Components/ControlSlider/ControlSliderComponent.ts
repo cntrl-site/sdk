@@ -463,7 +463,7 @@ export const ControlSliderComponent = {
         default: {
           caption: {
             widthSettings: {
-              width: 100,
+              width: 0.13,
               sizing: 'auto',
             },
             fontSettings: {

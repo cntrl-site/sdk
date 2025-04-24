@@ -160,7 +160,7 @@ export function ControlSlider({ settings, content, styles: sliderStyles, isEdito
                   fontFamily: fontSettings.fontFamily,
                   fontWeight: fontSettings.fontWeight,
                   fontStyle: fontSettings.fontStyle,
-                  width: widthSettings.sizing === 'auto' ? 'max-content' : widthSettings.width,
+                  width: widthSettings.sizing === 'auto' ? 'max-content' : scalingValue(widthSettings.width, isEditor),
                   letterSpacing: scalingValue(letterSpacing, isEditor),
                   wordSpacing: scalingValue(wordSpacing, isEditor),
                   textAlign,
