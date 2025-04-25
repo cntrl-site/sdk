@@ -115,6 +115,7 @@ export function ControlSlider({ settings, content, styles: sliderStyles, isEdito
           }),
           direction: direction === 'horizontal' ? 'ltr' : 'ttb',
           pagination: false,
+          drag: settings.triggers.triggersList.drag,
           perPage: 1,
           width: sliderDimensions ? sliderDimensions?.width : '100%',
           height: sliderDimensions ? sliderDimensions?.height : '100%',
