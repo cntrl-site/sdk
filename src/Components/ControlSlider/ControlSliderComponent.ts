@@ -23,7 +23,7 @@ export const ControlSliderComponent = {
               triggersList: {
                 type: 'object',
                 display: {
-                  type: 'checkbox-group',
+                  type: 'toggle-ratio-group',
                 },
                 properties: {
                   click: {
@@ -31,11 +31,15 @@ export const ControlSliderComponent = {
                   },
                   drag: {
                     type: 'boolean',
-                  },
-                  auto: {
-                    type: 'boolean',
                   }
                 }
+              },
+              autoPlay: {
+                type: ['string', 'null'],
+                display: {
+                  type: 'setep-selector',
+                },
+                enum: [null, '1s', '2s', '3s', '4s', '5s'],
               }
             }
           },
@@ -120,7 +124,7 @@ export const ControlSliderComponent = {
               position: {
                 name: 'nav position',
                 display: {
-                  type: 'nav-socket',
+                  type: 'socket',
                   direction: 'horizontal',
                 },
                 type: 'string',
@@ -219,8 +223,8 @@ export const ControlSliderComponent = {
             triggersList: {
               click: true,
               drag: true,
-              auto: false,
             },
+            autoPlay: null,
           },
           controls: {
             isActive: true,
@@ -256,16 +260,6 @@ export const ControlSliderComponent = {
           }
         },
         displayRules: [
-          {
-            if: {
-              name: 'direction',
-              value: 'vertical'
-            },
-            then: {
-              name: 'properties.controls.properties.position.display.direction',
-              value: 'vertical'
-            }
-          },
           {
             if: {
               name: 'direction',

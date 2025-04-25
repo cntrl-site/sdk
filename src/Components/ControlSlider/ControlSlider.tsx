@@ -109,7 +109,10 @@ export function ControlSlider({ settings, content, styles: sliderStyles, isEdito
         ref={setSliderRef}
         options={{
           arrows: false,
-          autoplay: isEditor ? false : settings.triggers.triggersList.auto,
+          autoplay: isEditor ? false : settings.triggers.autoPlay !== null,
+          ...(settings.triggers.autoPlay !== null && {
+            interval: parseInt(settings.triggers.autoPlay) * 1000,
+          }),
           direction: direction === 'horizontal' ? 'ltr' : 'ttb',
           pagination: false,
           perPage: 1,
@@ -311,8 +314,8 @@ type Triggers = {
   triggersList: {
     click: boolean;
     drag: boolean;
-    auto: boolean;
   };
+  autoPlay: string | null;
 };
 
 type SliderSettings = {
