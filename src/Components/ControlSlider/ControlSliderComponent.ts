@@ -222,7 +222,7 @@ export const ControlSliderComponent = {
         default: {
           triggers: {
             triggersList: {
-              click: true,
+              click: false,
               drag: true,
             },
             autoPlay: null,
