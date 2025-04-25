@@ -32,6 +32,7 @@ export interface ItemCommonParamsMap {
   [ArticleItemType.Group]: GroupCommonParams;
   [ArticleItemType.Compound]: CompoundCommonParams;
   [ArticleItemType.CodeEmbed]: CodeEmbedCommonParams
+  [ArticleItemType.Component]: ComponentCommonParams;
 }
 
 export interface ItemLayoutParamsMap {
@@ -45,6 +46,7 @@ export interface ItemLayoutParamsMap {
   [ArticleItemType.Group]: GroupLayoutParams;
   [ArticleItemType.Compound]: CompoundLayoutParams;
   [ArticleItemType.CodeEmbed]: CodeEmbedLayoutParams;
+  [ArticleItemType.Component]: ComponentLayoutParams;
 }
 
 interface CommonParamsBase {
@@ -105,6 +107,11 @@ interface YoutubeEmbedCommonParams extends CommonParamsBase {
   loop: boolean;
   url: string;
   coverUrl: string | null;
+}
+
+interface ComponentCommonParams extends CommonParamsBase {
+  componentId: string;
+  content?: any;
 }
 
 interface MediaLayoutParams {
@@ -204,6 +211,12 @@ export interface Link {
 
 type LayoutIdentifier = string;
 
+interface ComponentLayoutParams {
+  parameters?: any;
+  opacity: number;
+  blur: number;
+}
+
 export type VideoItem = Item<ArticleItemType.Video>;
 export type RectangleItem = Item<ArticleItemType.Rectangle>;
 export type ImageItem = Item<ArticleItemType.Image>;
@@ -214,3 +227,4 @@ export type CustomItem = Item<ArticleItemType.Custom>;
 export type GroupItem = Item<ArticleItemType.Group>;
 export type CodeEmbedItem = Item<ArticleItemType.CodeEmbed>;
 export type CompoundItem = Item<ArticleItemType.Compound>;
+export type ComponentItem = Item<ArticleItemType.Component>;
