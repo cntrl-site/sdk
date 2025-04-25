@@ -37,7 +37,7 @@ export const ControlSliderComponent = {
               autoPlay: {
                 type: ['string', 'null'],
                 display: {
-                  type: 'setep-selector',
+                  type: 'step-selector',
                 },
                 enum: [null, '1s', '2s', '3s', '4s', '5s'],
               }
