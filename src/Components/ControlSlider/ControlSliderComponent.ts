@@ -36,6 +36,7 @@ export const ControlSliderComponent = {
               },
               autoPlay: {
                 type: ['string', 'null'],
+                label: 'Auto',
                 display: {
                   type: 'step-selector',
                 },
