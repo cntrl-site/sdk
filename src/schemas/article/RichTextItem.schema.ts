@@ -65,5 +65,5 @@ export const RichTextItemSchema = ItemBaseSchema.extend({
       isDraggable: z.boolean().optional()
     })
   ),
-  state: z.record(z.record(RichTextStateParamsSchema))
+  state: z.record(RichTextStateParamsSchema)
 }) satisfies ZodType<RichTextItem>;

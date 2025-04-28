@@ -12,5 +12,5 @@ export const articleMock: Article = {
       color: {}
     }
   ],
-  interactions: []
+  interactions: {}
 };
