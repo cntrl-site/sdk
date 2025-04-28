@@ -73,7 +73,7 @@ const ImageItemSchema = ItemBaseSchema.extend({
       isDraggable: z.boolean().optional()
     })
   ),
-  state: z.record(z.record(MediaStateParamsSchema))
+  state: z.record(MediaStateParamsSchema)
 }) satisfies ZodType<ImageItem>;
 
 const VideoItemSchema = ItemBaseSchema.extend({
@@ -103,7 +103,7 @@ const VideoItemSchema = ItemBaseSchema.extend({
       isDraggable: z.boolean().optional()
     })
   ),
-  state: z.record(z.record(MediaStateParamsSchema))
+  state: z.record(MediaStateParamsSchema)
 }) satisfies ZodType<VideoItem>;
 
 const RectangleItemSchema = ItemBaseSchema.extend({
@@ -130,7 +130,7 @@ const RectangleItemSchema = ItemBaseSchema.extend({
       isDraggable: z.boolean().optional()
     })
   ),
-  state: z.record(z.record(RectangleStateParamsSchema))
+  state: z.record(RectangleStateParamsSchema)
 }) satisfies ZodType<RectangleItem>;
 
 const CustomItemSchema = ItemBaseSchema.extend({
@@ -148,7 +148,7 @@ const CustomItemSchema = ItemBaseSchema.extend({
   layoutParams: z.record(z.object({
     isDraggable: z.boolean().optional()
   })),
-  state: z.record(z.record(CustomItemStateParamsSchema))
+  state: z.record(CustomItemStateParamsSchema)
 }) satisfies ZodType<CustomItem>;
 
 const VimeoEmbedItemSchema = ItemBaseSchema.extend({
@@ -177,7 +177,7 @@ const VimeoEmbedItemSchema = ItemBaseSchema.extend({
       opacity: z.number().nonnegative()
     })
   ),
-  state: z.record(z.record(EmbedStateParamsSchema))
+  state: z.record(EmbedStateParamsSchema)
 }) satisfies ZodType<VimeoEmbedItem>;
 
 const YoutubeEmbedItemSchema = ItemBaseSchema.extend({
@@ -203,7 +203,7 @@ const YoutubeEmbedItemSchema = ItemBaseSchema.extend({
       opacity: z.number().nonnegative()
     })
   ),
-  state: z.record(z.record(EmbedStateParamsSchema))
+  state: z.record(EmbedStateParamsSchema)
 }) satisfies ZodType<YoutubeEmbedItem>;
 
 const CodeEmbedItemSchema =  ItemBaseSchema.extend({
@@ -228,7 +228,7 @@ const CodeEmbedItemSchema =  ItemBaseSchema.extend({
       isDraggable: z.boolean().optional()
     })
   ),
-  state: z.record(z.record(CodeEmbedStateParamsSchema))
+  state: z.record(CodeEmbedStateParamsSchema)
 }) satisfies ZodType<CodeEmbedItem>;
 
 const ComponentItemSchema = ItemBaseSchema.extend({
@@ -279,7 +279,7 @@ export const ItemSchema: ZodType<ItemAny> = z.lazy(() => z.discriminatedUnion('t
         blur: z.number()
       })
     ),
-    state: z.record(z.record(GroupStateParamsSchema))
+    state: z.record(GroupStateParamsSchema)
   }),
   ItemBaseSchema.extend({
     type: z.literal(ArticleItemType.Compound),
@@ -299,6 +299,6 @@ export const ItemSchema: ZodType<ItemAny> = z.lazy(() => z.discriminatedUnion('t
         opacity: z.number().nonnegative()
       })
     ),
-    state: z.record(z.record(CompoundStateParamsSchema))
+    state: z.record(CompoundStateParamsSchema)
   })
 ]));
