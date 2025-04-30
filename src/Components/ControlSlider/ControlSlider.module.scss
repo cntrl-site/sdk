@@ -291,3 +291,11 @@
   height: 100%;
   cursor: pointer;
 }
+
+.contain {
+  object-fit: contain;
+}
+
+.cover {
+  object-fit: cover;
+}
