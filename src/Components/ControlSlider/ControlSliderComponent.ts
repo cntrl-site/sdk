@@ -231,7 +231,7 @@ export const ControlSliderComponent = {
             isActive: true,
             arrowsImgUrl: null,
             offset: {
-              x: -0.0277,
+              x: 0,
               y: 0
             },
             scale: 100,

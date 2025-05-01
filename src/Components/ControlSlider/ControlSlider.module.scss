@@ -40,7 +40,7 @@
   border: none;
   background-color: transparent;
   top: 50%;
-  left: 0;
+  @include size(left, -20);
   z-index: 1;
   transform: translate(-50%, -50%);
   padding: 0;
@@ -48,20 +48,20 @@
   @include size(height, 30);
   &.arrowVertical {
     left: 50%;
-    top: 0;
+    @include size(top, -20);
     transform: translate(-50%, -50%);
   }
 }
 
 .nextArrow {
   left: unset;
-  right: 0;
+  @include size(right, -20);
   transform: translate(50%, -50%);
   &.arrowVertical {
     left: 50%;
     right: unset;
     top: unset;
-    bottom: 0;
+    @include size(bottom, -20);
     transform: translate(-50%, 50%);
   }
 }
