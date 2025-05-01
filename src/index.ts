@@ -8,7 +8,7 @@ export { ScrollPlaybackVideoManager } from './ScrollPlaybackVideoManager/ScrollP
 export { SectionHeightMode } from './types/article/Section';
 export { TextAlign, TextDecoration, TextTransform, VerticalAlign } from './types/article/RichText';
 export { ArticleItemType } from './types/article/ArticleItemType';
-export { AreaAnchor, AnchorSide, PositionType } from './types/article/ItemArea';
+export { AreaAnchor, AnchorSide, DimensionMode, PositionType } from './types/article/ItemArea';
 export { KeyframeType } from './types/keyframe/Keyframe';
 
 // types
