@@ -45,8 +45,8 @@ export function ControlSlider({ settings, content, styles: sliderStyles, isEdito
       if (!sliderRef) return;
       const [wrapper] = entries;
       setSliderDimensions({
-        width: wrapper.contentRect.width,
-        height: wrapper.contentRect.height
+        width: Math.round(wrapper.contentRect.width),
+        height: Math.round(wrapper.contentRect.height)
       });
     });
     observer.observe(wrapperRef);
