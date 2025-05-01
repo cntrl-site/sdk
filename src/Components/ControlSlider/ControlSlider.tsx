@@ -133,7 +133,13 @@ export function ControlSlider({ settings, content, styles: sliderStyles, isEdito
               <div
                 className={styles.imgWrapper}
               >
-                <img className={styles.sliderImage} src={item.image.url} alt={item.image.name ?? ''} />
+                <img
+                  className={cn(styles.sliderImage, {
+                    [styles.contain]: item.image.objectFit === 'contain',
+                    [styles.cover]: item.image.objectFit === 'cover'
+                  })}
+                  src={item.image.url} alt={item.image.name ?? ''}
+                />
               </div>
             </div>
           </SplideSlide>
@@ -274,6 +280,7 @@ type SliderItem = {
   image: {
     url: string;
     name?: string;
+    objectFit?: 'cover' | 'contain';
   };
   imageCaption: any[];
 };

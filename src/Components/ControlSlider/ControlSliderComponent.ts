@@ -231,7 +231,7 @@ export const ControlSliderComponent = {
             isActive: true,
             arrowsImgUrl: null,
             offset: {
-              x: 0,
+              x: -0.0277,
               y: 0
             },
             scale: 100,
@@ -290,6 +290,10 @@ export const ControlSliderComponent = {
                 },
                 name: {
                   type: 'string',
+                },
+                objectFit: {
+                  type: 'string',
+                  enum: ['cover', 'contain'],
                 }
               },
               required: ['url', 'name']
@@ -318,6 +322,7 @@ export const ControlSliderComponent = {
         default: [
           {
             image: {
+              objectFit: 'cover',
               url: 'https://cdn.cntrl.site/projects/01GJ2SMPPCQ7JSNGVXZ2DHWXWF/articles-assets/01JRZ15T247392621FNTTRCW9D.jpeg',
               name: 'Slider-1.jpeg'
             },
@@ -330,6 +335,7 @@ export const ControlSliderComponent = {
           },
           {
             image: {
+              objectFit: 'cover',
               url: 'https://cdn.cntrl.site/projects/01GJ2SMPPCQ7JSNGVXZ2DHWXWF/articles-assets/01JRZ17S8TS9T62P7NKTNNEB64.jpeg',
               name: 'Slider-2.jpeg'
             },
@@ -342,6 +348,7 @@ export const ControlSliderComponent = {
           },
           {
             image: {
+              objectFit: 'cover',
               url: 'https://cdn.cntrl.site/projects/01GJ2SMPPCQ7JSNGVXZ2DHWXWF/articles-assets/01JRZ197S89RNT6RA7ZJSX3Z38.jpeg',
               name: 'Slider-3.jpeg'
             },

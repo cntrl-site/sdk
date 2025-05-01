@@ -1,4 +1,4 @@
-@import '../mixins.scss';
+@use '../mixins.scss' as *;
 
 .wrapper {
   position: relative;
@@ -290,4 +290,12 @@
   width: 100%;
   height: 100%;
   cursor: pointer;
+}
+
+.contain {
+  object-fit: contain;
+}
+
+.cover {
+  object-fit: cover;
 }
