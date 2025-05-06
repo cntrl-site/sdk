@@ -4,6 +4,10 @@ export const ControlSliderComponent = {
   element: ControlSlider,
   id: 'control-slider',
   name: 'Slider',
+  preview: {
+    type: 'video' as const,
+    url: 'https://cdn.cntrl.site/projects/01GJ2SMPPCQ7JSNGVXZ2DHWXWF/articles-assets/01JTFXX5M899RG2JA2GTJG1WNX.mp4',
+  },
   defaultSize: {
     width: 400,
     height: 400
