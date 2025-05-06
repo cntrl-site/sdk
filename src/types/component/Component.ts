@@ -9,4 +9,8 @@ export type Component = {
     height: number;
   };
   schema: any;
+  preview?: {
+    type: 'image' | 'video';
+    url: string;
+  };
 };
