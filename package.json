@@ -1,6 +1,6 @@
 {
   "name": "@cntrl-site/sdk",
-  "version": "1.22.7",
+  "version": "1.22.8",
   "description": "Generic SDK for use in public websites.",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
