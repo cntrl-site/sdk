@@ -109,6 +109,7 @@ export function ControlSlider({ settings, content, styles: sliderStyles, isEdito
         ref={setSliderRef}
         options={{
           arrows: false,
+          speed: 600,
           autoplay: isEditor ? false : settings.triggers.autoPlay !== null,
           ...(settings.triggers.autoPlay !== null && {
             interval: parseInt(settings.triggers.autoPlay) * 1000,
@@ -270,8 +271,10 @@ export function ControlSlider({ settings, content, styles: sliderStyles, isEdito
 
 function ArrowIcon({ color, className }: { color: string, className: string }) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21 51" className={className}>
-      <path fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" transform="matrix(-1 0 0 1 18.6055 1.13037)" d="M17.472713 0L0 23L17.472713 47" fillRule="evenodd" />
+    <svg viewBox="0 0 10 18" className={className}>
+      <g id="Symbols" stroke="none" strokeWidth="1" fill={color} fillRule="evenodd">
+          <path d="M-3.70710678,4.29289322 C-3.34662282,3.93240926 -2.77939176,3.90467972 -2.38710056,4.20970461 L-2.29289322,4.29289322 L5,11.585 L12.2928932,4.29289322 C12.6533772,3.93240926 13.2206082,3.90467972 13.6128994,4.20970461 L13.7071068,4.29289322 C14.0675907,4.65337718 14.0953203,5.22060824 13.7902954,5.61289944 L13.7071068,5.70710678 L5.70710678,13.7071068 C5.34662282,14.0675907 4.77939176,14.0953203 4.38710056,13.7902954 L4.29289322,13.7071068 L-3.70710678,5.70710678 C-4.09763107,5.31658249 -4.09763107,4.68341751 -3.70710678,4.29289322 Z" id="Shape-Copy" fill="#000000" transform="translate(5, 9) rotate(-90) translate(-5, -9)"></path>
+      </g>
     </svg>
   );
 }
