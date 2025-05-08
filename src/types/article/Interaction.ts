@@ -1,15 +1,22 @@
 export interface Interaction {
   id: string;
-  triggers: InteractionTrigger[];
+  triggers: (InteractionItemTrigger | InteractionScrollTrigger)[];
   states: InteractionState[];
   startStateId: string;
 }
 
-export interface InteractionTrigger {
+export interface InteractionItemTrigger {
   itemId: string;
   type: 'hover-in' | 'hover-out' | 'click';
   from: StateId;
   to: StateId;
+}
+
+export interface InteractionScrollTrigger {
+  position: number;
+  from: StateId;
+  to: StateId;
+  isReverse: boolean;
 }
 
 export type VideoInteractionAction = {
