@@ -163,7 +163,7 @@ export function ControlSlider({ settings, content, styles: sliderStyles, isEdito
               }}
               className={styles.arrowInner}
               style={{
-                transform: `translate(${scalingValue(controlsOffsetX, isEditor)}, ${scalingValue(controlsOffsetY * (direction === 'horizontal' ? 1 : -1), isEditor)}) scale(${settings.controls.scale / 100}) rotate(${direction === 'horizontal' ? '180deg' : '-90deg'})`,
+                transform: `translate(${scalingValue(controlsOffsetX, isEditor)}, ${scalingValue(controlsOffsetY * (direction === 'horizontal' ? 1 : -1), isEditor)}) scale(${settings.controls.scale / 100}) rotate(${direction === 'horizontal' ? '0deg' : '90deg'})`,
               }}
             >
               {settings.controls.arrowsImgUrl && (
@@ -171,11 +171,11 @@ export function ControlSlider({ settings, content, styles: sliderStyles, isEdito
                   url={settings.controls.arrowsImgUrl}
                   fill={settings.controls.color}
                   hoverFill={settings.controls.hover}
-                  className={styles.arrowImg}
+                  className={cn(styles.arrowImg, styles.mirror)}
                 />
               )}
               {!settings.controls.arrowsImgUrl && (
-                <ArrowIcon color={settings.controls.color} className={cn(styles.arrowIcon, styles.arrowImg)} />
+                <ArrowIcon color={settings.controls.color} className={cn(styles.arrowIcon, styles.arrowImg, styles.mirror)} />
               )}
             </button>
           </div>
@@ -237,7 +237,7 @@ export function ControlSlider({ settings, content, styles: sliderStyles, isEdito
           <div
             className={styles.paginationInner}
             style={{
-              backgroundColor: settings.pagination.colors[0],
+              backgroundColor: settings.pagination.colors[2],
               transform: `scale(${settings.pagination.scale / 100}) translate(${scalingValue(settings.pagination.offset.x, isEditor)}, ${scalingValue(settings.pagination.offset.y, isEditor)}) rotate(${settings.direction === 'horizontal' ? '0deg' : '90deg'})`,
             }}
           >
@@ -256,7 +256,7 @@ export function ControlSlider({ settings, content, styles: sliderStyles, isEdito
                     [styles.activeDot]: index === currentSlideIndex
                   })}
                   style={{
-                    backgroundColor: settings.pagination.colors[1],
+                    backgroundColor: index === currentSlideIndex ? settings.pagination.colors[0] : settings.pagination.colors[1],
                     ['--pagination-hover-color' as string]: settings.pagination.hover
                   }}
                 />
