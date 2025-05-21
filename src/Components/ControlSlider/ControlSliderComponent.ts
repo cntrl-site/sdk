@@ -62,7 +62,7 @@ export const ControlSliderComponent = {
           controls: {
             name: 'controls',
             icon: 'controls',
-            tooltip: 'Arrows controls',
+            tooltip: 'Controls',
             type: 'object',
             properties: {
               isActive: {
@@ -121,7 +121,7 @@ export const ControlSliderComponent = {
           pagination: {
             name: 'nav',
             icon: 'pagination',
-            tooltip: 'Pagination',
+            tooltip: 'Navigation',
             type: 'object',
             properties: {
               isActive: {
@@ -184,7 +184,7 @@ export const ControlSliderComponent = {
             }
           },
           caption: {
-            name: 'desc',
+            name: 'Caption',
             icon: 'text-icon',
             tooltip: 'Caption',
             type: 'object',
