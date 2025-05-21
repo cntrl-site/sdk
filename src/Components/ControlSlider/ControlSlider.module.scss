@@ -93,8 +93,14 @@
   }
 }
 
-.prevIcon {
-  transform: rotate(180deg);
+.mirror {
+  transform: translate(-50%, -50%) scaleX(-1);
+}
+
+.arrowVertical {
+  &.mirror {
+    transform: translate(-50%, -50%) scaleY(-1);
+  }
 }
 
 .pagination {

@@ -22,6 +22,7 @@ export const ControlSliderComponent = {
           triggers: {
             name: 'triggers',
             icon: 'target',
+            tooltip: 'Triggers',
             type: 'object',
             properties: {
               triggersList: {
@@ -51,6 +52,7 @@ export const ControlSliderComponent = {
           direction: {
             name: 'direction',
             icon: 'horizontal-resize',
+            tooltip: 'Direction',
             type: 'string',
             display: {
               type: 'direction-enum'
@@ -60,6 +62,7 @@ export const ControlSliderComponent = {
           controls: {
             name: 'controls',
             icon: 'controls',
+            tooltip: 'Controls',
             type: 'object',
             properties: {
               isActive: {
@@ -118,6 +121,7 @@ export const ControlSliderComponent = {
           pagination: {
             name: 'nav',
             icon: 'pagination',
+            tooltip: 'Navigation',
             type: 'object',
             properties: {
               isActive: {
@@ -180,8 +184,9 @@ export const ControlSliderComponent = {
             }
           },
           caption: {
-            name: 'desc',
+            name: 'Caption',
             icon: 'text-icon',
+            tooltip: 'Caption',
             type: 'object',
             properties: {
               isActive: {
@@ -250,7 +255,7 @@ export const ControlSliderComponent = {
               x: 0,
               y: 0
             },
-            colors: ['#000000', '#cccccc'],
+            colors: ['#cccccc', '#cccccc', '#000000'],
             hover: '#cccccc'
           },
           direction: 'horizontal',
