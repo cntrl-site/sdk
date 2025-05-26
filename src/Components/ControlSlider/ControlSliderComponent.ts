@@ -55,9 +55,32 @@ export const ControlSliderComponent = {
             tooltip: 'Direction',
             type: 'string',
             display: {
-              type: 'direction-enum'
+              type: 'ratio-group'
             },
-            enum: ['horizontal', 'vertical']
+            enum: ['horiz', 'vert']
+          },
+          transition: {
+            name: 'transit',
+            icon: 'transition',
+            tooltip: 'Transition',
+            type: 'object',
+            properties: {
+              type: {
+                type: 'string',
+                display: {
+                  type: 'ratio-group'
+                },
+                enum: ['slide', 'fade in']
+              },
+              duration: {
+                type: 'string',
+                label: 'hourglass-icon',
+                display: {
+                  type: 'step-selector',
+                },
+                enum: ['100ms', '250ms', '500ms', '1000ms'],
+              }
+            }
           },
           controls: {
             name: 'controls',
@@ -247,6 +270,10 @@ export const ControlSliderComponent = {
             color: '#000000',
             hover: '#cccccc',
           },
+          transition: {
+            type: 'slide',
+            duration: '500ms',
+          },
           pagination: {
             isActive: true,
             scale: 50,
@@ -258,7 +285,7 @@ export const ControlSliderComponent = {
             colors: ['#cccccc', '#cccccc', '#000000'],
             hover: '#cccccc'
           },
-          direction: 'horizontal',
+          direction: 'horiz',
           caption: {
             offset: {
               x: 0,
