@@ -63,6 +63,10 @@ export function ControlSlider({ settings, content, styles: sliderStyles, isEdito
 
   return (
     <div className={cn(styles.wrapper, { [styles.editor]: isEditor })} ref={setWrapperRef}>
+      <div className={styles.sliderInner} style={{
+        width: sliderDimensions ? sliderDimensions.width : '100%',
+        height: sliderDimensions ? sliderDimensions.height : '100%'
+      }}>
       {settings.caption.isActive && (
         <div
           className={cn(styles.captionBlock)}
@@ -128,8 +132,8 @@ export function ControlSlider({ settings, content, styles: sliderStyles, isEdito
           pagination: false,
           drag: triggers.triggersList.drag,
           perPage: 1,
-          width: sliderDimensions ? sliderDimensions?.width : '100%',
-          height: sliderDimensions ? sliderDimensions?.height : '100%',
+          width: sliderDimensions ? sliderDimensions.width : '100%',
+          height: sliderDimensions ? sliderDimensions.height : '100%',
           type: transition.type === 'fade in' ? 'fade' : 'loop',
           rewind: true
         }}
@@ -138,9 +142,6 @@ export function ControlSlider({ settings, content, styles: sliderStyles, isEdito
           <SplideSlide key={index}>
             <div
               className={styles.sliderItem}
-              style={{
-                ...sliderDimensions
-              }}
             >
               <div
                 className={styles.imgWrapper}
@@ -276,6 +277,7 @@ export function ControlSlider({ settings, content, styles: sliderStyles, isEdito
           </div>
         </div>
       )}
+      </div>
     </div>
   );
 }
