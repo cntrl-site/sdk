@@ -300,7 +300,7 @@ export const ControlSliderComponent = {
           {
             if: {
               name: 'direction',
-              value: 'vertical'
+              value: 'vert'
             },
             then: {
               name: 'properties.pagination.properties.position.display.direction',
