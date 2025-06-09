@@ -224,11 +224,16 @@
 .captionText {
   pointer-events: none;
   max-width: 100%;
-  transition: opacity 0.3s ease-in-out;
+  transition-property: opacity;
+  transition-timing-function: ease-in-out;
   position: absolute;
   display: inline-block;
   white-space: pre-wrap;
   overflow-wrap: break-word;
+  opacity: 0;
+  &.active {
+    opacity: 1;
+  }
 }
 
 .withPointerEvents {
