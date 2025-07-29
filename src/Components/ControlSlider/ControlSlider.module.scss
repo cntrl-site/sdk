@@ -94,12 +94,12 @@
 }
 
 .mirror {
-  transform: translate(-50%, -50%) scaleX(-1);
+  transform: translate(-50%, -50%) scaleX(-1) !important;
 }
 
 .arrowVertical {
   &.mirror {
-    transform: translate(-50%, -50%) scaleY(-1);
+    transform: translate(-50%, -50%) scaleY(-1) !important;
   }
 }
 
