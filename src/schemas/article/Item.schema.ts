@@ -248,7 +248,7 @@ const ComponentItemSchema = ItemBaseSchema.extend({
     opacity: z.number().nonnegative(),
     blur: z.number()
   })),
-  state: z.record(z.record(ComponentStateParamsSchema))
+  state: z.record(ComponentStateParamsSchema)
 }) satisfies ZodType<ComponentItem>;
 
 export const ItemSchema: ZodType<ItemAny> = z.lazy(() => z.discriminatedUnion('type', [

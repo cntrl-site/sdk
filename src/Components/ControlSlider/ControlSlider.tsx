@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styles from './ControlSlider.module.scss';
 import { Splide, SplideSlide, SplideProps } from '@splidejs/react-splide';
 import '@splidejs/react-splide/css/core';
@@ -32,7 +32,9 @@ export function ControlSlider({ settings, content, styles: sliderStyles, isEdito
   const [sliderDimensions, setSliderDimensions] = useState<Dimensions | undefined>(undefined);
   const [wrapperRef, setWrapperRef] = useState<HTMLDivElement | null>(null);
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
-  const { direction } = settings;
+  const [key, setKey] = useState(0);
+  const { direction, transition, controls, pagination, caption, triggers } = settings;
+  const prevSliderTypeRef = useRef<string | null>(transition.type);
   const { x: controlsOffsetX, y: controlsOffsetY } = settings.controls.offset;
   const handleArrowClick = (dir: '+1' | '-1') => {
     if (sliderRef) {
@@ -53,8 +55,18 @@ export function ControlSlider({ settings, content, styles: sliderStyles, isEdito
     return () => observer.unobserve(wrapperRef);
   }, [wrapperRef]);
 
+  useEffect(() => {
+    if (!sliderRef || prevSliderTypeRef.current === transition.type) return;
+    setKey(prev => prev + 1);
+    prevSliderTypeRef.current = transition.type;
+  }, [transition.type]);
+
   return (
     <div className={cn(styles.wrapper, { [styles.editor]: isEditor })} ref={setWrapperRef}>
+      <div className={styles.sliderInner} style={{
+        width: sliderDimensions ? sliderDimensions.width : '100%',
+        height: sliderDimensions ? sliderDimensions.height : '100%'
+      }}>
       {settings.caption.isActive && (
         <div
           className={cn(styles.captionBlock)}
@@ -65,8 +77,9 @@ export function ControlSlider({ settings, content, styles: sliderStyles, isEdito
             {content.map((item, index) => (
               <div
                 key={index}
-                className={cn(styles.captionText, alignmentClassName[settings.caption.alignment], { 
-                  [styles.withPointerEvents]: index === currentSlideIndex && isEditor
+                className={cn(styles.captionText, alignmentClassName[caption.alignment], { 
+                  [styles.withPointerEvents]: index === currentSlideIndex && isEditor,
+                  [styles.active]: index === currentSlideIndex,
                 })}
                 style={{
                   fontFamily: fontSettings.fontFamily,
@@ -82,17 +95,17 @@ export function ControlSlider({ settings, content, styles: sliderStyles, isEdito
                   textDecoration: textAppearance.textDecoration ?? 'none',
                   fontVariant: textAppearance.fontVariant ?? 'normal',
                   color,
-                  opacity: index === currentSlideIndex ? 1 : 0,
+                  transitionDuration: transition.duration ? `${Math.round(parseInt(transition.duration) / 2)}ms` : '500ms',
                 }}
               >
                 <div
                   data-styles="caption"
                   className={styles.captionTextInner}
                   style={{
-                    '--link-hover-color': settings.caption.hover,
+                    '--link-hover-color': caption.hover,
                     position: 'relative',
-                    top: scalingValue(settings.caption.offset.y, isEditor),
-                    left: scalingValue(settings.caption.offset.x, isEditor)
+                    top: scalingValue(caption.offset.y, isEditor),
+                    left: scalingValue(caption.offset.x, isEditor)
                   } as React.CSSProperties}
                 >
                   <RichTextRenderer content={item.imageCaption} />
@@ -106,30 +119,29 @@ export function ControlSlider({ settings, content, styles: sliderStyles, isEdito
         onMove={(e) => {
           setCurrentSlideIndex(e.index);
         }}
+        key={key}
         ref={setSliderRef}
         options={{
           arrows: false,
-          speed: 600,
-          autoplay: isEditor ? false : settings.triggers.autoPlay !== null,
-          ...(settings.triggers.autoPlay !== null && {
-            interval: parseInt(settings.triggers.autoPlay) * 1000,
+          speed: transition.duration ? parseInt(transition.duration) : 500,
+          autoplay: isEditor ? false : triggers.autoPlay !== null,
+          ...(triggers.autoPlay !== null && {
+            interval: parseInt(triggers.autoPlay) * 1000,
           }),
-          direction: direction === 'horizontal' ? 'ltr' : 'ttb',
+          direction: direction === 'horiz' || transition.type === 'fade in' ? 'ltr' : 'ttb',
           pagination: false,
-          drag: settings.triggers.triggersList.drag,
+          drag: triggers.triggersList.drag,
           perPage: 1,
-          width: sliderDimensions ? sliderDimensions?.width : '100%',
-          height: sliderDimensions ? sliderDimensions?.height : '100%',
-          type: 'loop'
+          width: sliderDimensions ? sliderDimensions.width : '100%',
+          height: sliderDimensions ? sliderDimensions.height : '100%',
+          type: transition.type === 'fade in' ? 'fade' : 'loop',
+          rewind: true
         }}
       >
         {content.map((item, index) => (
           <SplideSlide key={index}>
             <div
               className={styles.sliderItem}
-              style={{
-                ...sliderDimensions
-              }}
             >
               <div
                 className={styles.imgWrapper}
@@ -146,15 +158,15 @@ export function ControlSlider({ settings, content, styles: sliderStyles, isEdito
           </SplideSlide>
         ))}
       </Splide>
-      {settings.controls.isActive && (
+      {controls.isActive && (
         <>
           <div
             className={cn(styles.arrow, {
-              [styles.arrowVertical]: settings.direction === 'vertical'
+              [styles.arrowVertical]: direction === 'vert'
             })}
             style={{
-              color: settings.controls.color,
-              ['--arrow-hover-color' as string]: settings.controls.hover
+              color: controls.color,
+              ['--arrow-hover-color' as string]: controls.hover
             }}
           >
             <button
@@ -163,54 +175,54 @@ export function ControlSlider({ settings, content, styles: sliderStyles, isEdito
               }}
               className={styles.arrowInner}
               style={{
-                transform: `translate(${scalingValue(controlsOffsetX, isEditor)}, ${scalingValue(controlsOffsetY * (direction === 'horizontal' ? 1 : -1), isEditor)}) scale(${settings.controls.scale / 100}) rotate(${direction === 'horizontal' ? '180deg' : '-90deg'})`,
+                transform: `translate(${scalingValue(controlsOffsetX, isEditor)}, ${scalingValue(controlsOffsetY * (direction === 'horiz' ? 1 : -1), isEditor)}) scale(${settings.controls.scale / 100}) rotate(${direction === 'horiz' ? '0deg' : '90deg'})`,
               }}
             >
-              {settings.controls.arrowsImgUrl && (
+              {controls.arrowsImgUrl && (
                 <SvgImage
-                  url={settings.controls.arrowsImgUrl}
-                  fill={settings.controls.color}
-                  hoverFill={settings.controls.hover}
-                  className={styles.arrowImg}
+                  url={controls.arrowsImgUrl}
+                  fill={controls.color}
+                  hoverFill={controls.hover}
+                  className={cn(styles.arrowImg, styles.mirror)}
                 />
               )}
-              {!settings.controls.arrowsImgUrl && (
-                <ArrowIcon color={settings.controls.color} className={cn(styles.arrowIcon, styles.arrowImg)} />
+              {!controls.arrowsImgUrl && (
+                <ArrowIcon color={controls.color} className={cn(styles.arrowIcon, styles.arrowImg, styles.mirror)} />
               )}
             </button>
           </div>
           <div
             className={cn(styles.arrow, styles.nextArrow, {
-              [styles.arrowVertical]: settings.direction === 'vertical'
+              [styles.arrowVertical]: direction === 'vert'
             })}
             style={{
-              color: settings.controls.color,
-              ['--arrow-hover-color' as string]: settings.controls.hover
+              color: controls.color,
+              ['--arrow-hover-color' as string]: controls.hover
             }}
           >
             <button
               className={styles.arrowInner}
               onClick={() => handleArrowClick('+1')}
               style={{
-                transform: `translate(${scalingValue(controlsOffsetX * (direction === 'horizontal' ? -1 : 1), isEditor)}, ${scalingValue(controlsOffsetY, isEditor)}) scale(${settings.controls.scale / 100}) rotate(${direction === 'horizontal' ? '0deg' : '90deg'})`,
+                transform: `translate(${scalingValue(controlsOffsetX * (direction === 'horiz' ? -1 : 1), isEditor)}, ${scalingValue(controlsOffsetY, isEditor)}) scale(${settings.controls.scale / 100}) rotate(${direction === 'horiz' ? '0deg' : '90deg'})`,
               }}
             >
-              {settings.controls.arrowsImgUrl && (
+              {controls.arrowsImgUrl && (
                 <SvgImage
-                  url={settings.controls.arrowsImgUrl}
-                  fill={settings.controls.color}
-                  hoverFill={settings.controls.hover}
+                  url={controls.arrowsImgUrl}
+                  fill={controls.color}
+                  hoverFill={controls.hover}
                   className={styles.arrowImg}
                 />
               )}
-              {!settings.controls.arrowsImgUrl && (
-                <ArrowIcon color={settings.controls.color} className={cn(styles.arrowIcon, styles.arrowImg)} />
+              {!controls.arrowsImgUrl && (
+                <ArrowIcon color={controls.color} className={cn(styles.arrowIcon, styles.arrowImg)} />
               )}
             </button>
           </div>
         </>
       )}
-      {settings.triggers.triggersList.click && (
+      {triggers.triggersList.click && (
         <div
           className={styles.clickOverlay}
           onClick={() => {
@@ -220,25 +232,25 @@ export function ControlSlider({ settings, content, styles: sliderStyles, isEdito
           }}
         />
       )}
-      {settings.pagination.isActive && (
+      {pagination.isActive && (
         <div
           className={cn(styles.pagination, {
-            [styles.paginationInsideBottom]: settings.pagination.position === 'inside-1' && settings.direction === 'horizontal',
-            [styles.paginationInsideTop]: settings.pagination.position === 'inside-2' && settings.direction === 'horizontal',
-            [styles.paginationOutsideBottom]: settings.pagination.position === 'outside-1' && settings.direction === 'horizontal',
-            [styles.paginationOutsideTop]: settings.pagination.position === 'outside-2' && settings.direction === 'horizontal',
-            [styles.paginationInsideLeft]: settings.pagination.position === 'inside-1' && settings.direction === 'vertical',
-            [styles.paginationInsideRight]: settings.pagination.position === 'inside-2' && settings.direction === 'vertical',
-            [styles.paginationOutsideLeft]: settings.pagination.position === 'outside-1' && settings.direction === 'vertical',
-            [styles.paginationOutsideRight]: settings.pagination.position === 'outside-2' && settings.direction === 'vertical',
-            [styles.paginationVertical]: settings.direction === 'vertical',
+            [styles.paginationInsideBottom]: pagination.position === 'inside-1' && direction === 'horiz',
+            [styles.paginationInsideTop]: pagination.position === 'inside-2' && direction === 'horiz',
+            [styles.paginationOutsideBottom]: pagination.position === 'outside-1' && direction === 'horiz',
+            [styles.paginationOutsideTop]: pagination.position === 'outside-2' && direction === 'horiz',
+            [styles.paginationInsideLeft]: pagination.position === 'inside-1' && direction === 'vert',
+            [styles.paginationInsideRight]: pagination.position === 'inside-2' && direction === 'vert',
+            [styles.paginationOutsideLeft]: pagination.position === 'outside-1' && direction === 'vert',
+            [styles.paginationOutsideRight]: pagination.position === 'outside-2' && direction === 'vert',
+            [styles.paginationVertical]: direction === 'vert',
           })}
         >
           <div
             className={styles.paginationInner}
             style={{
-              backgroundColor: settings.pagination.colors[0],
-              transform: `scale(${settings.pagination.scale / 100}) translate(${scalingValue(settings.pagination.offset.x, isEditor)}, ${scalingValue(settings.pagination.offset.y, isEditor)}) rotate(${settings.direction === 'horizontal' ? '0deg' : '90deg'})`,
+              backgroundColor: pagination.colors[2],
+              transform: `scale(${pagination.scale / 100}) translate(${scalingValue(pagination.offset.x, isEditor)}, ${scalingValue(pagination.offset.y, isEditor)}) rotate(${direction === 'horiz' ? '0deg' : '90deg'})`,
             }}
           >
             {content.map((_, index) => (
@@ -256,8 +268,8 @@ export function ControlSlider({ settings, content, styles: sliderStyles, isEdito
                     [styles.activeDot]: index === currentSlideIndex
                   })}
                   style={{
-                    backgroundColor: settings.pagination.colors[1],
-                    ['--pagination-hover-color' as string]: settings.pagination.hover
+                    backgroundColor: index === currentSlideIndex ? pagination.colors[0] : pagination.colors[1],
+                    ['--pagination-hover-color' as string]: pagination.hover
                   }}
                 />
               </button>
@@ -265,6 +277,7 @@ export function ControlSlider({ settings, content, styles: sliderStyles, isEdito
           </div>
         </div>
       )}
+      </div>
     </div>
   );
 }
@@ -272,8 +285,8 @@ export function ControlSlider({ settings, content, styles: sliderStyles, isEdito
 function ArrowIcon({ color, className }: { color: string, className: string }) {
   return (
     <svg viewBox="0 0 10 18" className={className}>
-      <g id="Symbols" stroke="none" strokeWidth="1" fill={color} fillRule="evenodd">
-          <path d="M-3.70710678,4.29289322 C-3.34662282,3.93240926 -2.77939176,3.90467972 -2.38710056,4.20970461 L-2.29289322,4.29289322 L5,11.585 L12.2928932,4.29289322 C12.6533772,3.93240926 13.2206082,3.90467972 13.6128994,4.20970461 L13.7071068,4.29289322 C14.0675907,4.65337718 14.0953203,5.22060824 13.7902954,5.61289944 L13.7071068,5.70710678 L5.70710678,13.7071068 C5.34662282,14.0675907 4.77939176,14.0953203 4.38710056,13.7902954 L4.29289322,13.7071068 L-3.70710678,5.70710678 C-4.09763107,5.31658249 -4.09763107,4.68341751 -3.70710678,4.29289322 Z" id="Shape-Copy" fill="#000000" transform="translate(5, 9) rotate(-90) translate(-5, -9)"></path>
+      <g id="Symbols" stroke="none" strokeWidth="1" fillRule="evenodd">
+          <path d="M-3.70710678,4.29289322 C-3.34662282,3.93240926 -2.77939176,3.90467972 -2.38710056,4.20970461 L-2.29289322,4.29289322 L5,11.585 L12.2928932,4.29289322 C12.6533772,3.93240926 13.2206082,3.90467972 13.6128994,4.20970461 L13.7071068,4.29289322 C14.0675907,4.65337718 14.0953203,5.22060824 13.7902954,5.61289944 L13.7071068,5.70710678 L5.70710678,13.7071068 C5.34662282,14.0675907 4.77939176,14.0953203 4.38710056,13.7902954 L4.29289322,13.7071068 L-3.70710678,5.70710678 C-4.09763107,5.31658249 -4.09763107,4.68341751 -3.70710678,4.29289322 Z" id="Shape-Copy" fill={color} transform="translate(5, 9) rotate(-90) translate(-5, -9)"></path>
       </g>
     </svg>
   );
@@ -332,7 +345,11 @@ type Triggers = {
 type SliderSettings = {
   controls: SliderControls;
   pagination: SliderPagination;
-  direction: 'horizontal' | 'vertical';
+  direction: 'horiz' | 'vert';
+  transition: {
+    type: 'slide' | 'fade in';
+    duration: string;
+  };
   caption: SliderCaption;
   triggers: Triggers;
 };

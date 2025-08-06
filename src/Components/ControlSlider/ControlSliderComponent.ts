@@ -22,6 +22,7 @@ export const ControlSliderComponent = {
           triggers: {
             name: 'triggers',
             icon: 'target',
+            tooltip: 'Triggers',
             type: 'object',
             properties: {
               triggersList: {
@@ -51,15 +52,40 @@ export const ControlSliderComponent = {
           direction: {
             name: 'direction',
             icon: 'horizontal-resize',
+            tooltip: 'Direction',
             type: 'string',
             display: {
-              type: 'direction-enum'
+              type: 'ratio-group'
             },
-            enum: ['horizontal', 'vertical']
+            enum: ['horiz', 'vert']
+          },
+          transition: {
+            name: 'transit',
+            icon: 'transition',
+            tooltip: 'Transition',
+            type: 'object',
+            properties: {
+              type: {
+                type: 'string',
+                display: {
+                  type: 'ratio-group'
+                },
+                enum: ['slide', 'fade in']
+              },
+              duration: {
+                type: 'string',
+                label: 'hourglass-icon',
+                display: {
+                  type: 'step-selector',
+                },
+                enum: ['100ms', '250ms', '500ms', '1000ms'],
+              }
+            }
           },
           controls: {
             name: 'controls',
             icon: 'controls',
+            tooltip: 'Controls',
             type: 'object',
             properties: {
               isActive: {
@@ -118,6 +144,7 @@ export const ControlSliderComponent = {
           pagination: {
             name: 'nav',
             icon: 'pagination',
+            tooltip: 'Navigation',
             type: 'object',
             properties: {
               isActive: {
@@ -180,8 +207,9 @@ export const ControlSliderComponent = {
             }
           },
           caption: {
-            name: 'desc',
+            name: 'Caption',
             icon: 'text-icon',
+            tooltip: 'Caption',
             type: 'object',
             properties: {
               isActive: {
@@ -242,6 +270,10 @@ export const ControlSliderComponent = {
             color: '#000000',
             hover: '#cccccc',
           },
+          transition: {
+            type: 'slide',
+            duration: '500ms',
+          },
           pagination: {
             isActive: true,
             scale: 50,
@@ -250,10 +282,10 @@ export const ControlSliderComponent = {
               x: 0,
               y: 0
             },
-            colors: ['#000000', '#cccccc'],
+            colors: ['#cccccc', '#cccccc', '#000000'],
             hover: '#cccccc'
           },
-          direction: 'horizontal',
+          direction: 'horiz',
           caption: {
             offset: {
               x: 0,
@@ -268,7 +300,7 @@ export const ControlSliderComponent = {
           {
             if: {
               name: 'direction',
-              value: 'vertical'
+              value: 'vert'
             },
             then: {
               name: 'properties.pagination.properties.position.display.direction',
