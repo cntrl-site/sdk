@@ -1,12 +1,19 @@
 import { z, ZodType } from 'zod';
-import { Interaction, InteractionTrigger, VideoInteractionAction } from '../../types/article/Interaction';
+import { Interaction, InteractionItemTrigger, InteractionScrollTrigger, VideoInteractionAction } from '../../types/article/Interaction';
 
-const TriggerSchema = z.object({
+const ItemTriggerSchema = z.object({
   itemId: z.string(),
   type: z.enum(['hover-in', 'hover-out', 'click']),
   from: z.string(),
   to: z.string()
-}) satisfies ZodType<InteractionTrigger>;
+}) satisfies ZodType<InteractionItemTrigger>;
+
+const ScrollTriggerSchema = z.object({
+  position: z.number(),
+  from: z.string(),
+  to: z.string(),
+  isReverse: z.boolean()
+}) satisfies ZodType<InteractionScrollTrigger>;
 
 const VideoInteractionActionSchema = z.object({
   type: z.enum(['play', 'pause']),
@@ -20,7 +27,7 @@ const StateSchema = z.object({
 
 export const InteractionSchema = z.object({
   id: z.string(),
-  triggers: z.array(TriggerSchema),
+  triggers: z.array(z.union([ItemTriggerSchema, ScrollTriggerSchema])),
   states: z.array(StateSchema),
   startStateId: z.string(),
 }) satisfies ZodType<Interaction>;
