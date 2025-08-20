@@ -11,6 +11,26 @@ export interface SectionHeight {
   vhUnits?: number;
 }
 
+export type SectionVideo = {
+  url: string;
+  size: string;
+  type: 'video';
+  play: 'on-click' | 'auto';
+  position: string;
+  coverUrl: string | null;
+  offsetX: number | null;
+};
+
+export type SectionImage = {
+  url: string;
+  type: 'image';
+  size: string;
+  position: string;
+  offsetX: number | null;
+};
+
+export type SectionMedia = SectionVideo | SectionImage;
+
 export interface Section {
   id: string;
   name?: string;
@@ -19,10 +39,5 @@ export interface Section {
   items: ItemAny[];
   position: Record<string, number>;
   color: Record<string, string | null>;
-  media?: Record<string, {
-    url: string;
-    size: string;
-    position: string;
-    offsetX: number | null;
-  }>;
+  media?: Record<string, SectionMedia>;
 }
