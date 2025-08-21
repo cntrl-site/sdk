@@ -100,7 +100,10 @@ const VideoItemSchema = ItemBaseSchema.extend({
       strokeWidth: z.number(),
       strokeColor: z.string(),
       blur: z.number(),
-      isDraggable: z.boolean().optional()
+      isDraggable: z.boolean().optional(),
+      play: z.enum(['on-hover', 'on-click', 'auto']),
+      muted: z.boolean(),
+      controls: z.boolean(),
     })
   ),
   state: z.record(MediaStateParamsSchema)
@@ -154,11 +157,6 @@ const CustomItemSchema = ItemBaseSchema.extend({
 const VimeoEmbedItemSchema = ItemBaseSchema.extend({
   type: z.literal(ArticleItemType.VimeoEmbed),
   commonParams: z.object({
-    play: z.union([z.literal('on-hover'), z.literal('on-click'), z.literal('auto')]),
-    controls: z.boolean(),
-    loop: z.boolean(),
-    muted: z.boolean(),
-    pictureInPicture: z.boolean(),
     url: z.string().min(1),
     coverUrl: z.string().nullable(),
     ratioLock: z.boolean(),
@@ -174,7 +172,12 @@ const VimeoEmbedItemSchema = ItemBaseSchema.extend({
     z.object({
       radius: z.number(),
       blur: z.number(),
-      opacity: z.number().nonnegative()
+      opacity: z.number().nonnegative(),
+      play: z.union([z.literal('on-hover'), z.literal('on-click'), z.literal('auto')]),
+      controls: z.boolean(),
+      loop: z.boolean(),
+      muted: z.boolean(),
+      pictureInPicture: z.boolean()
     })
   ),
   state: z.record(EmbedStateParamsSchema)
@@ -183,9 +186,6 @@ const VimeoEmbedItemSchema = ItemBaseSchema.extend({
 const YoutubeEmbedItemSchema = ItemBaseSchema.extend({
   type: z.literal(ArticleItemType.YoutubeEmbed),
   commonParams: z.object({
-    play: z.enum(['on-hover', 'on-click', 'auto']),
-    controls: z.boolean(),
-    loop: z.boolean(),
     url: z.string().min(1),
     coverUrl: z.string().nullable(),
     pointerEvents
@@ -200,7 +200,10 @@ const YoutubeEmbedItemSchema = ItemBaseSchema.extend({
     z.object({
       radius: z.number(),
       blur: z.number(),
-      opacity: z.number().nonnegative()
+      opacity: z.number().nonnegative(),
+      play: z.enum(['on-hover', 'on-click', 'auto']),
+      controls: z.boolean(),
+      loop: z.boolean(),
     })
   ),
   state: z.record(EmbedStateParamsSchema)
