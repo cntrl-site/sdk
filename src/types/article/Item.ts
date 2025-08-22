@@ -92,19 +92,11 @@ interface CodeEmbedCommonParams extends CommonParamsBase {
 }
 
 interface VimeoEmbedCommonParams extends CommonParamsBase {
-  play: 'on-hover' | 'on-click' | 'auto';
-  controls: boolean;
-  loop: boolean;
-  muted: boolean;
-  pictureInPicture: boolean;
   url: string;
   coverUrl: string | null;
 }
 
 interface YoutubeEmbedCommonParams extends CommonParamsBase {
-  play: 'on-hover' | 'on-click' | 'auto';
-  controls: boolean;
-  loop: boolean;
   url: string;
   coverUrl: string | null;
 }
@@ -146,12 +138,20 @@ interface CodeEmbedLayoutParams {
 }
 
 interface VimeoEmbedLayoutParams {
+  play: 'on-hover' | 'on-click' | 'auto';
+  controls: boolean;
+  loop: boolean;
+  muted: boolean;
+  pictureInPicture: boolean;
   radius: number;
   blur: number;
   opacity: number;
 }
 
 interface YoutubeEmbedLayoutParams {
+  play: 'on-hover' | 'on-click' | 'auto';
+  controls: boolean;
+  loop: boolean;
   radius: number;
   blur: number;
   opacity: number;
@@ -160,7 +160,9 @@ interface YoutubeEmbedLayoutParams {
 interface ImageLayoutParams extends MediaLayoutParams {}
 
 interface VideoLayoutParams extends MediaLayoutParams {
-  autoplay: boolean;
+  play: 'on-hover' | 'on-click' | 'auto';
+  muted: boolean;
+  controls: boolean;
   scrollPlayback: ScrollPlaybackParams | null;
 }
 
