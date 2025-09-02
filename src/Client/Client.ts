@@ -35,11 +35,11 @@ export class Client {
     } : projectMeta;
   }
 
-  async getPageData(pageSlug: string): Promise<CntrlPageData> {
+  async getPageData(pageSlug: string, buildMode: 'default' | 'self-hosted' = 'default'): Promise<CntrlPageData> {
     try {
-      const project = await this.fetchProject();
+      const project = await this.fetchProject(buildMode);
       const articleId = this.findArticleIdByPageSlug(pageSlug, project.pages);
-      const { article, keyframes } = await this.fetchArticle(articleId);
+      const { article, keyframes } = await this.fetchArticle(articleId, buildMode);
       const page = project.pages.find(page => page.slug === pageSlug)!;
       const meta = Client.getPageMeta(project.meta, page?.meta!);
       return {
@@ -71,9 +71,9 @@ export class Client {
     }
   }
 
-  private async fetchProject(): Promise<Project> {
+  private async fetchProject(buildMode: 'default' | 'self-hosted' = 'default'): Promise<Project> {
     const { username: projectId, password: apiKey, origin } = this.url;
-    const url = new URL(`/projects/${projectId}`, origin);
+    const url = new URL(`/projects/${projectId}?buildMode=${buildMode}`, origin);
     const response = await this.fetchImpl(url.href, {
       headers: {
         Authorization: `Bearer ${apiKey}`
@@ -87,9 +87,9 @@ export class Client {
     return project;
   }
 
-  private async fetchArticle(articleId: string): Promise<ArticleData> {
+  private async fetchArticle(articleId: string, buildMode: 'default' | 'self-hosted' = 'default'): Promise<ArticleData> {
     const { username: projectId, password: apiKey, origin } = this.url;
-    const url = new URL(`/projects/${projectId}/articles/${articleId}`, origin);
+    const url = new URL(`/projects/${projectId}/articles/${articleId}?buildMode=${buildMode}`, origin);
     const response = await this.fetchImpl(url.href, {
       headers: {
         Authorization: `Bearer ${apiKey}`
