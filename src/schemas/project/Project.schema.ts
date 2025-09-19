@@ -40,7 +40,7 @@ export const ProjectSchema = z.object({
       files: z.array(
         z.object({
           type: z.nativeEnum(FontFileTypes),
-          url: z.string().url()
+          url: z.string()
         })
       )
     }))

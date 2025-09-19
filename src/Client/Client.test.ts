@@ -24,8 +24,8 @@ describe('Client', () => {
     const projectId = 'projectId';
     const API_BASE_URL = 'api-test.cntrl.site';
     const fetchesMap: Record<string, unknown> = {
-      [`https://${API_BASE_URL}/projects/${projectId}`]: projectMock,
-      [`https://${API_BASE_URL}/projects/${projectId}/articles/articleId`]: {
+      [`https://${API_BASE_URL}/projects/${projectId}?buildMode=default`]: projectMock,
+      [`https://${API_BASE_URL}/projects/${projectId}/articles/articleId?buildMode=default`]: {
         article: articleMock,
         keyframes: keyframesMock
       }
@@ -60,8 +60,8 @@ describe('Client', () => {
     const projectId = 'projectId';
     const API_BASE_URL = 'api-test.cntrl.site';
     const fetchesMap: Record<string, unknown> = {
-      [`https://${API_BASE_URL}/projects/${projectId}`]: projectMock,
-      [`https://${API_BASE_URL}/projects/${projectId}/articles/articleId2`]: {
+      [`https://${API_BASE_URL}/projects/${projectId}?buildMode=default`]: projectMock,
+      [`https://${API_BASE_URL}/projects/${projectId}/articles/articleId2?buildMode=default`]: {
         article: articleMock,
         keyframes: keyframesMock
       }
@@ -105,7 +105,7 @@ describe('Client', () => {
     const projectId = 'MY_PROJECT_ID';
     const apiKey = 'MY_API_KEY';
     const apiUrl = `https://${projectId}:${apiKey}@api.cntrl.site/`;
-    const projectApiUrl = `https://api.cntrl.site/projects/${projectId}`;
+    const projectApiUrl = `https://api.cntrl.site/projects/${projectId}?buildMode=default`;
     const slug = '/nonexistent-slug';
     const fetch = (url: string) => {
       return Promise.resolve({
