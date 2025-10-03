@@ -1,4 +1,4 @@
-@import 'src/shared';
+@use '../mixins.scss' as *;
 
 .imageRevealSlider {
     position: absolute;
