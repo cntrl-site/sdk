@@ -1,5 +1,6 @@
 import { KeyframeType } from '../../types/keyframe/Keyframe';
 import { z } from 'zod';
+import { FillLayerSchema } from '../article/FillLayer.schema';
 
 const KeyframesBaseSchema = z.object({
   id: z.string().min(1),
@@ -45,18 +46,9 @@ const BorderWidthKeyframeSchema = KeyframesBaseSchema.extend({
   })
 });
 
-const ColorKeyframeSchema = KeyframesBaseSchema.extend({
-  type: z.literal(KeyframeType.Color),
-  value: z.object({
-    color: z.string()
-  })
-});
-
-const BorderColorKeyframeSchema = KeyframesBaseSchema.extend({
-  type: z.literal(KeyframeType.BorderColor),
-  value: z.object({
-    color: z.string()
-  })
+const BorderFillKeyframeSchema = KeyframesBaseSchema.extend({
+  type: z.literal(KeyframeType.BorderFill),
+  value: z.array(FillLayerSchema)
 });
 
 const OpacityKeyframeSchema = KeyframesBaseSchema.extend({
@@ -113,14 +105,18 @@ const FXParamsKeyframeSchema = KeyframesBaseSchema.extend({
   value: z.record(z.string(), z.number())
 });
 
+const FillKeyframeSchema = KeyframesBaseSchema.extend({
+  type: z.literal(KeyframeType.Fill),
+  value: z.array(FillLayerSchema)
+});
+
 export const KeyframeSchema = z.discriminatedUnion('type', [
   DimensionsKeyframeSchema,
   PositionKeyframeSchema,
   RotationKeyframeSchema,
   BorderRadiusKeyframeSchema,
   BorderWidthKeyframeSchema,
-  ColorKeyframeSchema,
-  BorderColorKeyframeSchema,
+  BorderFillKeyframeSchema,
   OpacityKeyframeSchema,
   ScaleKeyframeSchema,
   BlurKeyframeSchema,
@@ -128,7 +124,8 @@ export const KeyframeSchema = z.discriminatedUnion('type', [
   TextColorKeyframeSchema,
   LetterSpacingKeyframeSchema,
   WordSpacingKeyframeSchema,
-  FXParamsKeyframeSchema
+  FXParamsKeyframeSchema,
+  FillKeyframeSchema
 ]);
 
 export const KeyframesSchema = z.array(KeyframeSchema);

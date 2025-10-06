@@ -17,7 +17,7 @@ export type { Section, SectionHeight } from './types/article/Section';
 export type {
   Item, ImageItem, ItemAny, CustomItem, ItemCommonParamsMap,
   ItemLayoutParamsMap, RectangleItem, StickyParams, VideoItem, RichTextItem,
-  Link, VimeoEmbedItem, YoutubeEmbedItem, GroupItem, CodeEmbedItem, CompoundItem, ComponentItem
+  Link, VimeoEmbedItem, YoutubeEmbedItem, GroupItem, CodeEmbedItem, CompoundItem, ComponentItem, FillLayer
 } from './types/article/Item';
 export type { RichTextBlock, RichTextEntity, RichTextStyle } from './types/article/RichText';
 export type { ItemArea } from './types/article/ItemArea';

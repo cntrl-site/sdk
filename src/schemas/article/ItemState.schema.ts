@@ -10,6 +10,7 @@ import {
    CompoundStateParams,
   ComponentStateParams
 } from '../../types/article/ItemState';
+import { FillLayerSchema } from './FillLayer.schema';
 
 const TransitionSchema = z.object({
   timing: z.string(),
@@ -40,15 +41,15 @@ export const MediaStateParamsSchema =
     opacity: getStateParamsSchema(z.number()),
     radius: getStateParamsSchema(z.number()),
     strokeWidth: getStateParamsSchema(z.number()),
-    strokeColor: getStateParamsSchema(z.string())
+    strokeFill: getStateParamsSchema(z.array(FillLayerSchema))
   })
     .merge(ItemStateBaseSchema) satisfies ZodType<MediaStateParams>;
 
 export const RectangleStateParamsSchema = z.object({
   strokeWidth: getStateParamsSchema(z.number()),
   radius: getStateParamsSchema(z.number()),
-  fillColor: getStateParamsSchema(z.string()),
-  strokeColor: getStateParamsSchema(z.string()),
+  fill: getStateParamsSchema(z.array(FillLayerSchema)),
+  strokeFill: getStateParamsSchema(z.array(FillLayerSchema)),
   backdropBlur: getStateParamsSchema(z.number())
 }).merge(ItemStateBaseSchema) satisfies ZodType<RectangleStateParams>;
 

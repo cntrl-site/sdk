@@ -24,6 +24,7 @@ import { ItemBaseSchema } from './ItemBase.schema';
 import { ArticleItemType } from '../../types/article/ArticleItemType';
 import { FXControlAny } from '../../types/article/FX';
 import { AreaAnchor } from '../../types/article/ItemArea';
+import { FillLayerSchema } from './FillLayer.schema';
 
 const pointerEvents = z.enum(['never', 'when_visible', 'always']).optional();
 
@@ -68,7 +69,7 @@ const ImageItemSchema = ItemBaseSchema.extend({
       opacity: z.number().nonnegative(),
       radius: z.number(),
       strokeWidth: z.number(),
-      strokeColor: z.string(),
+      strokeFill: z.array(FillLayerSchema),
       blur: z.number(),
       isDraggable: z.boolean().optional()
     })
@@ -97,7 +98,7 @@ const VideoItemSchema = ItemBaseSchema.extend({
       opacity: z.number().nonnegative(),
       radius: z.number(),
       strokeWidth: z.number(),
-      strokeColor: z.string(),
+      strokeFill: z.array(FillLayerSchema),
       blur: z.number(),
       isDraggable: z.boolean().optional(),
       play: z.enum(['on-hover', 'on-click', 'auto']),
@@ -124,8 +125,8 @@ const RectangleItemSchema = ItemBaseSchema.extend({
     z.object({
       radius: z.number(),
       strokeWidth: z.number(),
-      fillColor: z.string().min(1),
-      strokeColor: z.string().min(1),
+      fill: z.array(FillLayerSchema),
+      strokeFill: z.array(FillLayerSchema),
       blur: z.number(),
       backdropBlur: z.number(),
       blurMode: z.enum(['default', 'backdrop']),
