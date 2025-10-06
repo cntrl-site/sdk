@@ -72,6 +72,15 @@ export const ControlSliderComponent = {
                 },
                 enum: ['slide', 'fade in']
               },
+              backgroundColor: {
+                type: ['string', 'null'],
+                name: 'BG Color',
+                display: {
+                  visible: false,
+                  type: 'settings-color-picker',
+                  format: 'single'
+                }
+              },
               duration: {
                 type: 'string',
                 label: 'hourglass-icon',
@@ -79,15 +88,6 @@ export const ControlSliderComponent = {
                   type: 'step-selector',
                 },
                 enum: ['100ms', '250ms', '500ms', '1000ms', '1500ms', '2000ms'],
-              },
-              backgroundColor: {
-                type: 'string',
-                name: 'BG Color',
-                display: {
-                  visible: false,
-                  type: 'settings-color-picker',
-                  format: 'single'
-                }
               }
             }
           },
