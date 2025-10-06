@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 export const ColorPointSchema = z.object({
   id: z.string(),
-  color: z.string(),
+  value: z.string(),
   position: z.number()
 });
 

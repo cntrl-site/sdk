@@ -200,7 +200,7 @@ export type FillLayer = SolidFillLayer | LinearGradientFillLayer | RadialGradien
 
 type ColorPoint = {
   id: string;
-  color: string;
+  value: string;
   position: number;
 }
 
