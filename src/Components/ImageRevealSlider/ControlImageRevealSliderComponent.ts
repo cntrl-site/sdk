@@ -6,8 +6,8 @@ export const ControlImageRevealSliderComponent = {
   id: 'control-image-reveal',
   name: 'Image reveal',
   preview: {
-    type: 'image' as const,
-    url: ''
+    type: 'video' as const,
+    url: 'https://cdn.cntrl.site/projects/01JJKT02AWY2FGN2QJ7A173RNZ/articles-assets/01K723EY5AH8SKQFK4R31D8FPV.mp4'
   },
   defaultSize: {
     width: 700,

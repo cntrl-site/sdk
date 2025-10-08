@@ -21,7 +21,8 @@
   },
   "scripts": {
     "test": "jest",
-    "prebuild": "rm -rf ./dist",
+    "dev": "vite development",
+    "prebuild": "rimraf ./dist",
     "build": "vite build && tsc --project tsconfig.build.json",
     "prepublishOnly": "NODE_ENV=production npm run build"
   },
@@ -68,12 +69,15 @@
     "@types/jest": "^29.0.0",
     "@types/node": "^18.11.7",
     "@types/react": "^18.3.18",
-    "@vitejs/plugin-react": "^4.3.4",
+    "@types/react-dom": "^18.0.0",
+    "@vitejs/plugin-react": "^4.7.0",
     "jest": "^28.1.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "sass": "^1.86.3",
     "ts-jest": "^28.0.8",
     "typescript": "^5.2.2",
-    "vite": "^6.2.5",
+    "vite": "^6.3.6",
     "vite-plugin-dts": "^4.5.3"
   }
 }
