@@ -4,7 +4,7 @@ import dts from "vite-plugin-dts";
 import path from "path";
 
 export default defineConfig({
-  plugins: [react(), dts()],
+  plugins: [react({ jsxRuntime: 'automatic' }), dts()],
   build: {
     lib: {
       entry: path.resolve(__dirname, "src/index.ts"),
