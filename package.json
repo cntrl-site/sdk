@@ -23,7 +23,7 @@
     "test": "jest",
     "dev": "vite development",
     "prebuild": "rimraf ./dist",
-    "build": "vite build && tsc --project tsconfig.build.json",
+    "build": "vite build --mode production && tsc --project tsconfig.build.json",
     "prepublishOnly": "NODE_ENV=production npm run build"
   },
   "bin": {
