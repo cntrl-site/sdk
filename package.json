@@ -63,6 +63,10 @@
     "url": "^0.11.0",
     "zod": "^3.22.4"
   },
+  "peerDependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  },
   "devDependencies": {
     "@tsconfig/node16": "^1.0.3",
     "@tsconfig/recommended": "^1.0.1",
