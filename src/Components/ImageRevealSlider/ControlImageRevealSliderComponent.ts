@@ -212,7 +212,8 @@ export const ControlImageRevealSliderComponent = {
             link: {
               type: 'string',
               display: {
-                type: 'text-input'
+                type: 'text-input',
+                placeholder: 'Enter link...'
               }
             }
           },
