@@ -110,7 +110,7 @@ interface MediaLayoutParams {
   opacity: number;
   radius: number;
   strokeWidth: number;
-  strokeColor: string;
+  strokeFill: FillLayer[];
   blur: number;
   isDraggable?: boolean;
 }
@@ -188,14 +188,68 @@ interface RichTextLayoutParams {
 interface RectangleLayoutParams {
   radius: number;
   strokeWidth: number;
-  fillColor: string;
-  strokeColor: string;
+  fill: FillLayer[];
+  strokeFill: FillLayer[];
   blur: number;
   backdropBlur: number;
   blurMode: 'default' | 'backdrop';
   isDraggable?: boolean;
 }
 
+export type FillLayer = SolidFillLayer | LinearGradientFillLayer | RadialGradientFillLayer | ConicGradientFillLayer | ImageLayer;
+
+type ColorPoint = {
+  id: string;
+  value: string;
+  position: number;
+}
+
+export type SolidFillLayer = {
+  id: string;
+  type: 'solid';
+  value: string;
+  blendMode: string;
+};
+
+export type LinearGradientFillLayer = {
+  id: string;
+  type: 'linear-gradient';
+  colors: ColorPoint[];
+  start: [number, number];
+  end: [number, number];
+  angle: number;
+  blendMode: string;
+};
+
+export type RadialGradientFillLayer = {
+  id: string;
+  type: 'radial-gradient';
+  colors: ColorPoint[];
+  diameter: number;
+  center: [number, number];
+  angle: number;
+  blendMode: string;
+};
+
+export type ConicGradientFillLayer = {
+  id: string;
+  type: 'conic-gradient';
+  colors: ColorPoint[];
+  center: [number, number];
+  angle: number;
+  blendMode: string;
+};
+
+export type ImageLayer = {
+  id: string;
+  type: 'image';
+  src: string;
+  behavior: string;
+  backgroundSize: number;
+  opacity: number;
+  blendMode: string;
+  rotation?: number;
+};
 export interface ScrollPlaybackParams {
   from: number;
   to: number;

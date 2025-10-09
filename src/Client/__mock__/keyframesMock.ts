@@ -3,7 +3,7 @@ import { KeyframeAny, KeyframeType } from '../../types/keyframe/Keyframe';
 export const keyframesMock: KeyframeAny[] = [
   {
     id: 'keyframeId',
-    type: KeyframeType.Color,
+    type: KeyframeType.TextColor,
     position: 100,
     value: {
       color: 'black'

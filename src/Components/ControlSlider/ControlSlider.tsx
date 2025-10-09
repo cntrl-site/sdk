@@ -63,10 +63,14 @@ export function ControlSlider({ settings, content, styles: sliderStyles, isEdito
 
   return (
     <div className={cn(styles.wrapper, { [styles.editor]: isEditor })} ref={setWrapperRef}>
-      <div className={styles.sliderInner} style={{
-        width: sliderDimensions ? sliderDimensions.width : '100%',
-        height: sliderDimensions ? sliderDimensions.height : '100%'
-      }}>
+      <div
+       className={styles.sliderInner}
+       style={{
+          width: sliderDimensions ? sliderDimensions.width : '100%',
+          height: sliderDimensions ? sliderDimensions.height : '100%',
+          backgroundColor: transition.backgroundColor && transition.type === 'fade in' ? transition.backgroundColor : 'transparent'
+        }}
+      >
       {settings.caption.isActive && (
         <div
           className={cn(styles.captionBlock)}
@@ -349,6 +353,7 @@ type SliderSettings = {
   transition: {
     type: 'slide' | 'fade in';
     duration: string;
+    backgroundColor: string | null;
   };
   caption: SliderCaption;
   triggers: Triggers;
