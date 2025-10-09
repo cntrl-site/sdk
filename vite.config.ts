@@ -4,7 +4,10 @@ import dts from "vite-plugin-dts";
 import path from "path";
 
 export default defineConfig({
-  plugins: [react({ jsxRuntime: 'automatic' }), dts()],
+  plugins: [react(), dts()],
+  define: {
+    'process.env.NODE_ENV': JSON.stringify('production')
+  },
   build: {
     lib: {
       entry: path.resolve(__dirname, "src/index.ts"),
@@ -17,10 +20,6 @@ export default defineConfig({
       output: {
         preserveModules: false,
         manualChunks: undefined,
-        globals: {
-          react: 'React',
-          'react-dom': 'ReactDOM'
-        }
       }
     },
     outDir: "dist",
