@@ -76,29 +76,131 @@ function isMouseOverImage(mouseX: number, mouseY: number, placedImages: PlacedIm
   return false;
 }
 
-export function ImageRevealSlider({ settings, content, isEditor }: ImageRevealSliderProps) {
-  const revealPosition = settings.position.revealPosition;
-  const visibleType = settings.position.visible;
-  const sizeType = settings.imageSize.sizeType;
-  const customWidth = settings.imageSize.imageWidth;
-  const randomRange = settings.imageSize.randomRangeImageWidth;
-  const clickTarget = settings.position.target;
-  const defaultCursorUrl = settings.cursor.defaultCursor;
-  const hoverCursorUrl = settings.cursor.hoverCursor;
-  const cursorType = settings.cursor.cursorType;
+function getImageSize(url: string): Promise<{ width: number; height: number }> {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.src = url;
+    img.onload = () => {
+      resolve({ width: img.naturalWidth, height: img.naturalHeight });
+    };
+  });
+}
 
-  const [counter, setCounter] = useState(0);
+async function calculateImageWidthHeight(
+  imgUrl: string,
+  sizeType: 'as Is' | 'custom' | 'random',
+  customWidth: number,
+  randomRange: RandomRange
+): Promise<{ width: number; height: number; finalWidth: string }> {
+  let width: number;
+  let height: number;
+
+  if (sizeType === 'custom') {
+    width = customWidth;
+    const size = await getImageSize(imgUrl);
+    height = (size.height / size.width) * width;
+  } else if (sizeType === 'random') {
+    width = Math.random() * (randomRange.max - randomRange.min) + randomRange.min;
+    const size = await getImageSize(imgUrl);
+    height = (size.height / size.width) * width;
+  } else {
+    const size = await getImageSize(imgUrl);
+    width = size.width;
+    height = size.height;
+  }
+
+  return { width, height, finalWidth: `${width}px` };
+}
+
+export function ImageRevealSlider({ settings, content, isEditor }: ImageRevealSliderProps) {
   const divRef = useRef<HTMLDivElement>(null);
   const [placedImages, setPlacedImages] = useState<PlacedImage[]>([]);
+  const [counter, setCounter] = useState(0);
   const imageIdCounter = useRef(0);
+  const defaultImageCount = 1;
+
+  const { sizeType, imageWidth: customWidth, randomRangeImageWidth: randomRange } = settings.imageSize;
+  const { revealPosition, visible, target } = settings.position;
+  const { cursorType, defaultCursor, hoverCursor } = settings.cursor;
+
+  const createNewImage = async (
+    imgData: ImageRevealSliderItem['image'],
+    containerWidth: number,
+    containerHeight: number,
+    position: { x?: number; y?: number } = {}
+  ): Promise<PlacedImage> => {
+    const { width, height, finalWidth } = await calculateImageWidthHeight(
+      imgData.url,
+      sizeType,
+      customWidth,
+      randomRange
+    );
+
+    let x = position.x ?? Math.random() * containerWidth;
+    let y = position.y ?? Math.random() * containerHeight;
+
+    const adjustedX = Math.min(Math.max(x, width / 2), containerWidth - width / 2);
+    const adjustedY = Math.min(Math.max(y, height / 2), containerHeight - height / 2);
+
+    return {
+      id: imageIdCounter.current++,
+      url: imgData.url,
+      name: imgData.name,
+      x: adjustedX,
+      y: adjustedY,
+      width: finalWidth,
+    };
+  };
 
   useEffect(() => {
-    if (visibleType === 'lastOne') {
-      setPlacedImages(prev =>
-        prev.length > 0 ? [prev[prev.length - 1]] : []
-      );
+    if (!divRef.current || content.length === 0) return;
+
+    const rect = divRef.current.getBoundingClientRect();
+    const containerWidth = rect.width;
+    const containerHeight = rect.height;
+
+    const defaultPlaced: PlacedImage[] = [];
+
+    const placeImages = async () => {
+      for (let i = 0; i < defaultImageCount && i < content.length; i++) {
+        const imgData = content[i].image;
+        const newImg = await createNewImage(imgData, containerWidth, containerHeight);
+        defaultPlaced.push(newImg);
+      }
+
+      setPlacedImages(defaultPlaced);
+      setCounter(defaultImageCount % content.length);
+    };
+
+    placeImages();
+  }, [content, sizeType, customWidth, randomRange]);
+
+  const handleClick = async (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!divRef.current) return;
+    const rect = divRef.current.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const clickY = e.clientY - rect.top;
+
+    if (target === 'image' && !isMouseOverImage(clickX, clickY, placedImages)) return;
+
+    let x = 0, y = 0;
+    if (revealPosition === 'onClick') {
+      x = clickX;
+      y = clickY;
+    } else if (revealPosition === 'same') {
+      x = rect.width / 2;
+      y = rect.height / 2;
+    } else {
+      x = Math.random() * rect.width;
+      y = Math.random() * rect.height;
     }
-  }, [visibleType]);
+
+    const imgData = content[counter].image;
+    const newImage = await createNewImage(imgData, rect.width, rect.height, { x, y });
+
+    setPlacedImages(prev => (visible === 'all' ? [...prev, newImage] : [newImage]));
+    setCounter(prev => (prev >= content.length - 1 ? 0 : prev + 1));
+  };
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!divRef.current) return;
@@ -110,100 +212,11 @@ export function ImageRevealSlider({ settings, content, isEditor }: ImageRevealSl
     const mouseX = e.clientX - rect.left;
     const mouseY = e.clientY - rect.top;
 
-    let isHover = false;
+    const isHover = target === 'area' || isMouseOverImage(mouseX, mouseY, placedImages);
 
-    if (clickTarget === 'area') {
-      isHover = true;
-    } else if (clickTarget === 'image') {
-      isHover = isMouseOverImage(mouseX, mouseY, placedImages);
-    }
-
-    if (divRef.current) {
-      divRef.current.style.cursor = isHover
-        ? `url(${hoverCursorUrl}), auto`
-        : `url(${defaultCursorUrl}), auto`;
-    }
-  };
-
-  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!divRef.current) return;
-    const rect = divRef.current.getBoundingClientRect();
-
-    const clickX = e.clientX - rect.left;
-    const clickY = e.clientY - rect.top;
-
-    const containerWidth = rect.width;
-    const containerHeight = rect.height;
-
-    if (clickTarget === 'image') {
-      const hit = isMouseOverImage(clickX, clickY, placedImages);
-      if (!hit) return;
-    }
-
-    let x: number;
-    let y: number;
-
-    if (revealPosition === 'onClick') {
-      x = clickX;
-      y = clickY;
-    } else if (revealPosition === 'same') {
-      x = containerWidth / 2;
-      y = containerHeight / 2;
-    } else {
-      x = Math.random() * containerWidth;
-      y = Math.random() * containerHeight;
-    }
-
-    let finalWidth: string | undefined;
-    let imgWidthValue: number | undefined;
-
-    if (sizeType === 'custom') {
-      finalWidth = `${customWidth}px`;
-      imgWidthValue = customWidth;
-    } else if (sizeType === 'random') {
-      const rnd = Math.random() * (randomRange.max - randomRange.min) + randomRange.min;
-      finalWidth = `${rnd}px`;
-      imgWidthValue = rnd;
-    }
-
-    const tempImg = new Image();
-    tempImg.src = content[counter].image.url;
-    tempImg.onload = () => {
-      const imgWidth = imgWidthValue ?? tempImg.naturalWidth;
-      const imgHeight = imgWidthValue
-        ? (tempImg.naturalHeight / tempImg.naturalWidth) * imgWidthValue
-        : tempImg.naturalHeight;
-
-      const halfW = imgWidth / 2;
-      const halfH = imgHeight / 2;
-
-      const adjustedX = Math.min(Math.max(x, halfW), containerWidth - halfW);
-
-      let adjustedY: number;
-      if (imgHeight > containerHeight) {
-        adjustedY = containerHeight / 2;
-      } else {
-        adjustedY = Math.min(Math.max(y, halfH), containerHeight - halfH);
-      }
-
-      const newImage: PlacedImage = {
-        id: imageIdCounter.current++,
-        url: content[counter].image.url,
-        name: content[counter].image.name,
-        x: adjustedX,
-        y: adjustedY,
-        width: finalWidth,
-      };
-
-      setPlacedImages(prev => {
-        if (visibleType === 'all') {
-          return [...prev, newImage];
-        } else {
-          return [newImage];
-        }
-      });
-      setCounter(prev => (prev >= content.length - 1 ? 0 : prev + 1));
-    };
+    divRef.current.style.cursor = isHover
+      ? `url(${hoverCursor}), auto`
+      : `url(${defaultCursor}), auto`;
   };
 
   return (
