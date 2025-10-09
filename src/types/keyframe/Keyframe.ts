@@ -1,3 +1,5 @@
+import { FillLayer } from "../article/Item";
+
 export type KeyframeAny = Keyframe<KeyframeType>;
 
 export interface Keyframe<T extends KeyframeType> {
@@ -15,8 +17,6 @@ export enum KeyframeType {
   Rotation = 'rotation',
   BorderRadius = 'border-radius',
   BorderWidth = 'border-width',
-  Color = 'color',
-  BorderColor = 'border-color',
   Opacity = 'opacity',
   Scale = 'scale',
   TextColor = 'text-color',
@@ -24,7 +24,9 @@ export enum KeyframeType {
   WordSpacing = 'word-spacing',
   Blur = 'blur',
   BackdropBlur = 'backdrop-blur',
-  FXParams = 'fx-params'
+  FXParams = 'fx-params',
+  BorderFill = 'border-fill',
+  Fill = 'fill',
 }
 
 export interface KeyframeValueMap {
@@ -33,8 +35,6 @@ export interface KeyframeValueMap {
   [KeyframeType.Rotation]: RotationValue;
   [KeyframeType.BorderRadius]: BorderRadiusValue;
   [KeyframeType.BorderWidth]: BorderWidthValue;
-  [KeyframeType.Color]: ColorValue;
-  [KeyframeType.BorderColor]: BorderColorValue;
   [KeyframeType.Opacity]: OpacityValue;
   [KeyframeType.Scale]: ScaleValue;
   [KeyframeType.Blur]: BlurValue;
@@ -43,6 +43,8 @@ export interface KeyframeValueMap {
   [KeyframeType.LetterSpacing]: LetterSpacingValue;
   [KeyframeType.WordSpacing]: WordSpacingValue;
   [KeyframeType.FXParams]: FXParamsValue;
+  [KeyframeType.BorderFill]: BorderFillValue;
+  [KeyframeType.Fill]: FillValue;
 }
 
 interface DimensionsValue {
@@ -68,10 +70,6 @@ interface BorderWidthValue {
 }
 
 interface ColorValue {
-  color: string;
-}
-
-interface BorderColorValue {
   color: string;
 }
 
@@ -103,4 +101,8 @@ interface WordSpacingValue {
   wordSpacing: number;
 }
 
+type BorderFillValue = FillLayer[];
+
 type FXParamsValue = Record<string, number>;
+
+type FillValue = FillLayer[];

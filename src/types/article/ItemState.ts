@@ -1,4 +1,5 @@
 import { ArticleItemType } from './ArticleItemType';
+import { FillLayer } from './Item';
 
 type StateId = string;
 
@@ -48,7 +49,7 @@ export interface MediaStateParams extends ItemStatesBaseMap {
   opacity?: StateParams<number>;
   radius?: StateParams<number>;
   strokeWidth?: StateParams<number>;
-  strokeColor?: StateParams<string>;
+  strokeFill?: StateParams<FillLayer[]>;
 }
 
 export interface RichTextStateParams extends ItemStatesBaseMap {
@@ -60,8 +61,8 @@ export interface RichTextStateParams extends ItemStatesBaseMap {
 export interface RectangleStateParams extends ItemStatesBaseMap {
   radius?: StateParams<number>;
   strokeWidth?: StateParams<number>;
-  fillColor?: StateParams<string>;
-  strokeColor?: StateParams<string>;
+  fill?: StateParams<FillLayer[]>;
+  strokeFill?: StateParams<FillLayer[]>;
   backdropBlur?: StateParams<number>;
 }
 
