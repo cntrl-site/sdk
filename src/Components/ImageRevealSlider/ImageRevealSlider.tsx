@@ -41,12 +41,13 @@ type ImageRevealSliderItem = {
     url: string;
     name: string;
   };
-  imageCaption: any[];
+  link: string;
 };
 
 interface PlacedImage {
   id: number;
   url: string;
+  link: string;
   name: string;
   x: number;
   y: number;
@@ -124,13 +125,13 @@ export function ImageRevealSlider({ settings, content, isEditor }: ImageRevealSl
   const { cursorType, defaultCursor, hoverCursor } = settings.cursor;
 
   const createNewImage = async (
-    imgData: ImageRevealSliderItem['image'],
+    imgData: ImageRevealSliderItem,
     containerWidth: number,
     containerHeight: number,
     position: { x?: number; y?: number } = {}
   ): Promise<PlacedImage> => {
     const { width, height, finalWidth } = await calculateImageWidthHeight(
-      imgData.url,
+      imgData.image.url,
       sizeType,
       customWidth,
       randomRange
@@ -144,8 +145,9 @@ export function ImageRevealSlider({ settings, content, isEditor }: ImageRevealSl
 
     return {
       id: imageIdCounter.current++,
-      url: imgData.url,
-      name: imgData.name,
+      url: imgData.image.url,
+      link: imgData.link,
+      name: imgData.image.name,
       x: adjustedX,
       y: adjustedY,
       width: finalWidth,
@@ -163,7 +165,7 @@ export function ImageRevealSlider({ settings, content, isEditor }: ImageRevealSl
 
     const placeImages = async () => {
       for (let i = 0; i < defaultImageCount && i < content.length; i++) {
-        const imgData = content[i].image;
+        const imgData = content[i];
         const newImg = await createNewImage(imgData, containerWidth, containerHeight);
         defaultPlaced.push(newImg);
       }
@@ -201,7 +203,7 @@ export function ImageRevealSlider({ settings, content, isEditor }: ImageRevealSl
       y = Math.random() * rect.height;
     }
 
-    const imgData = content[counter].image;
+    const imgData = content[counter];
     const newImage = await createNewImage(imgData, rect.width, rect.height, { x, y });
 
     setPlacedImages(prev => (visible === 'all' ? [...prev, newImage] : [newImage]));
@@ -234,20 +236,41 @@ export function ImageRevealSlider({ settings, content, isEditor }: ImageRevealSl
       className={styles.imageRevealSlider}
     >
       {placedImages.map(img => (
-        <img
-          key={img.id}
-          src={img.url}
-          alt={img.name}
-          className={styles.image}
-          style={{
-            top: `${img.y}px`,
-            left: `${img.x}px`,
-            position: 'absolute',
-            transform: 'translate(-50%, -50%)',
-            width: img.width ?? 'auto',
-            height: 'auto',
-          }}
-        />
+        <>
+          { target === 'area' && img.link ? (
+            <a href={img.link}>
+              <img
+                key={img.id}
+                src={img.url}
+                alt={img.name}
+                className={styles.image}
+                style={{
+                  top: `${img.y}px`,
+                  left: `${img.x}px`,
+                  position: 'absolute',
+                  transform: 'translate(-50%, -50%)',
+                  width: img.width ?? 'auto',
+                  height: 'auto',
+                }}
+              />
+            </a>
+          ) : (
+            <img
+              key={img.id}
+              src={img.url}
+              alt={img.name}
+              className={styles.image}
+              style={{
+                top: `${img.y}px`,
+                left: `${img.x}px`,
+                position: 'absolute',
+                transform: 'translate(-50%, -50%)',
+                width: img.width ?? 'auto',
+                height: 'auto',
+              }}
+            />
+          )}
+        </>
       ))}
     </div>
   );
