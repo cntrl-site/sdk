@@ -175,6 +175,12 @@ export function ImageRevealSlider({ settings, content, isEditor }: ImageRevealSl
     placeImages();
   }, [content, sizeType, customWidth, randomRange]);
 
+  useEffect(() => {
+    if (visible === 'lastOne') {
+      setPlacedImages(prev => prev.length > 0 ? [prev[prev.length - 1]] : []);
+    }
+  }, [visible]);
+
   const handleClick = async (e: React.MouseEvent<HTMLDivElement>) => {
     if (!divRef.current) return;
     const rect = divRef.current.getBoundingClientRect();
