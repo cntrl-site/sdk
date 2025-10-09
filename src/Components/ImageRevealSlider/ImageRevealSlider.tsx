@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef, useState } from 'react';
+import React, { FC, useEffect, useMemo, useRef, useState } from 'react';
 import styles from './ImageRevealSlider.module.scss';
 
 interface ImageRevealSliderProps {
@@ -154,6 +154,12 @@ export function ImageRevealSlider({ settings, content, isEditor }: ImageRevealSl
     };
   };
 
+  const defaultContentUrls = useMemo(() => {
+    const defaultContentLength = Math.min(content.length, defaultImageCount);
+    return content.filter((_, i) => i < defaultContentLength).map((c) => c.image.url).join('-');
+  }, [content])
+
+
   useEffect(() => {
     if (!divRef.current || content.length === 0) return;
 
@@ -175,7 +181,7 @@ export function ImageRevealSlider({ settings, content, isEditor }: ImageRevealSl
     };
 
     placeImages();
-  }, [content, sizeType, customWidth, randomRange]);
+  }, [defaultContentUrls, sizeType, customWidth, randomRange]);
 
   useEffect(() => {
     if (visible === 'lastOne') {
