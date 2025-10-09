@@ -9,7 +9,8 @@ const content = [
       "objectFit": "cover",
       "url": "https://cdn.cntrl.site/projects/01JJKT02AWY2FGN2QJ7A173RNZ/articles-assets/01K740QZCY7R9HD9KTMB6XGPJ4.jpeg",
       "name": "Slider-1.jpeg"
-    }
+    },
+    "link": "https://app.slack.com/client/TV38ZDJ2F/D08AGG2DWSG"
   },
   {
     "image": {
@@ -72,7 +73,7 @@ const settings = {
   "position": {
     "revealPosition": "random",
     "visible": "all",
-    "target": "image"
+    "target": "area"
   }
 }
 

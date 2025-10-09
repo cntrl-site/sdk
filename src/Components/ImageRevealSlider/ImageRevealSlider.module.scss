@@ -11,8 +11,16 @@
 }
 
 .image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     position: relative;
-    transform: translate(-50%, -50%);
     user-select: none;
     pointer-events: none;
+}
+
+.link {
+    width: 100%;
+    height: 100%;
+    display: block;
 }

@@ -236,22 +236,23 @@ export function ImageRevealSlider({ settings, content, isEditor }: ImageRevealSl
       className={styles.imageRevealSlider}
     >
       {placedImages.map(img => (
-        <>
-          { target === 'area' && img.link ? (
-            <a href={img.link} target='_blank'>
+        <div className={styles.wrapper}
+          style={{
+            top: `${img.y}px`,
+            left: `${img.x}px`,
+            position: 'absolute',
+            transform: 'translate(-50%, -50%)',
+            width: img.width ?? 'auto',
+            height: 'auto',
+          }}
+        >
+          {target === 'area' && img.link ? (
+            <a href={img.link} target='_blank' className={styles.link}>
               <img
                 key={img.id}
                 src={img.url}
                 alt={img.name}
                 className={styles.image}
-                style={{
-                  top: `${img.y}px`,
-                  left: `${img.x}px`,
-                  position: 'absolute',
-                  transform: 'translate(-50%, -50%)',
-                  width: img.width ?? 'auto',
-                  height: 'auto',
-                }}
               />
             </a>
           ) : (
@@ -260,17 +261,9 @@ export function ImageRevealSlider({ settings, content, isEditor }: ImageRevealSl
               src={img.url}
               alt={img.name}
               className={styles.image}
-              style={{
-                top: `${img.y}px`,
-                left: `${img.x}px`,
-                position: 'absolute',
-                transform: 'translate(-50%, -50%)',
-                width: img.width ?? 'auto',
-                height: 'auto',
-              }}
             />
           )}
-        </>
+        </div>
       ))}
     </div>
   );
