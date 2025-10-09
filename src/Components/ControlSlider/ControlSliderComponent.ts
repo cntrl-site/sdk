@@ -72,13 +72,22 @@ export const ControlSliderComponent = {
                 },
                 enum: ['slide', 'fade in']
               },
+              backgroundColor: {
+                type: ['string', 'null'],
+                name: 'BG Color',
+                display: {
+                  visible: false,
+                  type: 'settings-color-picker',
+                  format: 'single'
+                }
+              },
               duration: {
                 type: 'string',
                 label: 'hourglass-icon',
                 display: {
                   type: 'step-selector',
                 },
-                enum: ['100ms', '250ms', '500ms', '1000ms'],
+                enum: ['100ms', '250ms', '500ms', '1000ms', '1500ms', '2000ms'],
               }
             }
           },
@@ -273,6 +282,7 @@ export const ControlSliderComponent = {
           transition: {
             type: 'slide',
             duration: '500ms',
+            backgroundColor: null,
           },
           pagination: {
             isActive: true,
@@ -305,6 +315,16 @@ export const ControlSliderComponent = {
             then: {
               name: 'properties.pagination.properties.position.display.direction',
               value: 'vertical'
+            }
+          },
+          {
+            if: {
+              name: 'transition.type',
+              value: 'fade in'
+            },
+            then: {
+              name: 'properties.transition.properties.backgroundColor.display.visible',
+              value: true
             }
           }
         ]
