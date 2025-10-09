@@ -238,7 +238,7 @@ export function ImageRevealSlider({ settings, content, isEditor }: ImageRevealSl
       {placedImages.map(img => (
         <>
           { target === 'area' && img.link ? (
-            <a href={img.link}>
+            <a href={img.link} target='_blank'>
               <img
                 key={img.id}
                 src={img.url}
