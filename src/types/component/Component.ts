@@ -1,5 +1,5 @@
 export type Component = {
-  element: (props: any) => JSX.Element;
+  element: (props: any) => React.ReactElement;
   id: string;
   name: string;
   defaultSize: {
