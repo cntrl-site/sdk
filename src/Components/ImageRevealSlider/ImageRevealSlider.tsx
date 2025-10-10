@@ -181,7 +181,7 @@ export function ImageRevealSlider({ settings, content, isEditor }: ImageRevealSl
     };
 
     placeImages();
-  }, [defaultContentUrls, sizeType, customWidth, randomRange]);
+  }, [defaultContentUrls, sizeType, customWidth, randomRange, revealPosition]);
 
   useEffect(() => {
     if (visible === 'lastOne') {
