@@ -1,3 +1,5 @@
+import React from 'react';
+
 export type Component = {
   element: (props: any) => React.ReactElement;
   id: string;
