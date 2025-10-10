@@ -137,8 +137,14 @@ export function ImageRevealSlider({ settings, content, isEditor }: ImageRevealSl
       randomRange
     );
 
-    let x = position.x ?? Math.random() * containerWidth;
-    let y = position.y ?? Math.random() * containerHeight;
+    let x = 0, y = 0;
+    if (revealPosition === 'same') {
+      x = containerWidth / 2;
+      y = containerHeight / 2;
+    } else {
+      x = position.x ?? Math.random() * containerWidth;
+      y = position.y ?? Math.random() * containerHeight;
+    }
 
     const adjustedX = Math.min(Math.max(x, width / 2), containerWidth - width / 2);
     const adjustedY = Math.min(Math.max(y, height / 2), containerHeight - height / 2);

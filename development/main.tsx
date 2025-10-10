@@ -71,7 +71,7 @@ const settings = {
     "hoverCursor": null
   },
   "position": {
-    "revealPosition": "random",
+    "revealPosition": "onClick",
     "visible": "all",
     "target": "area"
   }
