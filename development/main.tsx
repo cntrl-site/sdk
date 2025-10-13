@@ -72,7 +72,7 @@ const settings = {
   },
   "position": {
     "revealPosition": "onClick",
-    "visible": "all",
+    "visible": "last One",
     "target": "area"
   }
 }

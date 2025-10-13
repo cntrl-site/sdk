@@ -6,7 +6,7 @@ export const ControlSliderComponent = {
   name: 'Slider',
   preview: {
     type: 'video' as const,
-    url: 'https://cdn.cntrl.site/projects/01GJ2SMPPCQ7JSNGVXZ2DHWXWF/articles-assets/01JTFXX5M899RG2JA2GTJG1WNX.mp4',
+    url: 'https://cdn.cntrl.site/projects/01JJKT02AWY2FGN2QJ7A173RNZ/articles-assets/01K7EQ4ME6CP4KX7TJ4HPAXFEW.mp4',
   },
   defaultSize: {
     width: 400,
@@ -379,8 +379,8 @@ export const ControlSliderComponent = {
           {
             image: {
               objectFit: 'cover',
-              url: 'https://cdn.cntrl.site/projects/01GJ2SMPPCQ7JSNGVXZ2DHWXWF/articles-assets/01JRZ15T247392621FNTTRCW9D.jpeg',
-              name: 'Slider-1.jpeg'
+              url: 'https://cdn.cntrl.site/projects/01JJKT02AWY2FGN2QJ7A173RNZ/articles-assets/01K7ERMHNP08T27H1649S67NZV.png',
+              name: 'Image-Slider-1.png'
             },
             imageCaption: [
               {
@@ -392,8 +392,8 @@ export const ControlSliderComponent = {
           {
             image: {
               objectFit: 'cover',
-              url: 'https://cdn.cntrl.site/projects/01GJ2SMPPCQ7JSNGVXZ2DHWXWF/articles-assets/01JRZ17S8TS9T62P7NKTNNEB64.jpeg',
-              name: 'Slider-2.jpeg'
+              url: 'https://cdn.cntrl.site/projects/01JJKT02AWY2FGN2QJ7A173RNZ/articles-assets/01K7ERMTZA3RYMXKF0M095D6JD.png',
+              name: 'Image-Slider-2.png'
             },
             imageCaption: [
               {
@@ -405,8 +405,8 @@ export const ControlSliderComponent = {
           {
             image: {
               objectFit: 'cover',
-              url: 'https://cdn.cntrl.site/projects/01GJ2SMPPCQ7JSNGVXZ2DHWXWF/articles-assets/01JRZ197S89RNT6RA7ZJSX3Z38.jpeg',
-              name: 'Slider-3.jpeg'
+              url: 'https://cdn.cntrl.site/projects/01JJKT02AWY2FGN2QJ7A173RNZ/articles-assets/01K7ERMVSCMPVJBG2WF5KJZYHZ.png',
+              name: 'Image-Slider-3.png'
             },
             imageCaption: [
               {

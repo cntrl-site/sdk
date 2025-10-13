@@ -26,7 +26,7 @@ type ImageRevealSliderCursor = {
 
 type ImageRevealSliderPosition = {
   revealPosition: 'random' | 'same' | 'onClick';
-  visible: 'all' | 'lastOne';
+  visible: 'all' | 'last One';
   target: 'area' | 'image';
 }
 
@@ -190,7 +190,7 @@ export function ImageRevealSlider({ settings, content, isEditor }: ImageRevealSl
   }, [defaultContentUrls, sizeType, customWidth, randomRange, revealPosition]);
 
   useEffect(() => {
-    if (visible === 'lastOne') {
+    if (visible === 'last One') {
       setPlacedImages(prev => prev.length > 0 ? [prev[prev.length - 1]] : []);
     }
   }, [visible]);

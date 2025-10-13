@@ -7,7 +7,7 @@ export const ControlImageRevealSliderComponent = {
   name: 'Image reveal',
   preview: {
     type: 'video' as const,
-    url: 'https://cdn.cntrl.site/projects/01JJKT02AWY2FGN2QJ7A173RNZ/articles-assets/01K723EY5AH8SKQFK4R31D8FPV.mp4'
+    url: 'https://cdn.cntrl.site/projects/01JJKT02AWY2FGN2QJ7A173RNZ/articles-assets/01K7EQ3WSW43JG5YMC8B2HTPKT.mp4'
   },
   defaultSize: {
     width: 700,
@@ -109,7 +109,7 @@ export const ControlImageRevealSliderComponent = {
                 display: {
                   type: 'ratio-group'
                 },
-                enum: ['all', 'lastOne']
+                enum: ['all', 'last One']
               },
               target: {
                 type: 'string',
@@ -223,59 +223,35 @@ export const ControlImageRevealSliderComponent = {
           {
             image: {
               objectFit: "cover",
-              url: "https://cdn.cntrl.site/projects/01JJKT02AWY2FGN2QJ7A173RNZ/articles-assets/01K740QZCY7R9HD9KTMB6XGPJ4.jpeg",
-              name: "Slider-1.jpeg"
+              url: "https://cdn.cntrl.site/projects/01JJKT02AWY2FGN2QJ7A173RNZ/articles-assets/01K7ERQK9211QXBE9W284ZNKB8.png",
+              name: "Slider-1.png"
             },
             link: "",
           },
           {
             image: {
               objectFit: "cover",
-              url: "https://cdn.cntrl.site/projects/01JJKT02AWY2FGN2QJ7A173RNZ/articles-assets/01K740S36970GH347RCZ8GW6QF.jpeg",
-              name: "Slider-2.jpeg"
+              url: "https://cdn.cntrl.site/projects/01JJKT02AWY2FGN2QJ7A173RNZ/articles-assets/01K7ERQMFT72JD18WKP0Q2DVAT.png",
+              name: "Slider-2.png"
             },
             link: "",
           },
           {
             image: {
               objectFit: "cover",
-              url: "https://cdn.cntrl.site/projects/01JJKT02AWY2FGN2QJ7A173RNZ/articles-assets/01K740RZ7VG1PWA7CRMR6TW0QS.jpeg",
-              name: "Slider-3.jpeg"
+              url: "https://cdn.cntrl.site/projects/01JJKT02AWY2FGN2QJ7A173RNZ/articles-assets/01K7ERQNEVRXPSRX5K1YTMJQY9.png",
+              name: "Slider-3.png"
             },
             link: "",
           },
           {
             image: {
               objectFit: "cover",
-              url: "https://cdn.cntrl.site/projects/01JJKT02AWY2FGN2QJ7A173RNZ/articles-assets/01K740RV2XQMBWM2RZABY6AP9N.jpeg",
-              name: "Slider-4.jpeg"
+              url: "https://cdn.cntrl.site/projects/01JJKT02AWY2FGN2QJ7A173RNZ/articles-assets/01K7ERQP84JKRDT7WNWDQZR4Y9.png",
+              name: "Slider-4.png"
             },
             link: "",
-          },
-          {
-            image: {
-              objectFit: "cover",
-              url: "https://cdn.cntrl.site/projects/01JJKT02AWY2FGN2QJ7A173RNZ/articles-assets/01K740RQ4E62FG7Y92J4AP8T0A.jpeg",
-              name: "Slider-5.jpeg"
-            },
-            link: "",
-          },
-          {
-            image: {
-              objectFit: "cover",
-              url: "https://cdn.cntrl.site/projects/01JJKT02AWY2FGN2QJ7A173RNZ/articles-assets/01K740RE073FS2HZX8AVP3MCR7.jpeg",
-              name: "Slider-6.jpeg"
-            },
-            link: "",
-          },
-          {
-            image: {
-              objectFit: "cover",
-              url: "https://cdn.cntrl.site/projects/01JJKT02AWY2FGN2QJ7A173RNZ/articles-assets/01K740R841W216BPQR07XZN8G4.jpeg",
-              name: "Slider-7.jpeg"
-            },
-            link: "",
-          },
+          }
         ]
       },
     }
