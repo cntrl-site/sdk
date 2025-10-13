@@ -380,7 +380,7 @@ export const ControlSliderComponent = {
             image: {
               objectFit: 'cover',
               url: 'https://cdn.cntrl.site/projects/01JJKT02AWY2FGN2QJ7A173RNZ/articles-assets/01K7ERMHNP08T27H1649S67NZV.png',
-              name: 'Image-Slider-1.png'
+              name: 'Slider-1.png'
             },
             imageCaption: [
               {
@@ -393,7 +393,7 @@ export const ControlSliderComponent = {
             image: {
               objectFit: 'cover',
               url: 'https://cdn.cntrl.site/projects/01JJKT02AWY2FGN2QJ7A173RNZ/articles-assets/01K7ERMTZA3RYMXKF0M095D6JD.png',
-              name: 'Image-Slider-2.png'
+              name: 'Slider-2.png'
             },
             imageCaption: [
               {
@@ -406,7 +406,7 @@ export const ControlSliderComponent = {
             image: {
               objectFit: 'cover',
               url: 'https://cdn.cntrl.site/projects/01JJKT02AWY2FGN2QJ7A173RNZ/articles-assets/01K7ERMVSCMPVJBG2WF5KJZYHZ.png',
-              name: 'Image-Slider-3.png'
+              name: 'Slider-3.png'
             },
             imageCaption: [
               {
