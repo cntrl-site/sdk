@@ -16,7 +16,7 @@ export default defineConfig({
       external: ["react", "react-dom", "classnames"],
       output: {
         preserveModules: false,
-        manualChunks: undefined
+        manualChunks: undefined,
       }
     },
     outDir: "dist",

@@ -1,7 +1,7 @@
-import { JSX } from 'react';
+import React from 'react';
 
 export type Component = {
-  element: (props: any) => JSX.Element;
+  element: (props: any) => React.ReactElement;
   id: string;
   name: string;
   defaultSize: {
