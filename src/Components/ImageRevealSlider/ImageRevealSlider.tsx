@@ -249,6 +249,7 @@ export function ImageRevealSlider({ settings, content, isEditor }: ImageRevealSl
     >
       {placedImages.map(img => (
         <div className={styles.wrapper}
+          key={img.id}
           style={{
             top: `${img.y}px`,
             left: `${img.x}px`,
