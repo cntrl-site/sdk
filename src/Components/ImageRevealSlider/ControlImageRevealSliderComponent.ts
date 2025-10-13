@@ -4,7 +4,7 @@ import { ImageRevealSlider } from './ImageRevealSlider';
 export const ControlImageRevealSliderComponent = {
   element: ImageRevealSlider,
   id: 'control-image-reveal',
-  name: 'Image reveal',
+  name: 'Click Gallery',
   preview: {
     type: 'video' as const,
     url: 'https://cdn.cntrl.site/projects/01JJKT02AWY2FGN2QJ7A173RNZ/articles-assets/01K7EQ3WSW43JG5YMC8B2HTPKT.mp4'
@@ -102,7 +102,7 @@ export const ControlImageRevealSliderComponent = {
                 display: {
                   type: 'ratio-group'
                 },
-                enum: ['random', 'same', 'onClick']
+                enum: ['random', 'same', 'on Click']
               },
               visible: {
                 type: 'string',
@@ -194,6 +194,7 @@ export const ControlImageRevealSliderComponent = {
               type: 'object',
               display: {
                 type: 'media-input',
+                isObjectFitEditable: false,
               },
               properties: {
                 url: {
@@ -257,7 +258,3 @@ export const ControlImageRevealSliderComponent = {
     }
   }
 };
-
-export const components: Component[] = [
-  ControlImageRevealSliderComponent
-];

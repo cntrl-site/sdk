@@ -5,9 +5,6 @@ import path from "path";
 
 export default defineConfig({
   plugins: [react(), dts()],
-  define: {
-    'process.env.NODE_ENV': JSON.stringify('production')
-  },
   build: {
     lib: {
       entry: path.resolve(__dirname, "src/index.ts"),

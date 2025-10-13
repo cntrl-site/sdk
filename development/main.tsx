@@ -66,14 +66,14 @@ const settings = {
     }
   },
   "cursor": {
-    "cursorType": "system",
-    "defaultCursor": null,
-    "hoverCursor": null
+    "cursorType": "custom",
+    "defaultCursor": "https://cdn.cntrl.site/projects/01JJKT02AWY2FGN2QJ7A173RNZ/articles-assets/01K7F7J6R3CPECQ23B6HB1T83H.svg",
+    "hoverCursor": "https://cdn.cntrl.site/projects/01JJKT02AWY2FGN2QJ7A173RNZ/articles-assets/01K7F7J43SMS63PJGPVX4YKA0G.svg"
   },
   "position": {
     "revealPosition": "onClick",
     "visible": "last One",
-    "target": "area"
+    "target": "image"
   }
 }
 

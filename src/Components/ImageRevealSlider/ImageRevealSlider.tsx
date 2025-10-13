@@ -5,30 +5,30 @@ interface ImageRevealSliderProps {
   settings: ImageRevealSliderSettings;
   content: ImageRevealSliderItem[];
   isEditor?: boolean;
-}
+};
 
 type RandomRange = {
   min: number;
   max: number;
-}
+};
 
 type ImageRevealSliderImageSize = {
   sizeType: 'as Is' | 'custom' | 'random';
   imageWidth: number;
   randomRangeImageWidth: RandomRange;
-}
+};
 
 type ImageRevealSliderCursor = {
   cursorType: 'system' | 'custom';
   defaultCursor: string | null;
   hoverCursor: string | null;
-}
+};
 
 type ImageRevealSliderPosition = {
-  revealPosition: 'random' | 'same' | 'onClick';
+  revealPosition: 'random' | 'same' | 'on Click';
   visible: 'all' | 'last One';
   target: 'area' | 'image';
-}
+};
 
 type ImageRevealSliderSettings = {
   imageSize: ImageRevealSliderImageSize;
@@ -52,7 +52,7 @@ interface PlacedImage {
   x: number;
   y: number;
   width?: string;
-}
+};
 
 function isMouseOverImage(mouseX: number, mouseY: number, placedImages: PlacedImage[]) {
   for (const img of placedImages) {
@@ -204,7 +204,7 @@ export function ImageRevealSlider({ settings, content, isEditor }: ImageRevealSl
     if (target === 'image' && !isMouseOverImage(clickX, clickY, placedImages)) return;
 
     let x = 0, y = 0;
-    if (revealPosition === 'onClick') {
+    if (revealPosition === 'on Click') {
       x = clickX;
       y = clickY;
     } else if (revealPosition === 'same') {
@@ -234,9 +234,11 @@ export function ImageRevealSlider({ settings, content, isEditor }: ImageRevealSl
 
     const isHover = target === 'area' || isMouseOverImage(mouseX, mouseY, placedImages);
 
-    divRef.current.style.cursor = isHover
-      ? `url(${hoverCursor}), auto`
-      : `url(${defaultCursor}), auto`;
+    const newCursor = `url(${isHover ? hoverCursor : defaultCursor}), auto`;
+
+    if (divRef.current.style.cursor !== newCursor) {
+      divRef.current.style.cursor = newCursor;
+    }
   };
 
   return (
