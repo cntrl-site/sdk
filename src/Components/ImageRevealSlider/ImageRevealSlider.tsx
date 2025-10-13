@@ -222,32 +222,12 @@ export function ImageRevealSlider({ settings, content, isEditor }: ImageRevealSl
     setCounter(prev => (prev >= content.length - 1 ? 0 : prev + 1));
   };
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!divRef.current) return;
-    if (cursorType === 'system') {
-      divRef.current.style.cursor = '';
-      return;
-    }
-    const rect = divRef.current.getBoundingClientRect();
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-
-    const isHover = target === 'area' || isMouseOverImage(mouseX, mouseY, placedImages);
-
-    const newCursor = `url(${isHover ? hoverCursor : defaultCursor}), auto`;
-
-    if (divRef.current.style.cursor !== newCursor) {
-      divRef.current.style.cursor = newCursor;
-    }
-  };
-
   return (
     <div
       ref={divRef}
       onClick={handleClick}
-      onMouseEnter={handleMouseMove}
-      onMouseMove={handleMouseMove}
       className={styles.imageRevealSlider}
+      style={{ cursor: target === "area" && cursorType !== 'system' && defaultCursor ? `url(${defaultCursor}), auto` : 'default' }}
     >
       {placedImages.map(img => (
         <div className={styles.wrapper}
@@ -259,6 +239,7 @@ export function ImageRevealSlider({ settings, content, isEditor }: ImageRevealSl
             transform: 'translate(-50%, -50%)',
             width: img.width ?? 'auto',
             height: 'auto',
+            cursor: target === "area" && cursorType !== 'system' && hoverCursor ? `url(${hoverCursor}), auto` : 'default'
           }}
         >
           {target === 'area' && img.link ? (
