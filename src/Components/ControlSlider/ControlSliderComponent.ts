@@ -339,6 +339,9 @@ export const ControlSliderComponent = {
               type: 'object',
               display: {
                 type: 'media-input',
+                minWidth: 48,
+                defaultWidth: 108,
+                maxWidth: 108
               },
               properties: {
                 url: {
@@ -358,6 +361,9 @@ export const ControlSliderComponent = {
               display: {
                 type: 'rich-text',
                 placeholder: 'Add Caption...',
+                minWidth: 100,
+                defaultWidth: 300,
+                maxWidth: 500
               }
             },
             link: {
