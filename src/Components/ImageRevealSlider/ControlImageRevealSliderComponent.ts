@@ -216,6 +216,16 @@ export const ControlImageRevealSliderComponent = {
               },
               required: ['url', 'name']
             },
+            link: {
+              type: 'string',
+              display: {
+                type: 'text-input',
+                placeholder: 'Enter link...',
+                minWidth: 100,
+                defaultWidth: 300,
+                maxWidth: 500
+              }
+            }
           },
           required: ['image']
         },
