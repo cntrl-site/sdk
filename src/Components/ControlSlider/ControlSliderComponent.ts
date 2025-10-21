@@ -332,6 +332,9 @@ export const ControlSliderComponent = {
       content: {
         layoutBased: false,
         type: 'array',
+        settings: {
+          addItemFromFileExplorer: true,
+        },
         items: {
           type: 'object',
           properties: {
@@ -364,18 +367,6 @@ export const ControlSliderComponent = {
                 minWidth: 100,
                 defaultWidth: 300,
                 maxWidth: 500
-              }
-            },
-            link: {
-              type: 'object',
-              display: {
-                type: 'text-input',
-                placeholder: 'Add Caption...',
-              },
-              properties: {
-                text: {
-                  type: 'string'
-                },
               }
             },
           },
