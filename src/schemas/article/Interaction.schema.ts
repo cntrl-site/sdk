@@ -3,12 +3,14 @@ import { Interaction, InteractionItemTrigger, InteractionScrollTrigger, VideoInt
 
 const ItemTriggerSchema = z.object({
   itemId: z.string(),
-  type: z.enum(['hover-in', 'hover-out', 'click']),
+  type: z.literal('item'),
+  triggerEvent: z.enum(['hover-in', 'hover-out', 'click']),
   from: z.string(),
   to: z.string()
 }) satisfies ZodType<InteractionItemTrigger>;
 
 const ScrollTriggerSchema = z.object({
+  type: z.literal('scroll-position'),
   position: z.number(),
   from: z.string(),
   to: z.string(),
