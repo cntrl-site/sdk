@@ -3,6 +3,7 @@ export { Client as CntrlClient } from './Client/Client';
 export { FontFaceGenerator } from './FontFaceGenerator/FontFaceGenerator';
 export { getLayoutStyles, getLayoutMediaQuery } from './utils';
 export { ScrollPlaybackVideoManager } from './ScrollPlaybackVideoManager/ScrollPlaybackVideoManager';
+export { Rect } from './Rect/Rect'
 
 // enums
 export { SectionHeightMode } from './types/article/Section';
@@ -28,3 +29,4 @@ export type { Project } from './types/project/Project';
 export type { Meta } from './types/project/Meta';
 export type { KeyframeValueMap, KeyframeAny } from './types/keyframe/Keyframe';
 export type { CompoundSettings } from './types/article/CompoundSettings';
+export type { Dimensions, Left, Position, RectCoordinates, RectObject, ScaleOrigin, Sides, Top } from './types/article/Rect'
