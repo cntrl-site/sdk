@@ -1,19 +1,32 @@
 export interface Interaction {
   id: string;
-  triggers: (InteractionItemTrigger | InteractionScrollTrigger)[];
+  triggers: InteractionTrigger[];
   states: InteractionState[];
   startStateId: string;
 }
 
 export interface InteractionItemTrigger {
   itemId: string;
-  type: 'hover-in' | 'hover-out' | 'click';
+  type: 'item';
+  triggerEvent: 'hover-in' | 'hover-out' | 'click';
   from: StateId;
   to: StateId;
 }
 
 export interface InteractionScrollTrigger {
+  type: 'scroll-position';
   position: number;
+  from: StateId;
+  to: StateId;
+  isReverse: boolean;
+}
+
+export interface InteractionItemScrollTrigger {
+  itemId: string;
+  type: 'item-scroll-position';
+  itemPosition: 'bottom' | 'center' | 'top';
+  screenPosition: 'bottom' | 'center' | 'top';
+  offset: number;
   from: StateId;
   to: StateId;
   isReverse: boolean;
@@ -30,3 +43,4 @@ export interface InteractionState {
 }
 
 type StateId = string;
+export type InteractionTrigger = InteractionItemTrigger | InteractionScrollTrigger | InteractionItemScrollTrigger;
