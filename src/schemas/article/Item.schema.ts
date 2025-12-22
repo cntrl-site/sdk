@@ -300,7 +300,8 @@ export const ItemSchema: ZodType<ItemAny> = z.lazy(() => z.discriminatedUnion('t
     ),
     layoutParams: z.record(
       z.object({
-        opacity: z.number().nonnegative()
+        opacity: z.number().nonnegative(),
+        isDraggable: z.boolean().optional()
       })
     ),
     state: z.record(CompoundStateParamsSchema)
