@@ -113,25 +113,25 @@ interface MediaLayoutParams {
   strokeFill: FillLayer[];
   blur: number;
   isDraggable?: boolean;
-  blendMode: string;
+  blendMode?: string;
 }
 
 interface CustomLayoutParams {
   isDraggable?: boolean;
-  blendMode: string;
+  blendMode?: string;
 }
 
 interface GroupLayoutParams {
   opacity: number;
   blur: number;
   isDraggable?: boolean;
-  blendMode: string;
+  blendMode?: string;
 }
 
 interface CompoundLayoutParams {
   opacity: number;
   isDraggable?: boolean;
-  blendMode: string;
+  blendMode?: string;
 }
 
 interface CodeEmbedLayoutParams {
@@ -139,7 +139,7 @@ interface CodeEmbedLayoutParams {
   opacity: number;
   blur: number;
   isDraggable?: boolean;
-  blendMode: string;
+  blendMode?: string;
 }
 
 interface VimeoEmbedLayoutParams {
@@ -151,7 +151,7 @@ interface VimeoEmbedLayoutParams {
   radius: number;
   blur: number;
   opacity: number;
-  blendMode: string;
+  blendMode?: string;
 }
 
 interface YoutubeEmbedLayoutParams {
@@ -161,7 +161,7 @@ interface YoutubeEmbedLayoutParams {
   radius: number;
   blur: number;
   opacity: number;
-  blendMode: string;
+  blendMode?: string;
 }
 
 interface ImageLayoutParams extends MediaLayoutParams {}
@@ -190,7 +190,7 @@ interface RichTextLayoutParams {
   fontWeight: number;
   fontVariant: string;
   isDraggable?: boolean;
-  blendMode: string;
+  blendMode?: string;
 }
 
 interface RectangleLayoutParams {
@@ -202,7 +202,7 @@ interface RectangleLayoutParams {
   backdropBlur: number;
   blurMode: 'default' | 'backdrop';
   isDraggable?: boolean;
-  blendMode: string;
+  blendMode?: string;
 }
 
 export type FillLayer = SolidFillLayer | LinearGradientFillLayer | RadialGradientFillLayer | ConicGradientFillLayer | ImageLayer;
