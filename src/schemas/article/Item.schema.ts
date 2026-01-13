@@ -71,7 +71,8 @@ const ImageItemSchema = ItemBaseSchema.extend({
       strokeWidth: z.number(),
       strokeFill: z.array(FillLayerSchema),
       blur: z.number(),
-      isDraggable: z.boolean().optional()
+      isDraggable: z.boolean().optional(),
+      blendMode: z.string().optional()
     })
   ),
   state: z.record(MediaStateParamsSchema)
@@ -101,6 +102,7 @@ const VideoItemSchema = ItemBaseSchema.extend({
       strokeFill: z.array(FillLayerSchema),
       blur: z.number(),
       isDraggable: z.boolean().optional(),
+      blendMode: z.string().optional(),
       play: z.enum(['on-hover', 'on-click', 'auto']),
       muted: z.boolean(),
       controls: z.boolean(),
@@ -130,7 +132,8 @@ const RectangleItemSchema = ItemBaseSchema.extend({
       blur: z.number(),
       backdropBlur: z.number(),
       blurMode: z.enum(['default', 'backdrop']),
-      isDraggable: z.boolean().optional()
+      isDraggable: z.boolean().optional(),
+      blendMode: z.string().optional()
     })
   ),
   state: z.record(RectangleStateParamsSchema)
@@ -149,7 +152,8 @@ const CustomItemSchema = ItemBaseSchema.extend({
     }).nullable(),
   ),
   layoutParams: z.record(z.object({
-    isDraggable: z.boolean().optional()
+    isDraggable: z.boolean().optional(),
+    blendMode: z.string().optional()
   })),
   state: z.record(CustomItemStateParamsSchema)
 }) satisfies ZodType<CustomItem>;
@@ -177,7 +181,8 @@ const VimeoEmbedItemSchema = ItemBaseSchema.extend({
       controls: z.boolean(),
       loop: z.boolean(),
       muted: z.boolean(),
-      pictureInPicture: z.boolean()
+      pictureInPicture: z.boolean(),
+      blendMode: z.string().optional()
     })
   ),
   state: z.record(EmbedStateParamsSchema)
@@ -204,6 +209,7 @@ const YoutubeEmbedItemSchema = ItemBaseSchema.extend({
       play: z.enum(['on-hover', 'on-click', 'auto']),
       controls: z.boolean(),
       loop: z.boolean(),
+      blendMode: z.string().optional()
     })
   ),
   state: z.record(EmbedStateParamsSchema)
@@ -228,7 +234,8 @@ const CodeEmbedItemSchema =  ItemBaseSchema.extend({
       areaAnchor:  z.nativeEnum(AreaAnchor),
       opacity: z.number().nonnegative(),
       blur: z.number(),
-      isDraggable: z.boolean().optional()
+      isDraggable: z.boolean().optional(),
+      blendMode: z.string().optional()
     })
   ),
   state: z.record(CodeEmbedStateParamsSchema)
@@ -280,7 +287,8 @@ export const ItemSchema: ZodType<ItemAny> = z.lazy(() => z.discriminatedUnion('t
       z.object({
         opacity: z.number().nonnegative(),
         blur: z.number(),
-        isDraggable: z.boolean().optional()
+        isDraggable: z.boolean().optional(),
+        blendMode: z.string().optional()
       })
     ),
     state: z.record(GroupStateParamsSchema)
@@ -301,7 +309,8 @@ export const ItemSchema: ZodType<ItemAny> = z.lazy(() => z.discriminatedUnion('t
     layoutParams: z.record(
       z.object({
         opacity: z.number().nonnegative(),
-        isDraggable: z.boolean().optional()
+        isDraggable: z.boolean().optional(),
+        blendMode: z.string().optional()
       })
     ),
     state: z.record(CompoundStateParamsSchema)
