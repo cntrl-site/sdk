@@ -256,7 +256,8 @@ const ComponentItemSchema = ItemBaseSchema.extend({
   layoutParams: z.record(z.object({
     parameters: z.any().optional(),
     opacity: z.number().nonnegative(),
-    blur: z.number()
+    blur: z.number(),
+    blendMode: z.string().optional()
   })),
   state: z.record(ComponentStateParamsSchema)
 }) satisfies ZodType<ComponentItem>;
