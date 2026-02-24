@@ -11,7 +11,6 @@ export const FillLayerSchema = z.discriminatedUnion('type', [
     id: z.string(),
     type: z.literal('solid'),
     value: z.string(),
-    blendMode: z.string()
   }),
   z.object({
     id: z.string(),
@@ -20,7 +19,6 @@ export const FillLayerSchema = z.discriminatedUnion('type', [
     start: z.tuple([z.number(), z.number()]),
     end: z.tuple([z.number(), z.number()]),
     angle: z.number(),
-    blendMode: z.string()
   }),
   z.object({
     id: z.string(),
@@ -29,7 +27,6 @@ export const FillLayerSchema = z.discriminatedUnion('type', [
     center: z.tuple([z.number(), z.number()]),
     diameter: z.number(),
     angle: z.number(),
-    blendMode: z.string()
   }),
   z.object({
     id: z.string(),
@@ -37,7 +34,6 @@ export const FillLayerSchema = z.discriminatedUnion('type', [
     colors: z.array(ColorPointSchema),
     center: z.tuple([z.number(), z.number()]),
     angle: z.number(),
-    blendMode: z.string()
   }),
   z.object({
     id: z.string(),
@@ -46,7 +42,6 @@ export const FillLayerSchema = z.discriminatedUnion('type', [
     behavior: z.string(),
     backgroundSize: z.number(),
     opacity: z.number(),
-    blendMode: z.string(),
     rotation: z.number().optional()
   })
 ]);
