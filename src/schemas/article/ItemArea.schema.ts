@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { AnchorSide, PositionType, AreaAnchor } from '../../types/article/ItemArea';
+import { AnchorSide, PositionType, AreaAnchor, DimensionsType } from '../../types/article/ItemArea';
 
 export const ItemAreaSchema = z.object({
   top: z.number(),
@@ -11,5 +11,6 @@ export const ItemAreaSchema = z.object({
   anchorSide: z.nativeEnum(AnchorSide).optional(),
   scale: z.number().nonnegative(),
   positionType: z.nativeEnum(PositionType),
+  dimensionsType: z.nativeEnum(DimensionsType).optional(),
   scaleAnchor: z.nativeEnum(AreaAnchor)
 });

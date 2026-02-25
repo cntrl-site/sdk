@@ -9,6 +9,11 @@ export enum PositionType {
   ScreenBased = 'screen-based'
 }
 
+export enum DimensionsType {
+  PixelsBased = 'pixels-based',
+  PercentageBased = 'percentage-based'
+}
+
 export enum AreaAnchor {
   TopLeft = 'top-left',
   TopCenter = 'top-center',
@@ -32,6 +37,7 @@ export interface ItemArea {
   width: number;
   height: number;
   positionType: PositionType;
+  dimensionsType?: DimensionsType;
   zIndex: number;
   angle: number;
   anchorSide?: AnchorSide;
