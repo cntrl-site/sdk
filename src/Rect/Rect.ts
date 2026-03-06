@@ -248,8 +248,10 @@ export class Rect {
 
   private static getNormalizedFactor(factor: number): number {
     const EPSILON = 1e-10;
-    return factor === 0 ? EPSILON :
-    factor === Infinity ? 1 / EPSILON :
-    factor;
+    return factor === 0 
+      ? EPSILON
+      : factor === Infinity 
+        ? 1 / EPSILON
+        : factor;
   }
 }
