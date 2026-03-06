@@ -32,8 +32,9 @@ export class Rect {
   }
 
   public static scale(rect: Rect, factor: number, origin: ScaleOrigin): Rect {
-    const width = rect.width * factor;
-    const height = rect.height * factor;
+    const normalizedFactor = Rect.getNormalizedFactor(factor);
+    const width = rect.width * normalizedFactor;
+    const height = rect.height * normalizedFactor;
     const dw = rect.width - width;
     const dh = rect.height - height;
     const [kt, kl] = scaleMatrix[origin];
@@ -43,8 +44,9 @@ export class Rect {
   }
 
   public static scaleWithOrigin(rect: Rect, factor: number, kt: number, kl: number): Rect {
-    const width = rect.width * factor;
-    const height = rect.height * factor;
+    const normalizedFactor = Rect.getNormalizedFactor(factor);
+    const width = rect.width * normalizedFactor;
+    const height = rect.height * normalizedFactor;
     const dw = rect.width - width;
     const dh = rect.height - height;
     const x = rect.left + (kl * dw);
@@ -242,5 +244,14 @@ export class Rect {
     const x = rect.left + (rect.width - newDimensions.width) / 2;
     const y = rect.top + (rect.height - newDimensions.height) / 2;
     return { x, y };
+  }
+
+  private static getNormalizedFactor(factor: number): number {
+    const EPSILON = 1e-10;
+    return factor === 0 
+      ? EPSILON
+      : factor === Infinity 
+        ? 1 / EPSILON
+        : factor;
   }
 }
