@@ -217,7 +217,7 @@ export type SolidFillLayer = {
   id: string;
   type: 'solid';
   value: string;
-  blendMode: string;
+  blendMode?: string;
 };
 
 export type LinearGradientFillLayer = {
@@ -227,7 +227,7 @@ export type LinearGradientFillLayer = {
   start: [number, number];
   end: [number, number];
   angle: number;
-  blendMode: string;
+  blendMode?: string;
 };
 
 export type RadialGradientFillLayer = {
@@ -237,7 +237,7 @@ export type RadialGradientFillLayer = {
   diameter: number;
   center: [number, number];
   angle: number;
-  blendMode: string;
+  blendMode?: string;
 };
 
 export type ConicGradientFillLayer = {
@@ -246,7 +246,7 @@ export type ConicGradientFillLayer = {
   colors: ColorPoint[];
   center: [number, number];
   angle: number;
-  blendMode: string;
+  blendMode?: string;
 };
 
 export type ImageLayer = {
@@ -256,7 +256,7 @@ export type ImageLayer = {
   behavior: string;
   backgroundSize: number;
   opacity: number;
-  blendMode: string;
+  blendMode?: string;
   rotation?: number;
 };
 export interface ScrollPlaybackParams {
