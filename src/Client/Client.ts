@@ -9,6 +9,7 @@ import { KeyframeAny } from '../types/keyframe/Keyframe';
 import { ArticleSchema } from '../schemas/article/Article.schema';
 import { ProjectSchema } from '../schemas/project/Project.schema';
 import { KeyframesSchema } from '../schemas/keyframe/Keyframes.schema';
+import { CustomComponentMeta } from '../types/customComponent/CustomComponentMeta';
 
 export class Client {
   private url: URL;
@@ -71,6 +72,34 @@ export class Client {
     }
   }
 
+  async fetchCustomComponents(buildMode: 'default' | 'self-hosted' = 'default'): Promise<CustomComponentMeta[]> {
+    const { username: projectId, password: apiKey, origin } = this.url;
+    const url = new URL(`/projects/${projectId}/custom-components?buildMode=${buildMode}`, origin);
+    const response = await this.fetchImpl(url.href, {
+      headers: {
+        Authorization: `Bearer ${apiKey}`
+      }
+    });
+    if (!response.ok) {
+      throw new Error(`Failed to fetch custom components for project #${projectId}: ${response.statusText}`);
+    }
+    return response.json();
+  }
+
+  async fetchCustomComponentBundle(componentId: string, buildMode: 'default' | 'self-hosted' = 'default'): Promise<string> {
+    const { username: projectId, password: apiKey, origin } = this.url;
+    const url = new URL(`/projects/${projectId}/custom-components/${componentId}/bundle.js?buildMode=${buildMode}`, origin);
+    const response = await this.fetchImpl(url.href, {
+      headers: {
+        Authorization: `Bearer ${apiKey}`
+      }
+    });
+    if (!response.ok) {
+      throw new Error(`Failed to fetch bundle for custom component #${componentId}: ${response.statusText}`);
+    }
+    return response.text();
+  }
+
   private async fetchProject(buildMode: 'default' | 'self-hosted' = 'default'): Promise<Project> {
     const { username: projectId, password: apiKey, origin } = this.url;
     const url = new URL(`/projects/${projectId}?buildMode=${buildMode}`, origin);
@@ -117,6 +146,7 @@ export class Client {
 interface FetchImplResponse {
   ok: boolean;
   json(): Promise<any>;
+  text(): Promise<string>;
   statusText: string;
 }
 
