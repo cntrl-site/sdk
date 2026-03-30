@@ -56,8 +56,13 @@ export class ScrollPlaybackVideoManager {
     this.video.pause();
     this.video.load();
     this.container.appendChild(this.video);
-    const browserEngine = new UAParser().getEngine();
+    const ua = new UAParser();
+    const browserEngine = ua.getEngine();
     this.isSafari = browserEngine.name === 'WebKit';
+    const deviceType = ua.getDevice().type;
+    if (deviceType === 'mobile' || deviceType === 'tablet') {
+      this.useWebCodecs = false;
+    }
     if (this.debug && this.isSafari) console.info('Safari browser detected');
     this.video.addEventListener('loadedmetadata', () => this.setTargetTimePercent(0, true), { once: true });
     this.video.addEventListener('progress', this.resize);
