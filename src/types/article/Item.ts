@@ -62,6 +62,7 @@ interface MediaCommonParams extends CommonParamsBase {
 
 interface VideoCommonParams extends MediaCommonParams {
   coverUrl: string | null;
+  scrollPlaybackFrameData?: ScrollPlaybackFrameData | null;
 }
 
 interface ImageCommonParams extends MediaCommonParams {}
@@ -257,6 +258,15 @@ export type ImageLayer = {
 export interface ScrollPlaybackParams {
   from: number;
   to: number;
+}
+
+export interface ScrollPlaybackFrameData {
+  status: 'processing' | 'ready' | 'error';
+  batchId?: string;
+  frameCount?: number;
+  frameRate?: number;
+  framesUrl?: string;
+  frameFormat?: string;
 }
 
 export interface StickyParams {
