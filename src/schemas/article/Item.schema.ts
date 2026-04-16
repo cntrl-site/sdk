@@ -78,10 +78,20 @@ const ImageItemSchema = ItemBaseSchema.extend({
   state: z.record(MediaStateParamsSchema)
 }) satisfies ZodType<ImageItem>;
 
+const ScrollPlaybackFrameDataSchema = z.object({
+  status: z.enum(['processing', 'ready', 'error']),
+  batchId: z.string().optional(),
+  frameCount: z.number().optional(),
+  frameRate: z.number().optional(),
+  framesUrl: z.string().optional(),
+  frameFormat: z.string().optional()
+});
+
 const VideoItemSchema = ItemBaseSchema.extend({
   type: z.literal(ArticleItemType.Video),
   commonParams: z.object({
     coverUrl: z.string().nullable(),
+    scrollPlaybackFrameData: ScrollPlaybackFrameDataSchema.nullable().optional(),
     pointerEvents
   }).merge(FXParams),
   sticky: z.record(

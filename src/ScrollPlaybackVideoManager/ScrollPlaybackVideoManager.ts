@@ -1,10 +1,16 @@
 import UAParser from 'ua-parser-js';
 import videoDecoder from '../VideoDecoder/VideoDecoder';
 
-
 interface ScrollVideoOptions {
   src: string;
   videoContainer: HTMLElement | string;
+  frameData?: {
+    batchId: string;
+    frameCount: number;
+    frameRate: number;
+    frameFormat: string;
+  };
+  frameBaseUrl?: string;
 }
 
 export class ScrollPlaybackVideoManager {
@@ -23,6 +29,10 @@ export class ScrollPlaybackVideoManager {
   private transitionSpeed: number = 10;
   private useWebCodecs: boolean = true;
   private resizeObserver: ResizeObserver;
+  private serverFrameData?: { batchId: string; frameCount: number; frameRate: number; frameFormat: string };
+  private serverFrameBaseUrl?: string;
+  private serverFrameImages: HTMLImageElement[] = [];
+  private currentServerFrameIdx = 0;
 
   constructor(options: ScrollVideoOptions) {
     this.resizeObserver = new ResizeObserver(() => {
@@ -30,7 +40,9 @@ export class ScrollPlaybackVideoManager {
     });
     const {
       src,
-      videoContainer
+      videoContainer,
+      frameData,
+      frameBaseUrl
     } = options;
     if (typeof document !== 'object') {
       console.error('ScrollVideo must be initiated in a DOM context');
@@ -47,6 +59,14 @@ export class ScrollPlaybackVideoManager {
 
     this.container = typeof videoContainer === 'string' ? document.getElementById(videoContainer)! : videoContainer;
     this.resizeObserver.observe(this.container);
+
+    if (frameData && frameBaseUrl) {
+      this.serverFrameData = frameData;
+      this.serverFrameBaseUrl = frameBaseUrl;
+      this.loadServerFrames();
+      return;
+    }
+
     this.video = document.createElement('video');
     this.video.src = src;
     this.video.preload = 'auto';
@@ -56,12 +76,60 @@ export class ScrollPlaybackVideoManager {
     this.video.pause();
     this.video.load();
     this.container.appendChild(this.video);
-    const browserEngine = new UAParser().getEngine();
+    const ua = new UAParser();
+    const browserEngine = ua.getEngine();
     this.isSafari = browserEngine.name === 'WebKit';
     if (this.debug && this.isSafari) console.info('Safari browser detected');
     this.video.addEventListener('loadedmetadata', () => this.setTargetTimePercent(0, true), { once: true });
     this.video.addEventListener('progress', this.resize);
     this.decodeVideo();
+  }
+
+  private async loadServerFrames(): Promise<void> {
+    if (!this.serverFrameData || !this.serverFrameBaseUrl || !this.container) return;
+    const { batchId, frameCount, frameRate } = this.serverFrameData;
+
+    const loadBatch = async (start: number, end: number): Promise<void> => {
+      const promises: Promise<void>[] = [];
+      for (let i = start; i <= end; i++) {
+        const idx = String(i).padStart(4, '0');
+        const url = `${this.serverFrameBaseUrl}/${batchId}_${idx}.${this.serverFrameData!.frameFormat}`;
+        const img = new Image();
+        this.serverFrameImages[i - 1] = img;
+        promises.push(new Promise<void>((resolve) => {
+          img.onload = () => resolve();
+          img.onerror = () => resolve();
+          img.src = url;
+        }));
+      }
+      await Promise.all(promises);
+    };
+
+    const initialBatch = Math.min(10, frameCount);
+    await loadBatch(1, initialBatch);
+
+    this.frameRate = frameRate;
+    this.canvas = document.createElement('canvas');
+    this.context = this.canvas.getContext('2d')!;
+    this.container.appendChild(this.canvas);
+    this.paintServerFrame(0);
+
+    if (initialBatch < frameCount) {
+      loadBatch(initialBatch + 1, frameCount);
+    }
+  }
+
+  private paintServerFrame(frameIdx: number) {
+    if (!this.canvas || !this.context || !this.container) return;
+    const clampedIdx = Math.max(0, Math.min(frameIdx, this.serverFrameImages.length - 1));
+    const img = this.serverFrameImages[clampedIdx];
+    if (!img || !img.naturalWidth) return;
+    this.currentServerFrameIdx = clampedIdx;
+    this.canvas.width = img.naturalWidth;
+    this.canvas.height = img.naturalHeight;
+    const { width, height } = this.container.getBoundingClientRect();
+    this.resetCanvasDimensions(width, height, img.naturalWidth, img.naturalHeight);
+    this.context.drawImage(img, 0, 0, img.naturalWidth, img.naturalHeight);
   }
 
   private setCoverStyle(el: any) {
@@ -85,12 +153,14 @@ export class ScrollPlaybackVideoManager {
 
   private resize = () => {
     if (this.debug) console.info('ScrollVideo resizing...');
-    if (this.canvas) {
+    if (this.serverFrameData && this.serverFrameImages.length > 0) {
+      this.paintServerFrame(this.currentServerFrameIdx);
+    } else if (this.canvas) {
       this.setCoverStyle(this.canvas);
+      this.paintCanvasFrame(Math.floor(this.currentTime * this.frameRate));
     } else if (this.video) {
       this.setCoverStyle(this.video);
     }
-    this.paintCanvasFrame(Math.floor(this.currentTime * this.frameRate));
   };
 
   private decodeVideo = () => {
@@ -193,6 +263,11 @@ export class ScrollPlaybackVideoManager {
   }
 
   setTargetTimePercent(setPercentage: number, jump: boolean = true): void {
+    if (this.serverFrameData && this.serverFrameImages.length > 0) {
+      const frameIdx = Math.round(Math.max(0, Math.min(setPercentage, 1)) * (this.serverFrameImages.length - 1));
+      this.paintServerFrame(frameIdx);
+      return;
+    }
     if (!this.video) return;
     this.targetTime = Math.max(Math.min(setPercentage, 1), 0)
       * (this.frames.length && this.frameRate ? this.frames.length / this.frameRate : this.video.duration);
