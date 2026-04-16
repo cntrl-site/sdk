@@ -100,6 +100,10 @@ export class Client {
     return response.text();
   }
 
+  getHostname(): string {
+    return this.url.origin;
+  }
+
   private async fetchProject(buildMode: 'default' | 'self-hosted' = 'default'): Promise<Project> {
     const { username: projectId, password: apiKey, origin } = this.url;
     const url = new URL(`/projects/${projectId}?buildMode=${buildMode}`, origin);
