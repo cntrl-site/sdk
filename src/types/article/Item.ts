@@ -105,6 +105,7 @@ interface YoutubeEmbedCommonParams extends CommonParamsBase {
 interface ComponentCommonParams extends CommonParamsBase {
   componentId: string;
   content?: any;
+  parameters?: Record<string, any>;
 }
 
 interface MediaLayoutParams {

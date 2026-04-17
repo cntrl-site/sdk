@@ -255,7 +255,8 @@ const ComponentItemSchema = ItemBaseSchema.extend({
   type: z.literal(ArticleItemType.Component),
   commonParams: z.object({
     componentId: z.string(),
-    content: z.any().optional()
+    content: z.any().optional(),
+    parameters: z.record(z.any()).optional()
   }),
   sticky: z.record(
     z.object({

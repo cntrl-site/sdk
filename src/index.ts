@@ -31,3 +31,4 @@ export type { Meta } from './types/project/Meta';
 export type { KeyframeValueMap, KeyframeAny } from './types/keyframe/Keyframe';
 export type { CompoundSettings } from './types/article/CompoundSettings';
 export type { Dimensions, Left, Position, RectCoordinates, RectObject, ScaleOrigin, Sides, Top } from './types/article/Rect';
+export type { CustomComponentMeta } from './types/customComponent/CustomComponentMeta';

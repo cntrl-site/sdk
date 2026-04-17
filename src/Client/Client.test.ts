@@ -38,6 +38,7 @@ describe('Client', () => {
       return Promise.resolve({
         ok: true,
         json: () => Promise.resolve(fetchesMap[url]),
+        text: () => Promise.resolve(JSON.stringify(fetchesMap[url])),
         statusText: ''
       });
     };
@@ -74,6 +75,7 @@ describe('Client', () => {
       return Promise.resolve({
         ok: true,
         json: () => Promise.resolve(fetchesMap[url]),
+        text: () => Promise.resolve(JSON.stringify(fetchesMap[url])),
         statusText: ''
       });
     };
@@ -95,7 +97,8 @@ describe('Client', () => {
     const fetch = async () => Promise.resolve({
       ok: false,
       statusText: 'reason',
-      json: () => Promise.resolve()
+      json: () => Promise.resolve(),
+      text: () => Promise.resolve('')
     });
     const client = new Client(apiUrl, fetch);
     await expect(client.getPageData('/')).rejects.toEqual(new Error('Failed to fetch project with id #MY_PROJECT_ID: reason'));
@@ -111,6 +114,7 @@ describe('Client', () => {
       return Promise.resolve({
         ok: url === projectApiUrl,
         json: () => Promise.resolve(projectMock),
+        text: () => Promise.resolve(JSON.stringify(projectMock)),
         statusText: 'reason'
       });
     };
