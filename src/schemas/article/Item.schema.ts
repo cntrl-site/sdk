@@ -50,7 +50,8 @@ const FXParams = z.object({
   url: z.string().min(1),
   hasGLEffect: z.boolean().optional(),
   fragmentShader: z.string().nullable(),
-  FXControls: z.array(FXControlSchema).optional()
+  FXControls: z.array(FXControlSchema).optional(),
+  FXPatterns: z.array(z.string()).optional()
 });
 
 const ImageItemSchema = ItemBaseSchema.extend({

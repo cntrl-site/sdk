@@ -58,6 +58,7 @@ interface MediaCommonParams extends CommonParamsBase {
   hasGLEffect?: boolean;
   fragmentShader: string | null;
   FXControls?: FXControlAny[];
+  FXPatterns?: string[];
 }
 
 interface VideoCommonParams extends MediaCommonParams {
