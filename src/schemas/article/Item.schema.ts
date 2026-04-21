@@ -51,7 +51,7 @@ const FXParams = z.object({
   hasGLEffect: z.boolean().optional(),
   fragmentShader: z.string().nullable(),
   FXControls: z.array(FXControlSchema).optional(),
-  FXPatterns: z.array(z.string()).optional()
+  FXTextures: z.array(z.string()).optional()
 });
 
 const ImageItemSchema = ItemBaseSchema.extend({
