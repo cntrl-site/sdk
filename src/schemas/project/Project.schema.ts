@@ -44,5 +44,6 @@ export const ProjectSchema = z.object({
         })
       )
     }))
-  })
+  }),
+  primaryDomain: z.string().nullable().optional()
 });
