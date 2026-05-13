@@ -12,4 +12,5 @@ export interface Page {
   meta?: PageMeta;
   isPublished?: boolean;
   isAuthProtected?: boolean;
+  lastModified?: string;
 }

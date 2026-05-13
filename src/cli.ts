@@ -63,14 +63,14 @@ program
         return;
       }
       const indexable = project.pages.filter(isIndexablePage);
-      const lastmod = new Date().toISOString();
+      const fallbackLastmod = formatLastmod(new Date().toISOString());
       const outputDir = path.resolve(process.cwd(), options.output);
       if (!fs.existsSync(outputDir)) {
         fs.mkdirSync(outputDir, { recursive: true });
       }
       const sitemapPath = path.resolve(outputDir, 'sitemap.xml');
       const robotsPath = path.resolve(outputDir, 'robots.txt');
-      fs.writeFileSync(sitemapPath, renderSitemap(indexable, siteUrl, lastmod));
+      fs.writeFileSync(sitemapPath, renderSitemap(indexable, siteUrl, fallbackLastmod));
       fs.writeFileSync(robotsPath, renderRobots(siteUrl));
       console.log(`Generated sitemap.xml at ${sitemapPath} (${indexable.length} of ${project.pages.length} pages)`);
       console.log(`Generated robots.txt at ${robotsPath}`);
@@ -93,9 +93,10 @@ function isIndexablePage(page: Page): boolean {
   return true;
 }
 
-function renderSitemap(pages: Page[], siteUrl: URL, lastmod: string): string {
+function renderSitemap(pages: Page[], siteUrl: URL, fallbackLastmod: string): string {
   const entries = pages.map(page => {
     const loc = escapeXml(buildPageUrl(siteUrl, page.slug));
+    const lastmod = page.lastModified ? formatLastmod(page.lastModified) : fallbackLastmod;
     const priority = page.slug === '' ? '1.00' : '0.80';
     return [
       '  <url>',
@@ -112,6 +113,11 @@ function renderSitemap(pages: Page[], siteUrl: URL, lastmod: string): string {
     '</urlset>',
     ''
   ].join('\n');
+}
+
+function formatLastmod(iso: string): string {
+  // YYYY-MM-DD is sitemap-spec valid and avoids hour-of-rebuild noise.
+  return iso.slice(0, 10);
 }
 
 function renderRobots(siteUrl: URL): string {

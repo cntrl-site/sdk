@@ -30,7 +30,8 @@ export const ProjectSchema = z.object({
     }).optional(),
     id: z.string().min(1),
     isPublished: z.boolean().optional(),
-    isAuthProtected: z.boolean().optional()
+    isAuthProtected: z.boolean().optional(),
+    lastModified: z.string().optional()
   })),
   fonts: z.object({
     google: z.string(),
