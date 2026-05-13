@@ -10,4 +10,6 @@ export interface Page {
   articleId: string;
   slug: string;
   meta?: PageMeta;
+  isPublished?: boolean;
+  isAuthProtected?: boolean;
 }

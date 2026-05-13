@@ -63,6 +63,10 @@ export class Client {
     }
   }
 
+  async getProject(buildMode: 'default' | 'self-hosted' = 'default'): Promise<Project> {
+    return this.fetchProject(buildMode);
+  }
+
   async getLayouts(): Promise<Layout[]> {
     try {
       const { layouts } = await this.fetchProject();
