@@ -16,4 +16,5 @@ export interface Project {
   layouts: Layout[];
   pages: Page[];
   fonts: Fonts;
+  primaryDomain?: string | null;
 }
