@@ -28,7 +28,9 @@ export const ProjectSchema = z.object({
       keywords: z.string().optional(),
       enabled: z.boolean()
     }).optional(),
-    id: z.string().min(1)
+    id: z.string().min(1),
+    isPublished: z.boolean().optional(),
+    isAuthProtected: z.boolean().optional()
   })),
   fonts: z.object({
     google: z.string(),
