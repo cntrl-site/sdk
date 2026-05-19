@@ -1,11 +1,12 @@
 import { ArticleItemType } from './ArticleItemType';
 import { FillLayer } from './Item';
+import { StructuredBlockType } from './StructuredBlockType';
 
 type StateId = string;
 
-export type ItemState<T extends ArticleItemType> = Record<StateId, ItemStatesMap[T]>;
+export type ItemState<T extends ArticleItemType | StructuredBlockType> = Record<StateId, ItemStatesMap[T]>;
 
-export type ItemStateParams = ItemStatesMap[ArticleItemType];
+export type ItemStateParams = ItemStatesMap[ArticleItemType] | ItemStatesMap[StructuredBlockType];
 
 export interface ItemStatesMap {
   [ArticleItemType.Image]: MediaStateParams;
@@ -19,6 +20,11 @@ export interface ItemStatesMap {
   [ArticleItemType.CodeEmbed]: CodeEmbedStateParams;
   [ArticleItemType.Compound]: CompoundStateParams;
   [ArticleItemType.Component]: ComponentStateParams;
+  [StructuredBlockType.Component]: ComponentBlockStateParams;
+  [StructuredBlockType.RichText]: RichTextBlockStateParams;
+  [StructuredBlockType.Image]: MediaBlockStateParams;
+  [StructuredBlockType.VimeoEmbed]: VideoEmbedBlockStateParams;
+  [StructuredBlockType.YoutubeEmbed]: VideoEmbedBlockStateParams;
 }
 
 export interface StateParams<T> {
@@ -43,6 +49,27 @@ interface ItemStatesBaseMap {
   left?: StateParams<number>;
   scale?: StateParams<number>;
   blur?: StateParams<number>;
+}
+export interface ComponentBlockStateParams {
+  opacity?: StateParams<number>;
+}
+
+export interface RichTextBlockStateParams {
+  color?: StateParams<string>;
+  letterSpacing?: StateParams<number>;
+  wordSpacing?: StateParams<number>;
+}
+
+export interface MediaBlockStateParams {
+  opacity?: StateParams<number>;
+  radius?: StateParams<number>;
+  strokeWidth?: StateParams<number>;
+  strokeFill?: StateParams<FillLayer[]>;
+}
+
+export interface VideoEmbedBlockStateParams {
+  opacity?: StateParams<number>;
+  radius?: StateParams<number>;
 }
 
 export interface MediaStateParams extends ItemStatesBaseMap {

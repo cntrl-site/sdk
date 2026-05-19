@@ -2,13 +2,17 @@ import { z, ZodType } from 'zod';
 import {
   CodeEmbedItem,
   ComponentItem,
+  ComponentLayoutParams,
   CustomItem,
   ImageItem,
   ItemAny,
   RectangleItem,
   VideoItem,
+  VimeoEmbedCommonParams,
   VimeoEmbedItem,
-  YoutubeEmbedItem
+  VimeoEmbedLayoutParams,
+  YoutubeEmbedItem,
+  YoutubeEmbedLayoutParams
 } from '../../types/article/Item';
 import {
   CodeEmbedStateParamsSchema,
@@ -169,6 +173,18 @@ const CustomItemSchema = ItemBaseSchema.extend({
   state: z.record(CustomItemStateParamsSchema)
 }) satisfies ZodType<CustomItem>;
 
+export const VimeoEmbedLayoutParamsSchema = z.object({
+  radius: z.number(),
+  blur: z.number(),
+  opacity: z.number().nonnegative(),
+  play: z.union([z.literal('on-hover'), z.literal('on-click'), z.literal('auto')]),
+  controls: z.boolean(),
+  loop: z.boolean(),
+  muted: z.boolean(),
+  pictureInPicture: z.boolean(),
+  blendMode: z.string().optional()
+}) satisfies ZodType<VimeoEmbedLayoutParams>;
+
 const VimeoEmbedItemSchema = ItemBaseSchema.extend({
   type: z.literal(ArticleItemType.VimeoEmbed),
   commonParams: z.object({
@@ -183,21 +199,19 @@ const VimeoEmbedItemSchema = ItemBaseSchema.extend({
       to: z.number().optional()
     }).nullable(),
   ),
-  layoutParams: z.record(
-    z.object({
-      radius: z.number(),
-      blur: z.number(),
-      opacity: z.number().nonnegative(),
-      play: z.union([z.literal('on-hover'), z.literal('on-click'), z.literal('auto')]),
-      controls: z.boolean(),
-      loop: z.boolean(),
-      muted: z.boolean(),
-      pictureInPicture: z.boolean(),
-      blendMode: z.string().optional()
-    })
-  ),
+  layoutParams: z.record(VimeoEmbedLayoutParamsSchema),
   state: z.record(EmbedStateParamsSchema)
 }) satisfies ZodType<VimeoEmbedItem>;
+
+export const YoutubeEmbedLayoutParamsSchema = z.object({
+  radius: z.number(),
+  blur: z.number(),
+  opacity: z.number().nonnegative(),
+  play: z.enum(['on-hover', 'on-click', 'auto']),
+  controls: z.boolean(),
+  loop: z.boolean(),
+  blendMode: z.string().optional()
+}) satisfies ZodType<YoutubeEmbedLayoutParams>;
 
 const YoutubeEmbedItemSchema = ItemBaseSchema.extend({
   type: z.literal(ArticleItemType.YoutubeEmbed),
@@ -212,17 +226,7 @@ const YoutubeEmbedItemSchema = ItemBaseSchema.extend({
       to: z.number().optional()
     }).nullable(),
   ),
-  layoutParams: z.record(
-    z.object({
-      radius: z.number(),
-      blur: z.number(),
-      opacity: z.number().nonnegative(),
-      play: z.enum(['on-hover', 'on-click', 'auto']),
-      controls: z.boolean(),
-      loop: z.boolean(),
-      blendMode: z.string().optional()
-    })
-  ),
+  layoutParams: z.record(YoutubeEmbedLayoutParamsSchema),
   state: z.record(EmbedStateParamsSchema)
 }) satisfies ZodType<YoutubeEmbedItem>;
 
@@ -252,6 +256,13 @@ const CodeEmbedItemSchema =  ItemBaseSchema.extend({
   state: z.record(CodeEmbedStateParamsSchema)
 }) satisfies ZodType<CodeEmbedItem>;
 
+export const ComponentItemLayoutParamsSchema = z.object({
+  opacity: z.number().nonnegative(),
+  blur: z.number(),
+  parameters: z.any().optional(),
+  blendMode: z.string().optional(),
+}) satisfies ZodType<ComponentLayoutParams>;
+
 const ComponentItemSchema = ItemBaseSchema.extend({
   type: z.literal(ArticleItemType.Component),
   commonParams: z.object({
@@ -265,12 +276,7 @@ const ComponentItemSchema = ItemBaseSchema.extend({
       to: z.number().optional()
     }).nullable(),
   ),
-  layoutParams: z.record(z.object({
-    parameters: z.any().optional(),
-    opacity: z.number().nonnegative(),
-    blur: z.number(),
-    blendMode: z.string().optional()
-  })),
+  layoutParams: z.record(ComponentItemLayoutParamsSchema),
   state: z.record(ComponentStateParamsSchema)
 }) satisfies ZodType<ComponentItem>;
 

@@ -53,7 +53,7 @@ interface CommonParamsBase {
   pointerEvents?: 'never' | 'when_visible' | 'always';
 }
 
-interface MediaCommonParams extends CommonParamsBase {
+export interface MediaCommonParams extends CommonParamsBase {
   url: string;
   hasGLEffect?: boolean;
   fragmentShader: string | null;
@@ -93,12 +93,12 @@ interface CodeEmbedCommonParams extends CommonParamsBase {
   iframe: boolean;
 }
 
-interface VimeoEmbedCommonParams extends CommonParamsBase {
+export interface VimeoEmbedCommonParams extends CommonParamsBase {
   url: string;
   coverUrl: string | null;
 }
 
-interface YoutubeEmbedCommonParams extends CommonParamsBase {
+export interface YoutubeEmbedCommonParams extends CommonParamsBase {
   url: string;
   coverUrl: string | null;
 }
@@ -109,7 +109,7 @@ interface ComponentCommonParams extends CommonParamsBase {
   parameters?: Record<string, any>;
 }
 
-interface MediaLayoutParams {
+export interface MediaLayoutParams {
   opacity: number;
   radius: number;
   strokeWidth: number;
@@ -145,7 +145,7 @@ interface CodeEmbedLayoutParams {
   blendMode?: string;
 }
 
-interface VimeoEmbedLayoutParams {
+export interface VimeoEmbedLayoutParams {
   play: 'on-hover' | 'on-click' | 'auto';
   controls: boolean;
   loop: boolean;
@@ -157,7 +157,7 @@ interface VimeoEmbedLayoutParams {
   blendMode?: string;
 }
 
-interface YoutubeEmbedLayoutParams {
+export interface YoutubeEmbedLayoutParams {
   play: 'on-hover' | 'on-click' | 'auto';
   controls: boolean;
   loop: boolean;
@@ -283,7 +283,7 @@ export interface Link {
 
 type LayoutIdentifier = string;
 
-interface ComponentLayoutParams {
+export interface ComponentLayoutParams {
   parameters?: any;
   opacity: number;
   blur: number;

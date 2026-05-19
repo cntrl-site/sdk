@@ -1,4 +1,5 @@
 import { ItemAny } from './Item';
+import { StructuredBlockAny } from './StructuredBlock';
 
 export enum SectionHeightMode {
   ControlUnits = 'control-units' ,
@@ -29,15 +30,44 @@ export type SectionImage = {
   offsetX: number | null;
 };
 
+interface ContentBasedSectionSettings {
+  defaultWidth: Record<string, number>;
+  paddingBottom: Record<string, number>;
+}
+
+interface ComponentBasedSectionSettings {
+  paddingBottom: Record<string, number>;
+}
+
 export type SectionMedia = SectionVideo | SectionImage;
 
-export interface Section {
+type SectionBase = {
   id: string;
   name?: string;
-  height: Record<string, SectionHeight>;
-  hidden: Record<string, boolean>;
   items: ItemAny[];
   position: Record<string, number>;
   color: Record<string, string | null>;
   media?: Record<string, SectionMedia>;
-}
+  hidden: Record<string, boolean>;
+};
+
+export type FreehandSection = SectionBase & {
+  type: 'freehand';
+  height: Record<string, SectionHeight>;
+};
+
+export type ComponentBasedSection = SectionBase & {
+  type: 'component-based';
+  minHeight: Record<string, SectionHeight>;
+  structuredContent: StructuredBlockAny[];
+  structuredContentSettings: ComponentBasedSectionSettings;
+};
+
+export type ContentBasedSection = SectionBase & {
+  type: 'content-based';
+  minHeight: Record<string, SectionHeight>;
+  structuredContent: StructuredBlockAny[];
+  structuredContentSettings: ContentBasedSectionSettings;
+};
+
+export type Section = FreehandSection | ComponentBasedSection | ContentBasedSection;
