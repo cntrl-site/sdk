@@ -31,7 +31,8 @@ const FXParamsSchema = z.object({
   hasGLEffect: z.boolean(),
   fragmentShader: z.string().nullable(),
   shaderName: z.string().nullable(),
-  FXControls: z.array(FXControlSchema)
+  FXControls: z.array(FXControlSchema),
+  FXTextures: z.array(z.string()).optional()
 });
 
 export const StructuredBlockImageCommonParamsSchema = z.object({
