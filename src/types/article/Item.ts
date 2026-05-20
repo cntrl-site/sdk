@@ -286,6 +286,7 @@ type LayoutIdentifier = string;
 export interface ComponentLayoutParams {
   parameters?: any;
   opacity: number;
+  sizing?: string;
   blur: number;
 }
 

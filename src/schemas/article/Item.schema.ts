@@ -257,6 +257,7 @@ const CodeEmbedItemSchema =  ItemBaseSchema.extend({
 }) satisfies ZodType<CodeEmbedItem>;
 
 export const ComponentItemLayoutParamsSchema = z.object({
+  sizing: z.string().optional(),
   opacity: z.number().nonnegative(),
   blur: z.number(),
   parameters: z.any().optional(),
