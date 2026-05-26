@@ -1,5 +1,5 @@
 import { ArticleItemType } from './ArticleItemType';
-import { FillLayer } from './Item';
+import { FillLayer } from './Params.type';
 import { StructuredBlockType } from './StructuredBlockType';
 
 type StateId = string;

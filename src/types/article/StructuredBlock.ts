@@ -1,7 +1,7 @@
 import { RichTextBlock, RichTextStyle } from './RichText';
 import { ItemState } from './ItemState';
 import { StructuredBlockType } from './StructuredBlockType';
-import { ComponentLayoutParams, MediaCommonParams, MediaLayoutParams, VimeoEmbedCommonParams, VimeoEmbedLayoutParams, YoutubeEmbedCommonParams, YoutubeEmbedLayoutParams } from './Item';
+import { ComponentLayoutParams, MediaCommonParams, MediaLayoutParams, VimeoEmbedCommonParams, VimeoEmbedLayoutParams, YoutubeEmbedCommonParams, YoutubeEmbedLayoutParams } from './Params.type';
 
 type LayoutIdentifier = string;
 

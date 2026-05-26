@@ -18,10 +18,10 @@ export type { Article } from './types/article/Article';
 export type { Section, SectionHeight } from './types/article/Section';
 export type {
   Item, ImageItem, ItemAny, CustomItem, ItemCommonParamsMap,
-  ItemLayoutParamsMap, RectangleItem, StickyParams, VideoItem, RichTextItem,
-  Link, VimeoEmbedItem, YoutubeEmbedItem, GroupItem, CodeEmbedItem, CompoundItem, ComponentItem, FillLayer,
-  ScrollPlaybackFrameData
+  ItemLayoutParamsMap, RectangleItem, VideoItem, RichTextItem,
+  VimeoEmbedItem, YoutubeEmbedItem, GroupItem, CodeEmbedItem, CompoundItem, ComponentItem
 } from './types/article/Item';
+export type { Link, StickyParams, FillLayer, ScrollPlaybackFrameData } from './types/article/Params.type';
 export type {
   StructuredBlock, ComponentStructuredBlock, RichTextStructuredBlock,
   ImageStructuredBlock, VimeoEmbedStructuredBlock, YoutubeEmbedStructuredBlock, StructuredBlockAny

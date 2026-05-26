@@ -1,10 +1,11 @@
 import { z, ZodType } from 'zod';
 import { RichTextBlockSchema, RichTextStyleSchema } from './RichTextItem.schema';
-import { ComponentItemLayoutParamsSchema, FXControlSchema, VimeoEmbedLayoutParamsSchema, YoutubeEmbedLayoutParamsSchema } from './Item.schema';
+import { FXControlSchema } from './Item.schema';
 import { StructuredBlockAny, StructuredBlockCommonParamsMap, StructuredBlockLayoutParamsMap } from '../../types/article/StructuredBlock';
 import { FillLayerSchema } from './FillLayer.schema';
 import { StructuredBlockType } from '../../types/article/StructuredBlockType';
 import { ComponentBlockStateParamsSchema, MediaBlockStateParamsSchema, RichTextBlockStateParamsSchema, VideoEmbedBlockStateParamsSchema } from './ItemState.schema';
+import { ComponentItemLayoutParamsSchema, VimeoEmbedLayoutParamsSchema, YoutubeEmbedLayoutParamsSchema } from './ElementLayoutParams.schema';
 
 export const StructuredBlockAreaSchema = z.object({
   width: z.number().nonnegative().optional(),
@@ -64,6 +65,7 @@ const StructuredBlockBaseSchema = z.object({
   area: z.record(StructuredBlockAreaSchema),
   hidden: z.record(z.boolean()).optional()
 });
+
 const ComponentStructuredBlockSchema = StructuredBlockBaseSchema.extend({
   type: z.literal(StructuredBlockType.Component),
   commonParams: StructuredBlockComponentCommonParamsSchema,
