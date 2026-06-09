@@ -45,30 +45,22 @@ const SectionBaseSchema = z.object({
   position: z.record(z.number()),
   color: z.record(z.nullable(z.string())),
   hidden: z.record(z.boolean()),
+  minHeight: z.record(SectionHeightSchema),
+  structuredContent: z.array(StructuredBlockSchema),
   media: z.record(SectionMediaSchema).optional()
 });
 
-const FreehandSectionSchema = SectionBaseSchema.extend({
-  type: z.literal('freehand'),
-  height: z.record(SectionHeightSchema),
-});
-
-const ComponentBasedSectionSchema = SectionBaseSchema.extend({
-  type: z.literal('component-based'),
-  minHeight: z.record(SectionHeightSchema),
-  structuredContent: z.array(StructuredBlockSchema),
-  structuredContentSettings: ComponentBasedSectionSettingsSchema
+const DefaultSectionSchema = SectionBaseSchema.extend({
+  type: z.literal('default'),
+  structuredContentSettings: ComponentBasedSectionSettingsSchema,
 });
 
 const ContentBasedSectionSchema = SectionBaseSchema.extend({
   type: z.literal('content-based'),
-  minHeight: z.record(SectionHeightSchema),
-  structuredContent: z.array(StructuredBlockSchema),
   structuredContentSettings: ContentBasedSectionSettingsSchema
 });
 
 export const SectionSchema: ZodType<Section> = z.discriminatedUnion('type', [
-  FreehandSectionSchema,
-  ComponentBasedSectionSchema,
+  DefaultSectionSchema,
   ContentBasedSectionSchema
 ]);

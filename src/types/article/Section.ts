@@ -30,44 +30,37 @@ export type SectionImage = {
   offsetX: number | null;
 };
 
-interface ContentBasedSectionSettings {
-  defaultWidth: Record<string, number>;
+export interface ContentBasedSectionSettings {
   paddingBottom: Record<string, number>;
+  defaultWidth: Record<string, number>;
 }
 
-interface ComponentBasedSectionSettings {
+export interface DefaultSectionSettings {
   paddingBottom: Record<string, number>;
 }
 
 export type SectionMedia = SectionVideo | SectionImage;
 
 type SectionBase = {
-  id: string;
+    id: string;
   name?: string;
   items: ItemAny[];
   position: Record<string, number>;
+  minHeight: Record<string, SectionHeight>;
   color: Record<string, string | null>;
   media?: Record<string, SectionMedia>;
   hidden: Record<string, boolean>;
-};
-
-export type FreehandSection = SectionBase & {
-  type: 'freehand';
-  height: Record<string, SectionHeight>;
-};
-
-export type ComponentBasedSection = SectionBase & {
-  type: 'component-based';
-  minHeight: Record<string, SectionHeight>;
   structuredContent: StructuredBlockAny[];
-  structuredContentSettings: ComponentBasedSectionSettings;
+};
+
+export type DefaultSection = SectionBase & {
+  type: 'default';
+  structuredContentSettings: DefaultSectionSettings;
 };
 
 export type ContentBasedSection = SectionBase & {
   type: 'content-based';
-  minHeight: Record<string, SectionHeight>;
-  structuredContent: StructuredBlockAny[];
   structuredContentSettings: ContentBasedSectionSettings;
 };
 
-export type Section = FreehandSection | ComponentBasedSection | ContentBasedSection;
+export type Section = DefaultSection | ContentBasedSection;
