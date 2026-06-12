@@ -10,6 +10,8 @@ export interface StructuredBlockArea {
   height?: number;
   paddingTop?: number;
   zIndex: number;
+  alignment?: 'left' | 'center' | 'right';
+  horizontalOffset?: number;
 }
 
 export interface StructuredBlockComponentCommonParams {

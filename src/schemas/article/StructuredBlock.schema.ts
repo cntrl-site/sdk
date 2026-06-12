@@ -11,7 +11,9 @@ export const StructuredBlockAreaSchema = z.object({
   width: z.number().nonnegative().optional(),
   height: z.number().nonnegative().optional(),
   paddingTop: z.number().optional(),
-  zIndex: z.number()
+  zIndex: z.number(),
+  alignment: z.enum(['left', 'center', 'right']).optional(),
+  horizontalOffset: z.number().optional()
 });
 
 export const StructuredBlockComponentCommonParamsSchema = z.object({
