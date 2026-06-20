@@ -79,11 +79,7 @@ export class Client {
   async fetchCustomComponents(buildMode: 'default' | 'self-hosted' = 'default'): Promise<CustomComponentMeta[]> {
     const { username: projectId, password: apiKey, origin } = this.url;
     const url = new URL(`/projects/${projectId}/custom-components?buildMode=${buildMode}`, origin);
-    const response = await this.fetchImpl(url.href, {
-      headers: {
-        Authorization: `Bearer ${apiKey}`
-      }
-    });
+    const response = await this.request(url.href, apiKey);
     if (!response.ok) {
       throw new Error(`Failed to fetch custom components for project #${projectId}: ${response.statusText}`);
     }
@@ -93,11 +89,7 @@ export class Client {
   async fetchCustomComponentBundle(componentId: string, buildMode: 'default' | 'self-hosted' = 'default'): Promise<string> {
     const { username: projectId, password: apiKey, origin } = this.url;
     const url = new URL(`/projects/${projectId}/custom-components/${componentId}/bundle.js?buildMode=${buildMode}`, origin);
-    const response = await this.fetchImpl(url.href, {
-      headers: {
-        Authorization: `Bearer ${apiKey}`
-      }
-    });
+    const response = await this.request(url.href, apiKey);
     if (!response.ok) {
       throw new Error(`Failed to fetch bundle for custom component #${componentId}: ${response.statusText}`);
     }
@@ -111,11 +103,7 @@ export class Client {
   private async fetchProject(buildMode: 'default' | 'self-hosted' = 'default'): Promise<Project> {
     const { username: projectId, password: apiKey, origin } = this.url;
     const url = new URL(`/projects/${projectId}?buildMode=${buildMode}`, origin);
-    const response = await this.fetchImpl(url.href, {
-      headers: {
-        Authorization: `Bearer ${apiKey}`
-      }
-    });
+    const response = await this.request(url.href, apiKey);
     if (!response.ok) {
       throw new Error(`Failed to fetch project with id #${projectId}: ${response.statusText}`);
     }
@@ -127,11 +115,7 @@ export class Client {
   private async fetchArticle(articleId: string, buildMode: 'default' | 'self-hosted' = 'default'): Promise<ArticleData> {
     const { username: projectId, password: apiKey, origin } = this.url;
     const url = new URL(`/projects/${projectId}/articles/${articleId}?buildMode=${buildMode}`, origin);
-    const response = await this.fetchImpl(url.href, {
-      headers: {
-        Authorization: `Bearer ${apiKey}`
-      }
-    });
+    const response = await this.request(url.href, apiKey);
     if (!response.ok) {
       throw new Error(`Failed to fetch article with id #${articleId}: ${response.statusText}`);
     }
@@ -139,6 +123,17 @@ export class Client {
     const article = ArticleSchema.parse(data.article);
     const keyframes = KeyframesSchema.parse(data.keyframes);
     return { article, keyframes };
+  }
+
+  private request(url: string, apiKey: string): Promise<FetchImplResponse> {
+    const init: RequestInit & { compress?: boolean } = {
+      compress: false,
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        'Accept-Encoding': 'identity'
+      }
+    };
+    return this.fetchImpl(url, init);
   }
 
   private findArticleIdByPageSlug(slug: string, pages: Page[]): string {
