@@ -1,11 +1,21 @@
-import { SectionHeightMode } from '../../types/article/Section';
-import { z } from 'zod';
+import { Section, SectionHeightMode } from '../../types/article/Section';
+import { z, ZodType } from 'zod';
 import { ItemSchema } from './Item.schema';
+import { StructuredBlockSchema } from './StructuredBlock.schema';
 
 export const SectionHeightSchema = z.object({
   mode: z.nativeEnum(SectionHeightMode),
   units: z.number().nonnegative(),
   vhUnits: z.number().nonnegative().optional()
+});
+
+export const ContentBasedSectionSettingsSchema = z.object({
+  defaultWidth: z.record(z.number().nonnegative()),
+  paddingBottom: z.record(z.number().nonnegative()),
+});
+
+export const ComponentBasedSectionSettingsSchema = z.object({
+  paddingBottom: z.record(z.number().nonnegative()),
 });
 
 const SectionVideoSchema = z.object({
@@ -28,13 +38,29 @@ const SectionImageSchema = z.object({
 
 export const SectionMediaSchema = z.discriminatedUnion('type', [SectionVideoSchema, SectionImageSchema]);
 
-export const SectionSchema = z.object({
+const SectionBaseSchema = z.object({
   id: z.string().min(1),
-  items: z.array(ItemSchema),
   name: z.string().optional(),
-  height: z.record(SectionHeightSchema),
+  items: z.array(ItemSchema),
   position: z.record(z.number()),
-  hidden: z.record(z.boolean()),
   color: z.record(z.nullable(z.string())),
+  hidden: z.record(z.boolean()),
+  minHeight: z.record(SectionHeightSchema),
+  structuredContent: z.array(StructuredBlockSchema),
   media: z.record(SectionMediaSchema).optional()
 });
+
+const DefaultSectionSchema = SectionBaseSchema.extend({
+  type: z.literal('default'),
+  structuredContentSettings: ComponentBasedSectionSettingsSchema,
+});
+
+const ContentBasedSectionSchema = SectionBaseSchema.extend({
+  type: z.literal('content-based'),
+  structuredContentSettings: ContentBasedSectionSettingsSchema
+});
+
+export const SectionSchema: ZodType<Section> = z.discriminatedUnion('type', [
+  DefaultSectionSchema,
+  ContentBasedSectionSchema
+]);

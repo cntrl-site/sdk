@@ -8,7 +8,11 @@ import {
   RectangleStateParams,
   RichTextStateParams,
    CompoundStateParams,
-  ComponentStateParams
+  ComponentStateParams,
+  ComponentBlockStateParams,
+  RichTextBlockStateParams,
+  MediaBlockStateParams,
+  VideoEmbedBlockStateParams
 } from '../../types/article/ItemState';
 import { FillLayerSchema } from './FillLayer.schema';
 
@@ -83,6 +87,28 @@ export const ComponentStateParamsSchema = z.object({
   opacity: getStateParamsSchema(z.number().nonnegative())
 }).merge(ItemStateBaseSchema) satisfies ZodType<ComponentStateParams>;
 
+export const RichTextBlockStateParamsSchema = z.object({
+  color: getStateParamsSchema(z.string()),
+  letterSpacing: getStateParamsSchema(z.number()),
+  wordSpacing: getStateParamsSchema(z.number())
+}) satisfies ZodType<RichTextBlockStateParams>;
+
+export const MediaBlockStateParamsSchema = z.object({
+  opacity: getStateParamsSchema(z.number().nonnegative()),
+  radius: getStateParamsSchema(z.number()),
+  strokeWidth: getStateParamsSchema(z.number()),
+  strokeFill: getStateParamsSchema(z.array(FillLayerSchema))
+}) satisfies ZodType<MediaBlockStateParams>;
+
+export const ComponentBlockStateParamsSchema = z.object({
+  opacity: getStateParamsSchema(z.number().nonnegative())
+}) satisfies ZodType<ComponentBlockStateParams>;
+
+export const VideoEmbedBlockStateParamsSchema = z.object({
+  radius: getStateParamsSchema(z.number()),
+  opacity: getStateParamsSchema(z.number().nonnegative())
+}) satisfies ZodType<VideoEmbedBlockStateParams>;
+
 export const ItemStateParamsSchema = z.union([
   EmbedStateParamsSchema,
   MediaStateParamsSchema,
@@ -92,5 +118,9 @@ export const ItemStateParamsSchema = z.union([
   GroupStateParamsSchema,
   CompoundStateParamsSchema,
   CodeEmbedStateParamsSchema,
-  ComponentStateParamsSchema
+  ComponentStateParamsSchema,
+  RichTextBlockStateParamsSchema,
+  MediaBlockStateParamsSchema,
+  ComponentBlockStateParamsSchema,
+  VideoEmbedBlockStateParamsSchema
 ]);

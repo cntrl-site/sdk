@@ -8,14 +8,15 @@ import {
   RectangleItem,
   VideoItem,
   VimeoEmbedItem,
-  YoutubeEmbedItem
+  YoutubeEmbedItem,
 } from '../../types/article/Item';
 import {
   CodeEmbedStateParamsSchema,
-   ComponentStateParamsSchema,
-    CompoundStateParamsSchema,
+  ComponentStateParamsSchema,
+  CompoundStateParamsSchema,
   CustomItemStateParamsSchema,
-  EmbedStateParamsSchema, GroupStateParamsSchema,
+  EmbedStateParamsSchema,
+  GroupStateParamsSchema,
   MediaStateParamsSchema,
   RectangleStateParamsSchema
 } from './ItemState.schema';
@@ -23,8 +24,7 @@ import { RichTextItemSchema } from './RichTextItem.schema';
 import { ItemBaseSchema } from './ItemBase.schema';
 import { ArticleItemType } from '../../types/article/ArticleItemType';
 import { FXControlAny } from '../../types/article/FX';
-import { AreaAnchor } from '../../types/article/ItemArea';
-import { FillLayerSchema } from './FillLayer.schema';
+import { CodeEmbedLayoutParamsSchema, ComponentItemLayoutParamsSchema, CompoundLayoutParamsSchema, CustomLayoutParamsSchema, GroupLayoutParamsSchema, ImageLayoutParamsSchema, RectangleLayoutParamsSchema, VideoLayoutParamsSchema, VimeoEmbedLayoutParamsSchema, YoutubeEmbedLayoutParamsSchema } from './ElementLayoutParams.schema';
 
 const pointerEvents = z.enum(['never', 'when_visible', 'always']).optional();
 
@@ -66,15 +66,7 @@ const ImageItemSchema = ItemBaseSchema.extend({
     }).nullable(),
   ),
   layoutParams: z.record(
-    z.object({
-      opacity: z.number().nonnegative(),
-      radius: z.number(),
-      strokeWidth: z.number(),
-      strokeFill: z.array(FillLayerSchema),
-      blur: z.number(),
-      isDraggable: z.boolean().optional(),
-      blendMode: z.string().optional()
-    })
+    ImageLayoutParamsSchema
   ),
   state: z.record(MediaStateParamsSchema)
 }) satisfies ZodType<ImageItem>;
@@ -102,22 +94,7 @@ const VideoItemSchema = ItemBaseSchema.extend({
     }).nullable(),
   ),
   layoutParams: z.record(
-    z.object({
-      scrollPlayback: z.object({
-        from: z.number(),
-        to: z.number()
-      }).nullable(),
-      opacity: z.number().nonnegative(),
-      radius: z.number(),
-      strokeWidth: z.number(),
-      strokeFill: z.array(FillLayerSchema),
-      blur: z.number(),
-      isDraggable: z.boolean().optional(),
-      blendMode: z.string().optional(),
-      play: z.enum(['on-hover', 'on-click', 'auto']),
-      muted: z.boolean(),
-      controls: z.boolean(),
-    })
+    VideoLayoutParamsSchema
   ),
   state: z.record(MediaStateParamsSchema)
 }) satisfies ZodType<VideoItem>;
@@ -135,17 +112,7 @@ const RectangleItemSchema = ItemBaseSchema.extend({
     }).nullable(),
   ),
   layoutParams: z.record(
-    z.object({
-      radius: z.number(),
-      strokeWidth: z.number(),
-      fill: z.array(FillLayerSchema),
-      strokeFill: z.array(FillLayerSchema),
-      blur: z.number(),
-      backdropBlur: z.number(),
-      blurMode: z.enum(['default', 'backdrop']),
-      isDraggable: z.boolean().optional(),
-      blendMode: z.string().optional()
-    })
+    RectangleLayoutParamsSchema
   ),
   state: z.record(RectangleStateParamsSchema)
 }) satisfies ZodType<RectangleItem>;
@@ -162,10 +129,7 @@ const CustomItemSchema = ItemBaseSchema.extend({
       to: z.number().optional()
     }).nullable(),
   ),
-  layoutParams: z.record(z.object({
-    isDraggable: z.boolean().optional(),
-    blendMode: z.string().optional()
-  })),
+  layoutParams: z.record(CustomLayoutParamsSchema),
   state: z.record(CustomItemStateParamsSchema)
 }) satisfies ZodType<CustomItem>;
 
@@ -183,19 +147,7 @@ const VimeoEmbedItemSchema = ItemBaseSchema.extend({
       to: z.number().optional()
     }).nullable(),
   ),
-  layoutParams: z.record(
-    z.object({
-      radius: z.number(),
-      blur: z.number(),
-      opacity: z.number().nonnegative(),
-      play: z.union([z.literal('on-hover'), z.literal('on-click'), z.literal('auto')]),
-      controls: z.boolean(),
-      loop: z.boolean(),
-      muted: z.boolean(),
-      pictureInPicture: z.boolean(),
-      blendMode: z.string().optional()
-    })
-  ),
+  layoutParams: z.record(VimeoEmbedLayoutParamsSchema),
   state: z.record(EmbedStateParamsSchema)
 }) satisfies ZodType<VimeoEmbedItem>;
 
@@ -212,17 +164,7 @@ const YoutubeEmbedItemSchema = ItemBaseSchema.extend({
       to: z.number().optional()
     }).nullable(),
   ),
-  layoutParams: z.record(
-    z.object({
-      radius: z.number(),
-      blur: z.number(),
-      opacity: z.number().nonnegative(),
-      play: z.enum(['on-hover', 'on-click', 'auto']),
-      controls: z.boolean(),
-      loop: z.boolean(),
-      blendMode: z.string().optional()
-    })
-  ),
+  layoutParams: z.record(YoutubeEmbedLayoutParamsSchema),
   state: z.record(EmbedStateParamsSchema)
 }) satisfies ZodType<YoutubeEmbedItem>;
 
@@ -241,13 +183,7 @@ const CodeEmbedItemSchema =  ItemBaseSchema.extend({
     }).nullable(),
   ),
   layoutParams: z.record(
-    z.object({
-      areaAnchor:  z.nativeEnum(AreaAnchor),
-      opacity: z.number().nonnegative(),
-      blur: z.number(),
-      isDraggable: z.boolean().optional(),
-      blendMode: z.string().optional()
-    })
+    CodeEmbedLayoutParamsSchema
   ),
   state: z.record(CodeEmbedStateParamsSchema)
 }) satisfies ZodType<CodeEmbedItem>;
@@ -265,12 +201,7 @@ const ComponentItemSchema = ItemBaseSchema.extend({
       to: z.number().optional()
     }).nullable(),
   ),
-  layoutParams: z.record(z.object({
-    parameters: z.any().optional(),
-    opacity: z.number().nonnegative(),
-    blur: z.number(),
-    blendMode: z.string().optional()
-  })),
+  layoutParams: z.record(ComponentItemLayoutParamsSchema),
   state: z.record(ComponentStateParamsSchema)
 }) satisfies ZodType<ComponentItem>;
 
@@ -297,12 +228,7 @@ export const ItemSchema: ZodType<ItemAny> = z.lazy(() => z.discriminatedUnion('t
       }).nullable(),
     ),
     layoutParams: z.record(
-      z.object({
-        opacity: z.number().nonnegative(),
-        blur: z.number(),
-        isDraggable: z.boolean().optional(),
-        blendMode: z.string().optional()
-      })
+      GroupLayoutParamsSchema
     ),
     state: z.record(GroupStateParamsSchema)
   }),
@@ -320,11 +246,7 @@ export const ItemSchema: ZodType<ItemAny> = z.lazy(() => z.discriminatedUnion('t
       }).nullable(),
     ),
     layoutParams: z.record(
-      z.object({
-        opacity: z.number().nonnegative(),
-        isDraggable: z.boolean().optional(),
-        blendMode: z.string().optional()
-      })
+      CompoundLayoutParamsSchema
     ),
     state: z.record(CompoundStateParamsSchema)
   })

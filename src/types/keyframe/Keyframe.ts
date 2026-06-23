@@ -1,4 +1,4 @@
-import { FillLayer } from "../article/Item";
+import { FillLayer } from "../article/Params.type";
 
 export type KeyframeAny = Keyframe<KeyframeType>;
 
