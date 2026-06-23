@@ -5,11 +5,16 @@ export const articleMock: Article = {
   sections: [
     {
       id: 'sectionId',
+      type: 'default',
       items: [],
       position: {},
-      height: {},
+      minHeight: {},
       hidden: {},
-      color: {}
+      color: {},
+      structuredContent: [],
+      structuredContentSettings: {
+        paddingBottom: {}
+      }
     }
   ],
   interactions: {}
