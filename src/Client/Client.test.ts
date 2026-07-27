@@ -23,8 +23,10 @@ describe('Client', () => {
   it('returns page data', async () => {
     const projectId = 'projectId';
     const API_BASE_URL = 'api-test.cntrl.site';
+    const fontsVaultMock = [{ name: 'Custom', style: 'normal', weight: 400, files: [] }];
     const fetchesMap: Record<string, unknown> = {
       [`https://${API_BASE_URL}/projects/${projectId}?buildMode=default`]: projectMock,
+      [`https://${API_BASE_URL}/projects/${projectId}/fonts-vault?buildMode=default`]: { fonts: fontsVaultMock },
       [`https://${API_BASE_URL}/projects/${projectId}/articles/articleId?buildMode=default`]: {
         article: articleMock,
         keyframes: keyframesMock
@@ -44,10 +46,11 @@ describe('Client', () => {
     };
     const client = new Client(apiUrl, fetch);
     const pageData = await client.getPageData('/');
-    expect(fetchCalledTimes).toBe(2);
+    expect(fetchCalledTimes).toBe(3);
     expect(pageData.project).toEqual(projectMock);
     expect(pageData.article).toEqual(articleMock);
     expect(pageData.keyframes).toEqual(keyframesMock);
+    expect(pageData.fontsVault).toEqual(fontsVaultMock);
     expect(pageData.meta).toEqual({
       description: 'page description',
       favicon: 'project favicon',
@@ -62,6 +65,7 @@ describe('Client', () => {
     const API_BASE_URL = 'api-test.cntrl.site';
     const fetchesMap: Record<string, unknown> = {
       [`https://${API_BASE_URL}/projects/${projectId}?buildMode=default`]: projectMock,
+      [`https://${API_BASE_URL}/projects/${projectId}/fonts-vault?buildMode=default`]: { fonts: [] },
       [`https://${API_BASE_URL}/projects/${projectId}/articles/articleId2?buildMode=default`]: {
         article: articleMock,
         keyframes: keyframesMock
@@ -109,12 +113,13 @@ describe('Client', () => {
     const apiKey = 'MY_API_KEY';
     const apiUrl = `https://${projectId}:${apiKey}@api.cntrl.site/`;
     const projectApiUrl = `https://api.cntrl.site/projects/${projectId}?buildMode=default`;
+    const fontsVaultApiUrl = `https://api.cntrl.site/projects/${projectId}/fonts-vault?buildMode=default`;
     const slug = '/nonexistent-slug';
     const fetch = (url: string) => {
       return Promise.resolve({
-        ok: url === projectApiUrl,
-        json: () => Promise.resolve(projectMock),
-        text: () => Promise.resolve(JSON.stringify(projectMock)),
+        ok: url === projectApiUrl || url === fontsVaultApiUrl,
+        json: () => Promise.resolve(url === fontsVaultApiUrl ? { fonts: [] } : projectMock),
+        text: () => Promise.resolve(JSON.stringify(url === fontsVaultApiUrl ? { fonts: [] } : projectMock)),
         statusText: 'reason'
       });
     };
