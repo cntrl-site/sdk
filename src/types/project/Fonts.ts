@@ -23,3 +23,5 @@ export interface Fonts {
   adobe: string;
   custom: CustomFont[];
 }
+
+export interface FontVault extends CustomFont {}

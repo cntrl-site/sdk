@@ -33,6 +33,7 @@ export type { Interaction, InteractionItemTrigger, InteractionScrollTrigger, Int
 export type { Layout } from './types/project/Layout';
 export type { Project } from './types/project/Project';
 export type { Meta } from './types/project/Meta';
+export type { FontVault } from './types/project/Fonts';
 export type { KeyframeValueMap, KeyframeAny } from './types/keyframe/Keyframe';
 export type { CompoundSettings } from './types/article/CompoundSettings';
 export type { Dimensions, Left, Position, RectCoordinates, RectObject, ScaleOrigin, Sides, Top } from './types/article/Rect';
