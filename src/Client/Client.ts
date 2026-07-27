@@ -10,6 +10,7 @@ import { ArticleSchema } from '../schemas/article/Article.schema';
 import { ProjectSchema } from '../schemas/project/Project.schema';
 import { KeyframesSchema } from '../schemas/keyframe/Keyframes.schema';
 import { CustomComponentMeta } from '../types/customComponent/CustomComponentMeta';
+import { FontVault } from '../types/project/Fonts';
 
 export class Client {
   private url: URL;
@@ -39,6 +40,7 @@ export class Client {
   async getPageData(pageSlug: string, buildMode: 'default' | 'self-hosted' = 'default'): Promise<CntrlPageData> {
     try {
       const project = await this.fetchProject(buildMode);
+      const fontsVault = await this.fetchFontsVault(buildMode);
       const articleId = this.findArticleIdByPageSlug(pageSlug, project.pages);
       const { article, keyframes } = await this.fetchArticle(articleId, buildMode);
       const page = project.pages.find(page => page.slug === pageSlug)!;
@@ -47,6 +49,7 @@ export class Client {
         project,
         article,
         keyframes,
+        fontsVault,
         meta
       };
     } catch (e) {
@@ -74,6 +77,17 @@ export class Client {
     } catch (e) {
       throw e;
     }
+  }
+
+  async fetchFontsVault(buildMode: 'default' | 'self-hosted' = 'default'): Promise<FontVault[]> {
+    const { username: projectId, password: apiKey, origin } = this.url;
+    const url = new URL(`/projects/${projectId}/fonts-vault?buildMode=${buildMode}`, origin);
+    const response = await this.request(url.href, apiKey);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch fonts vault for project #${projectId}: ${response.statusText}`);
+    }
+    const data = await response.json();
+    return data.fonts;
   }
 
   async fetchCustomComponents(buildMode: 'default' | 'self-hosted' = 'default'): Promise<CustomComponentMeta[]> {
@@ -160,5 +174,6 @@ interface ArticleData {
 }
 interface CntrlPageData extends ArticleData {
   project: Project;
+  fontsVault: FontVault[];
   meta: Meta;
 }
