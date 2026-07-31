@@ -43,6 +43,12 @@ program
   .description('Generate sitemap.xml and robots.txt for the published site')
   .option('-o, --output <outputDir>', 'Output directory', 'public')
   .option('-e, --env <envFilename>', 'Name of the .env file', '.env.local')
+  .option(
+    '--extra <paths>',
+    'Comma-separated custom path slugs to include (e.g. templates,tutorials). Merged with Control pages.',
+    collectExtraPaths,
+    [] as string[]
+  )
   .action(async (options) => {
     try {
       config({ path: options.env });
@@ -63,6 +69,11 @@ program
         return;
       }
       const indexable = project.pages.filter(isIndexablePage);
+      const extraSlugs = parseExtraPaths([
+        ...options.extra,
+        ...(process.env.SITEMAP_EXTRA_PATHS ? [process.env.SITEMAP_EXTRA_PATHS] : [])
+      ]);
+      const pages = mergeSitemapPages(indexable, extraSlugs);
       const fallbackLastmod = formatLastmod(new Date().toISOString());
       const outputDir = path.resolve(process.cwd(), options.output);
       if (!fs.existsSync(outputDir)) {
@@ -70,15 +81,47 @@ program
       }
       const sitemapPath = path.resolve(outputDir, 'sitemap.xml');
       const robotsPath = path.resolve(outputDir, 'robots.txt');
-      fs.writeFileSync(sitemapPath, renderSitemap(indexable, siteUrl, fallbackLastmod));
+      fs.writeFileSync(sitemapPath, renderSitemap(pages, siteUrl, fallbackLastmod));
       fs.writeFileSync(robotsPath, renderRobots(siteUrl));
-      console.log(`Generated sitemap.xml at ${sitemapPath} (${indexable.length} of ${project.pages.length} pages)`);
+      const extraCount = pages.length - indexable.length;
+      const extraNote = extraCount > 0 ? `, +${extraCount} custom` : '';
+      console.log(
+        `Generated sitemap.xml at ${sitemapPath} (${pages.length} urls: ${indexable.length} of ${project.pages.length} Control pages${extraNote})`
+      );
       console.log(`Generated robots.txt at ${robotsPath}`);
     } catch (error: any) {
       console.warn(`[sitemap] Failed to generate sitemap/robots: ${error?.message || error}`);
       console.warn('[sitemap] Continuing without updated sitemap.');
     }
   });
+
+function collectExtraPaths(value: string, previous: string[]): string[] {
+  return previous.concat(value);
+}
+
+function parseExtraPaths(values: string[]): string[] {
+  const slugs = new Set<string>();
+  for (const value of values) {
+    for (const part of value.split(',')) {
+      const slug = stripSlashes(part.trim());
+      if (slug) slugs.add(slug);
+    }
+  }
+  return [...slugs];
+}
+
+function mergeSitemapPages(pages: Page[], extraSlugs: string[]): Array<Pick<Page, 'slug' | 'lastModified'>> {
+  const bySlug = new Map<string, Pick<Page, 'slug' | 'lastModified'>>();
+  for (const page of pages) {
+    bySlug.set(page.slug, { slug: page.slug, lastModified: page.lastModified });
+  }
+  for (const slug of extraSlugs) {
+    if (!bySlug.has(slug)) {
+      bySlug.set(slug, { slug });
+    }
+  }
+  return [...bySlug.values()];
+}
 
 function resolveSiteUrl(primaryDomain: string | null | undefined, override: string | undefined): URL | null {
   const host = override || primaryDomain;
@@ -93,7 +136,11 @@ function isIndexablePage(page: Page): boolean {
   return true;
 }
 
-function renderSitemap(pages: Page[], siteUrl: URL, fallbackLastmod: string): string {
+function renderSitemap(
+  pages: Array<Pick<Page, 'slug' | 'lastModified'>>,
+  siteUrl: URL,
+  fallbackLastmod: string
+): string {
   const entries = pages.map(page => {
     const loc = escapeXml(buildPageUrl(siteUrl, page.slug));
     const lastmod = page.lastModified ? formatLastmod(page.lastModified) : fallbackLastmod;
