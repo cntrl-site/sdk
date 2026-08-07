@@ -20,6 +20,7 @@ export type SectionVideo = {
   position: string;
   coverUrl: string | null;
   offsetX: number | null;
+  opacity?: number;
 };
 
 export type SectionImage = {
@@ -28,6 +29,8 @@ export type SectionImage = {
   size: string;
   position: string;
   offsetX: number | null;
+  opacity?: number;
+  tileSize?: number;
 };
 
 export interface ContentBasedSectionSettings {
