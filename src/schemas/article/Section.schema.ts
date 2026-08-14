@@ -25,7 +25,8 @@ const SectionVideoSchema = z.object({
   play: z.enum(['on-click', 'auto']),
   coverUrl: z.string().nullable(),
   position: z.string(),
-  offsetX: z.number().nullable()
+  offsetX: z.number().nullable(),
+  opacity: z.number().min(0).max(1).optional()
 });
 
 const SectionImageSchema = z.object({
@@ -33,7 +34,9 @@ const SectionImageSchema = z.object({
   type: z.literal('image'),
   size: z.string(),
   position: z.string(),
-  offsetX: z.number().nullable()
+  offsetX: z.number().nullable(),
+  opacity: z.number().min(0).max(1).optional(),
+  tileSize: z.number().min(0).max(100).optional()
 });
 
 export const SectionMediaSchema = z.discriminatedUnion('type', [SectionVideoSchema, SectionImageSchema]);
