@@ -57,7 +57,8 @@ const FXParams = z.object({
 const ImageItemSchema = ItemBaseSchema.extend({
   type: z.literal(ArticleItemType.Image),
   commonParams: z.object({
-    pointerEvents
+    pointerEvents,
+    altText: z.string().optional()
   }).merge(FXParams),
   sticky: z.record(
     z.object({
