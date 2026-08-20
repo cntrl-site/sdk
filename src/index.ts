@@ -7,7 +7,7 @@ export { Rect } from './Rect/Rect';
 
 // enums
 export { SectionHeightMode } from './types/article/Section';
-export { TextAlign, TextDecoration, TextTransform, VerticalAlign } from './types/article/RichText';
+export { HeadingTag, TextAlign, TextDecoration, TextTransform, VerticalAlign } from './types/article/RichText';
 export { ArticleItemType } from './types/article/ArticleItemType';
 export { StructuredBlockType } from './types/article/StructuredBlockType';
 export { AreaAnchor, AnchorSide, DimensionMode, PositionType, DimensionsType } from './types/article/ItemArea';

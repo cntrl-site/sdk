@@ -1,5 +1,5 @@
 import { z, ZodType } from 'zod';
-import { RichTextBlock, TextAlign, TextTransform, VerticalAlign } from '../../types/article/RichText';
+import { HeadingTag, RichTextBlock, TextAlign, TextTransform, VerticalAlign } from '../../types/article/RichText';
 import { ItemBaseSchema } from './ItemBase.schema';
 import { ArticleItemType } from '../../types/article/ArticleItemType';
 import { RichTextStateParamsSchema } from './ItemState.schema';
@@ -37,6 +37,7 @@ export const RichTextItemSchema = ItemBaseSchema.extend({
   commonParams: z.object({
     text: z.string(),
     blocks: z.array(RichTextBlockSchema).optional(),
+    heading: z.nativeEnum(HeadingTag).nullable().optional(),
     pointerEvents
   }),
   sticky: z.record(

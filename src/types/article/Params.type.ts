@@ -1,6 +1,6 @@
 import { FXControlAny } from './FX';
 import { AreaAnchor } from './ItemArea';
-import { RichTextBlock, RichTextStyle, TextAlign, TextTransform, VerticalAlign } from './RichText';
+import { HeadingTag, RichTextBlock, RichTextStyle, TextAlign, TextTransform, VerticalAlign } from './RichText';
 
 interface CommonParamsBase {
   pointerEvents?: 'never' | 'when_visible' | 'always';
@@ -19,11 +19,14 @@ export interface VideoCommonParams extends MediaCommonParams {
   scrollPlaybackFrameData?: ScrollPlaybackFrameData | null;
 }
 
-export interface ImageCommonParams extends MediaCommonParams {}
+export interface ImageCommonParams extends MediaCommonParams {
+  altText?: string;
+}
 
 export interface RichTextCommonParams extends CommonParamsBase {
   text: string;
   blocks?: RichTextBlock[];
+  heading?: HeadingTag | null;
 }
 
 export interface RectangleCommonParams extends CommonParamsBase {
@@ -120,7 +123,9 @@ export interface YoutubeEmbedLayoutParams {
   blendMode?: string;
 }
 
-export interface ImageLayoutParams extends MediaLayoutParams {}
+export interface ImageLayoutParams extends MediaLayoutParams {
+  altText?: string;
+}
 
 export interface VideoLayoutParams extends MediaLayoutParams {
   play: 'on-hover' | 'on-click' | 'auto';
