@@ -51,6 +51,7 @@ describe('Client', () => {
     expect(pageData.article).toEqual(articleMock);
     expect(pageData.keyframes).toEqual(keyframesMock);
     expect(pageData.fontsVault).toEqual(fontsVaultMock);
+    expect(pageData.navigation).toBeNull();
     expect(pageData.meta).toEqual({
       description: 'page description',
       favicon: 'project favicon',
@@ -58,6 +59,45 @@ describe('Client', () => {
       opengraphThumbnail: 'page thumbnail',
       title: 'page title'
     });
+  });
+
+  it('returns project navigation from article payload', async () => {
+    const projectId = 'projectId';
+    const API_BASE_URL = 'api-test.cntrl.site';
+    const navigation = {
+      id: 'nav-1',
+      component: {
+        id: 'nav-component-1',
+        componentId: 'burger',
+        content: {},
+        layoutParams: {
+          layout1: { opacity: 1, blur: 0, parameters: {} }
+        }
+      },
+      settings: {
+        layout1: { position: 'stickyTop' as const }
+      }
+    };
+    const fetchesMap: Record<string, unknown> = {
+      [`https://${API_BASE_URL}/projects/${projectId}?buildMode=default`]: projectMock,
+      [`https://${API_BASE_URL}/projects/${projectId}/fonts-vault?buildMode=default`]: { fonts: [] },
+      [`https://${API_BASE_URL}/projects/${projectId}/articles/articleId?buildMode=default`]: {
+        article: articleMock,
+        keyframes: keyframesMock,
+        navigation
+      }
+    };
+    const apiKey = 'MY_API_KEY';
+    const apiUrl = `https://${projectId}:${apiKey}@${API_BASE_URL}/`;
+    const fetch = async (url: string) => Promise.resolve({
+      ok: true,
+      json: () => Promise.resolve(fetchesMap[url]),
+      text: () => Promise.resolve(JSON.stringify(fetchesMap[url])),
+      statusText: ''
+    });
+    const client = new Client(apiUrl, fetch);
+    const pageData = await client.getPageData('/');
+    expect(pageData.navigation).toEqual(navigation);
   });
 
   it('ignores page meta if it is not enabled and uses project meta instead', async () => {

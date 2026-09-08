@@ -11,6 +11,8 @@ import { ProjectSchema } from '../schemas/project/Project.schema';
 import { KeyframesSchema } from '../schemas/keyframe/Keyframes.schema';
 import { CustomComponentMeta } from '../types/customComponent/CustomComponentMeta';
 import { FontVault } from '../types/project/Fonts';
+import { ProjectNavigation } from '../types/project/ProjectNavigation';
+import { ProjectNavigationSchema } from '../schemas/project/ProjectNavigation.schema';
 
 export class Client {
   private url: URL;
@@ -42,7 +44,7 @@ export class Client {
       const project = await this.fetchProject(buildMode);
       const fontsVault = await this.fetchFontsVault(buildMode);
       const articleId = this.findArticleIdByPageSlug(pageSlug, project.pages);
-      const { article, keyframes } = await this.fetchArticle(articleId, buildMode);
+      const { article, keyframes, navigation } = await this.fetchArticle(articleId, buildMode);
       const page = project.pages.find(page => page.slug === pageSlug)!;
       const meta = Client.getPageMeta(project.meta, page?.meta!);
       return {
@@ -50,7 +52,8 @@ export class Client {
         article,
         keyframes,
         fontsVault,
-        meta
+        meta,
+        navigation
       };
     } catch (e) {
       throw e;
@@ -136,7 +139,8 @@ export class Client {
     const data = await response.json();
     const article = ArticleSchema.parse(data.article);
     const keyframes = KeyframesSchema.parse(data.keyframes);
-    return { article, keyframes };
+    const navigation = data.navigation == null ? null : ProjectNavigationSchema.parse(data.navigation);
+    return { article, keyframes, navigation };
   }
 
   private request(url: string, apiKey: string): Promise<FetchImplResponse> {
@@ -171,8 +175,9 @@ type FetchImpl = (url: string, init?: RequestInit) => Promise<FetchImplResponse>
 interface ArticleData {
   article: Article;
   keyframes: KeyframeAny[];
+  navigation: ProjectNavigation | null;
 }
-interface CntrlPageData extends ArticleData {
+export interface CntrlPageData extends ArticleData {
   project: Project;
   fontsVault: FontVault[];
   meta: Meta;
