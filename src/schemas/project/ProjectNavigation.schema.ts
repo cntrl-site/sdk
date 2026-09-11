@@ -10,9 +10,11 @@ import { ComponentItemLayoutParamsSchema } from '../article/ElementLayoutParams.
 
 export const NavigationComponentSchema = z.object({
   id: z.string().min(1),
-  componentId: z.string().min(1),
-  content: z.any().optional(),
-  parameters: z.record(z.any()).optional(),
+  commonParams: z.object({
+    componentId: z.string(),
+    content: z.any().optional(),
+    parameters: z.record(z.any()).optional()
+  }),
   layoutParams: z.record(ComponentItemLayoutParamsSchema)
 }) satisfies ZodType<NavigationComponent>;
 

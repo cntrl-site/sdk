@@ -1,12 +1,11 @@
 import { ComponentLayoutParams } from '../article/Params.type';
+import { StructuredBlockComponentCommonParams } from '../article/StructuredBlock';
 
 type LayoutIdentifier = string;
 
 export interface NavigationComponent {
   id: string;
-  componentId: string;
-  content?: any;
-  parameters?: Record<string, any>;
+  commonParams: StructuredBlockComponentCommonParams;
   layoutParams: Record<LayoutIdentifier, ComponentLayoutParams>;
 }
 

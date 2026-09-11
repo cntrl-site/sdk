@@ -68,8 +68,10 @@ describe('Client', () => {
       id: 'nav-1',
       component: {
         id: 'nav-component-1',
-        componentId: 'burger',
-        content: {},
+        commonParams: {
+          componentId: 'burger',
+          content: {}
+        },
         layoutParams: {
           layout1: { opacity: 1, blur: 0, parameters: {} }
         }
