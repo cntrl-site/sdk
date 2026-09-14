@@ -7,14 +7,11 @@ import {
   ProjectNavigationSettings
 } from '../../types/project/ProjectNavigation';
 import { ComponentItemLayoutParamsSchema } from '../article/ElementLayoutParams.schema';
+import { StructuredBlockComponentCommonParamsSchema } from '../article/StructuredBlock.schema';
 
 export const NavigationComponentSchema = z.object({
   id: z.string().min(1),
-  commonParams: z.object({
-    componentId: z.string(),
-    content: z.any().optional(),
-    parameters: z.record(z.any()).optional()
-  }),
+  commonParams: StructuredBlockComponentCommonParamsSchema,
   layoutParams: z.record(ComponentItemLayoutParamsSchema)
 }) satisfies ZodType<NavigationComponent>;
 

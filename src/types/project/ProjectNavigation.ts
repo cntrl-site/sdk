@@ -1,13 +1,12 @@
 import { ComponentLayoutParams } from '../article/Params.type';
-import { StructuredBlockComponentCommonParams } from '../article/StructuredBlock';
+import { ComponentStructuredBlock } from '../article/StructuredBlock';
 
 type LayoutIdentifier = string;
 
-export interface NavigationComponent {
-  id: string;
-  commonParams: StructuredBlockComponentCommonParams;
-  layoutParams: Record<LayoutIdentifier, ComponentLayoutParams>;
-}
+export type NavigationComponent = Pick<
+  ComponentStructuredBlock,
+  'id' | 'commonParams' | 'layoutParams'
+>;
 
 export type ProjectNavigationPosition = 'default' | 'stickyTop' | 'switch';
 
