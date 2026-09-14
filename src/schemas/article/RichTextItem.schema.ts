@@ -1,5 +1,5 @@
 import { z, ZodType } from 'zod';
-import { HeadingTag, RichTextBlock, TextAlign, TextTransform, VerticalAlign } from '../../types/article/RichText';
+import { HeadingTag, Hyphens, RichTextBlock, TextAlign, TextTransform, VerticalAlign } from '../../types/article/RichText';
 import { ItemBaseSchema } from './ItemBase.schema';
 import { ArticleItemType } from '../../types/article/ArticleItemType';
 import { RichTextStateParamsSchema } from './ItemState.schema';
@@ -63,6 +63,10 @@ export const RichTextItemSchema = ItemBaseSchema.extend({
       fontStyle: z.string(),
       fontWeight: z.number(),
       fontVariant: z.string(),
+      columns: z.number().optional(),
+      columnWidth: z.number().optional(),
+      columnGutter: z.number().optional(),
+      hyphens: z.nativeEnum(Hyphens).optional(),
       isDraggable: z.boolean().optional(),
       blendMode: z.string().optional()
     })

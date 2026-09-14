@@ -1,6 +1,6 @@
 import { FXControlAny } from './FX';
 import { AreaAnchor } from './ItemArea';
-import { HeadingTag, RichTextBlock, RichTextStyle, TextAlign, TextTransform, VerticalAlign } from './RichText';
+import { HeadingTag, Hyphens, RichTextBlock, RichTextStyle, TextAlign, TextTransform, VerticalAlign } from './RichText';
 
 interface CommonParamsBase {
   pointerEvents?: 'never' | 'when_visible' | 'always';
@@ -150,6 +150,10 @@ export interface RichTextLayoutParams {
   fontStyle: string;
   fontWeight: number;
   fontVariant: string;
+  columns?: number;
+  columnWidth?: number;
+  columnGutter?: number;
+  hyphens?: Hyphens;
   isDraggable?: boolean;
   blendMode?: string;
 }
