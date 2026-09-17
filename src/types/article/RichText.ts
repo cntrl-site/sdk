@@ -53,3 +53,8 @@ export enum TextDecoration {
   Underline = 'underline',
   None = 'none'
 }
+
+export enum Hyphens {
+  None = 'none',
+  Auto = 'auto'
+}
