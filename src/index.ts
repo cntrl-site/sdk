@@ -1,5 +1,6 @@
 // logic
 export { Client as CntrlClient } from './Client/Client';
+export type { CntrlPageData } from './Client/Client';
 export { FontFaceGenerator } from './FontFaceGenerator/FontFaceGenerator';
 export { getLayoutStyles, getLayoutMediaQuery, measureFont } from './utils';
 export { ScrollPlaybackVideoManager } from './ScrollPlaybackVideoManager/ScrollPlaybackVideoManager';
@@ -32,6 +33,13 @@ export type { ItemState, ItemStateParams, StateParams, ItemStatesMap } from './t
 export type { Interaction, InteractionItemTrigger, InteractionScrollTrigger, InteractionState, InteractionItemScrollTrigger } from './types/article/Interaction';
 export type { Layout } from './types/project/Layout';
 export type { Project } from './types/project/Project';
+export type {
+  ProjectNavigation,
+  NavigationComponent,
+  ProjectNavigationPosition,
+  ProjectNavigationSettings,
+  ProjectNavigationLayoutSettings
+} from './types/project/ProjectNavigation';
 export type { Meta } from './types/project/Meta';
 export type { FontVault } from './types/project/Fonts';
 export type { KeyframeValueMap, KeyframeAny } from './types/keyframe/Keyframe';

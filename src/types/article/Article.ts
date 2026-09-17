@@ -5,4 +5,5 @@ export interface Article {
   id: string;
   sections: Section[];
   interactions: Record<string, Interaction[]>;
+  navigationHidden?: Record<string, boolean>;
 }
