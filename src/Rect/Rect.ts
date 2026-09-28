@@ -1,7 +1,5 @@
 import { Dimensions, Left, Position, RectCoordinates, RectObject, scaleMatrix, ScaleOrigin, Sides, Top } from "../types/article/Rect";
 
-type Point = { x: number; y: number };
-
 export class Rect {
   public static fromObject({ x, y, width, height }: RectObject): Rect {
     return new Rect(x, y, width, height);
@@ -75,7 +73,7 @@ export class Rect {
   }
 
   public static getUnrotatedChildRect(parentRect: Rect, childRect: Rect, rotationAngle: number): Rect {
-    const radians = -1 * rotationAngle * (Math.PI / 180);
+    const radians = -Rect.toRadians(rotationAngle);
     const parentCenterX = parentRect.left + parentRect.width / 2;
     const parentCenterY = parentRect.top + parentRect.height / 2;
     const relativeX = childRect.left + childRect.width / 2 - parentCenterX;
@@ -91,7 +89,7 @@ export class Rect {
 
   public static getRotatedRectCoordinates(originalRect: Rect, newRect: Rect, angle: number): RectCoordinates {
     if (angle === 0) return [newRect.left, newRect.top, newRect.right, newRect.bottom];
-    const radians: number = (Math.PI * angle) / 180;
+    const radians: number = Rect.toRadians(angle);
     const cos: number = Math.cos(radians);
     const sin: number = Math.sin(radians);
     const centerX = originalRect.left + originalRect.width / 2;
@@ -108,7 +106,7 @@ export class Rect {
     const [left, top, right, bottom] = coords;
     const centerX: number = (right + left) / 2;
     const centerY: number = (bottom + top) / 2;
-    const radians: number = -1 * (Math.PI * angle) / 180;
+    const radians: number = -Rect.toRadians(angle);
     const cos: number = Math.cos(radians);
     const sin: number = Math.sin(radians);
     const newLeft: number = left * cos - top * sin - cos * centerX + sin * centerY + centerX;
@@ -117,7 +115,7 @@ export class Rect {
   }
 
   public static getOriginRectFromBoundary = (boundary: DOMRect, angle: number, ratio: number): Rect => {
-    const radians = angle * (Math.PI / 180);
+    const radians = Rect.toRadians(angle);
     const cos = Math.abs(Math.cos(radians));
     const sin = Math.abs(Math.sin(radians));
     const W = boundary.width;
@@ -140,7 +138,8 @@ export class Rect {
 
   public static getRotatedBoundingBox(boundary: Rect, angle: number) {
     if (angle === 0) return Rect.fromObject(boundary);
-    const rotatedCorners = Rect.getRotatedCorners(boundary, angle);
+    const radians = Rect.toRadians(angle);
+    const rotatedCorners = Rect.getCorners(boundary, Math.cos(radians), Math.sin(radians));
     const xValues = rotatedCorners.map(point => point.x);
     const yValues = rotatedCorners.map(point => point.y);
     const minX = Math.min(...xValues);
@@ -151,12 +150,12 @@ export class Rect {
   }
 
   public static intersectsRotated(rect: Rect, target: Rect, angle: number): boolean {
-    const radians = (angle * Math.PI) / 180;
+    const radians = Rect.toRadians(angle);
     const cos = Math.cos(radians);
     const sin = Math.sin(radians);
-    const rectCorners = Rect.getRotatedCorners(rect, 0);
-    const targetCorners = Rect.getRotatedCorners(target, angle);
-    const axes: Point[] = [
+    const rectCorners = Rect.getCorners(rect);
+    const targetCorners = Rect.getCorners(target, cos, sin);
+    const axes: Position[] = [
       { x: 1, y: 0 },
       { x: 0, y: 1 },
       { x: cos, y: sin },
@@ -249,13 +248,10 @@ export class Rect {
     return { x, y };
   }
 
-  private static getRotatedCorners({ x, y, width, height }: Rect, angle: number): Point[] {
-    const radians = (angle * Math.PI) / 180;
-    const cos = Math.cos(radians);
-    const sin = Math.sin(radians);
+  private static getCorners({ x, y, width, height }: Rect, cos: number = 1, sin: number = 0): Position[] {
     const cx = x + width / 2;
     const cy = y + height / 2;
-    const corners: Point[] = [
+    const corners: Position[] = [
       { x, y },
       { x: x + width, y },
       { x: x + width, y: y + height },
@@ -267,9 +263,13 @@ export class Rect {
     }));
   }
 
-  private static projectOnAxis(points: Point[], axis: Point): [min: number, max: number] {
+  private static projectOnAxis(points: Position[], axis: Position): [min: number, max: number] {
     const values = points.map(p => p.x * axis.x + p.y * axis.y);
     return [Math.min(...values), Math.max(...values)];
+  }
+
+  private static toRadians(degrees: number): number {
+    return degrees * (Math.PI / 180);
   }
 
   private static getNormalizedFactor(factor: number): number {
