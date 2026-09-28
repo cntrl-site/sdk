@@ -92,7 +92,7 @@ export class Rect {
 
   public static getUnRotatedPosition(coords: RectCoordinates, angle: number): [Top, Left] {
     const [left, top, right, bottom] = coords;
-    const center = { x: (right + left) / 2, y: (bottom + top) / 2 };
+    const center = Rect.getCenter({ left, top, right, bottom });
     const { x, y } = Rect.rotatePoint({ x: left, y: top }, center, Rect.getRotation(-angle));
     return [x, y];
   }
@@ -241,7 +241,7 @@ export class Rect {
     return corners.map(corner => Rect.rotatePoint(corner, center, rotation));
   }
 
-  private static getCenter({ left, top, right, bottom }: Rect): Position {
+  private static getCenter({ left, top, right, bottom }: Pick<Rect, 'left' | 'top' | 'right' | 'bottom'>): Position {
     return { x: (left + right) / 2, y: (top + bottom) / 2 };
   }
 
