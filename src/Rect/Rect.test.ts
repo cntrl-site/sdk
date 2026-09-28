@@ -61,6 +61,14 @@ describe('Rect.getRotatedBoundingBox', () => {
     expect(box.width).toBeCloseTo(50);
     expect(box.height).toBeCloseTo(200);
   });
+
+  it('rotates a negative-width rect around its true center', () => {
+    const box = Rect.getRotatedBoundingBox(new Rect(100, 0, -100, 100), 90);
+    expect(box.x).toBeCloseTo(0);
+    expect(box.y).toBeCloseTo(0);
+    expect(box.width).toBeCloseTo(100);
+    expect(box.height).toBeCloseTo(100);
+  });
 });
 
 describe('Rect.getRotatedRectCoordinates', () => {
