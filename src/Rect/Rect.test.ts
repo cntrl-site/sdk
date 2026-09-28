@@ -109,4 +109,11 @@ describe('Rect.getUnrotatedChildRect', () => {
     expect(child.width).toBe(20);
     expect(child.height).toBe(20);
   });
+
+  it('pivots a negative-width child around its true center', () => {
+    const child = Rect.getUnrotatedChildRect(new Rect(0, 0, 200, 100), new Rect(170, 40, -20, 20), 90);
+    expect(child.left).toBeCloseTo(90);
+    expect(child.right).toBeCloseTo(110);
+    expect(child.top).toBeCloseTo(-20);
+  });
 });

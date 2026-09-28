@@ -229,8 +229,9 @@ export class Rect {
     return { x, y };
   }
 
-  private static getCorners({ x, y, width, height }: Rect, rotation: Rotation = NO_ROTATION): Position[] {
-    const center = { x: x + width / 2, y: y + height / 2 };
+  private static getCorners(rect: Rect, rotation: Rotation = NO_ROTATION): Position[] {
+    const { x, y, width, height } = rect;
+    const center = Rect.getCenter(rect);
     const corners: Position[] = [
       { x, y },
       { x: x + width, y },
@@ -240,8 +241,8 @@ export class Rect {
     return corners.map(corner => Rect.rotatePoint(corner, center, rotation));
   }
 
-  private static getCenter({ left, top, width, height }: Rect): Position {
-    return { x: left + width / 2, y: top + height / 2 };
+  private static getCenter({ left, top, right, bottom }: Rect): Position {
+    return { x: (left + right) / 2, y: (top + bottom) / 2 };
   }
 
   private static getRotation(degrees: number): Rotation {
