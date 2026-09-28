@@ -1,5 +1,7 @@
 import { Dimensions, Left, Position, RectCoordinates, RectObject, scaleMatrix, ScaleOrigin, Sides, Top } from "../types/article/Rect";
 
+type Point = { x: number; y: number };
+
 export class Rect {
   public static fromObject({ x, y, width, height }: RectObject): Rect {
     return new Rect(x, y, width, height);
@@ -138,25 +140,7 @@ export class Rect {
 
   public static getRotatedBoundingBox(boundary: Rect, angle: number) {
     if (angle === 0) return Rect.fromObject(boundary);
-    const { x, y, width, height } = boundary;
-    const radian = (angle * Math.PI) / 180;
-    const cx = x + width / 2;
-    const cy = y + height / 2;
-    const corners = [
-      { x, y },
-      { x: x + width, y },
-      { x, y: y + height },
-      { x: x + width, y: y + height }
-    ];
-    const rotatedCorners = corners.map((corner) => {
-      const dx = corner.x - cx;
-      const dy = corner.y - cy;
-
-      return {
-        x: cx + (dx * Math.cos(radian) - dy * Math.sin(radian)),
-        y: cy + (dx * Math.sin(radian) + dy * Math.cos(radian))
-      };
-    });
+    const rotatedCorners = Rect.getRotatedCorners(boundary, angle);
     const xValues = rotatedCorners.map(point => point.x);
     const yValues = rotatedCorners.map(point => point.y);
     const minX = Math.min(...xValues);
@@ -164,6 +148,25 @@ export class Rect {
     const minY = Math.min(...yValues);
     const maxY = Math.max(...yValues);
     return new Rect(minX, minY, maxX - minX, maxY - minY);
+  }
+
+  public static intersectsRotated(rect: Rect, target: Rect, angle: number): boolean {
+    const radians = (angle * Math.PI) / 180;
+    const cos = Math.cos(radians);
+    const sin = Math.sin(radians);
+    const rectCorners = Rect.getRotatedCorners(rect, 0);
+    const targetCorners = Rect.getRotatedCorners(target, angle);
+    const axes: Point[] = [
+      { x: 1, y: 0 },
+      { x: 0, y: 1 },
+      { x: cos, y: sin },
+      { x: -sin, y: cos }
+    ];
+    return axes.every(axis => {
+      const [rectMin, rectMax] = Rect.projectOnAxis(rectCorners, axis);
+      const [targetMin, targetMax] = Rect.projectOnAxis(targetCorners, axis);
+      return rectMin <= targetMax && targetMin <= rectMax;
+    });
   }
 
   public static getRelativeRect(src: Rect, origin: Rect): Rect {
@@ -244,6 +247,29 @@ export class Rect {
     const x = rect.left + (rect.width - newDimensions.width) / 2;
     const y = rect.top + (rect.height - newDimensions.height) / 2;
     return { x, y };
+  }
+
+  private static getRotatedCorners({ x, y, width, height }: Rect, angle: number): Point[] {
+    const radians = (angle * Math.PI) / 180;
+    const cos = Math.cos(radians);
+    const sin = Math.sin(radians);
+    const cx = x + width / 2;
+    const cy = y + height / 2;
+    const corners: Point[] = [
+      { x, y },
+      { x: x + width, y },
+      { x: x + width, y: y + height },
+      { x, y: y + height }
+    ];
+    return corners.map(corner => ({
+      x: cx + (corner.x - cx) * cos - (corner.y - cy) * sin,
+      y: cy + (corner.x - cx) * sin + (corner.y - cy) * cos
+    }));
+  }
+
+  private static projectOnAxis(points: Point[], axis: Point): [min: number, max: number] {
+    const values = points.map(p => p.x * axis.x + p.y * axis.y);
+    return [Math.min(...values), Math.max(...values)];
   }
 
   private static getNormalizedFactor(factor: number): number {
