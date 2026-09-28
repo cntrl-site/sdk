@@ -7,6 +7,7 @@
 #   AGENT          - short agent name (e.g. quality)
 #   REVIEW_OUTCOME - outcome of the claude-code-action step (success|failure|...)
 #   EXECUTION_FILE - claude-code-action execution_file (empty if it didn't run)
+#                    (a run whose final result has is_error: true counts as failed)
 #   FINDINGS_FILE  - /tmp/${AGENT}-findings.json (may be absent)
 #   HEAD_SHA       - commit reviewed this run
 #   PRIOR_SHA      - reviewed-sha recorded by the previous run (may be empty)
@@ -29,8 +30,18 @@ REVIEW_OUTCOME="${REVIEW_OUTCOME:-failure}"
 PRIOR_SHA="${PRIOR_SHA:-}"
 
 agent_ran=false
+agent_error=""
 if [ "$REVIEW_OUTCOME" = "success" ] && [ -n "${EXECUTION_FILE:-}" ] && [ -f "${EXECUTION_FILE:-/nonexistent}" ]; then
-  agent_ran=true
+  if [ "$(jq -r 'last | .is_error // false' "$EXECUTION_FILE" 2>/dev/null || echo false)" = true ]; then
+    agent_error="$(jq -r '
+      (last | .result | select(type == "string" and . != ""))
+      // ([.[] | select(.type == "assistant") | .message.content[]? | select(.type == "text") | .text] | last)
+      // "no error message in the execution file"
+    ' "$EXECUTION_FILE" 2>/dev/null | tr '\n' ' ' | cut -c1-1000)"
+    agent_error="${agent_error:-no error message in the execution file}"
+  else
+    agent_ran=true
+  fi
 fi
 
 num_findings=0
@@ -58,7 +69,7 @@ if [ "$agent_ran" = true ]; then
   fi
 else
   record_sha="$PRIOR_SHA"
-  if [ "$REVIEW_OUTCOME" = "success" ]; then
+  if [ "$REVIEW_OUTCOME" = "success" ] && [ -z "$agent_error" ]; then
     status="skipped"
   else
     status="failed"
@@ -81,8 +92,14 @@ case "$status" in
     echo "::warning title=${AGENT} review skipped::claude-code-action self-skipped (workflow-validation gate: the workflow file must be byte-identical to the version on the default branch). This is expected on the PR that adds/edits this workflow and resolves once it is merged to the default branch."
     ;;
   failed)
-    echo "::error title=${AGENT} review failed::claude-code-action exited non-zero (e.g. model unavailable, Anthropic auth, or a crash). See the 'Run anthropics/claude-code-action' step log above."
+    if [ -n "$agent_error" ]; then
+      echo "::error title=${AGENT} review failed::Claude Code ended with an error: ${agent_error}"
+    else
+      echo "::error title=${AGENT} review failed::claude-code-action exited non-zero (e.g. model unavailable, Anthropic auth, or a crash). See the 'Run anthropics/claude-code-action' step log above."
+    fi
     ;;
 esac
 
 echo "Results: agent=$AGENT status=$status findings=$num_findings record_sha=${record_sha:-<none>} (turns=$turns cost=\$$cost duration=${duration}s)"
+
+[ "$status" != failed ]
