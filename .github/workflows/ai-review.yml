@@ -95,7 +95,7 @@ jobs:
       # auth, crash) must turn the job — and the workflow — red. The action's own
       # workflow-validation gate exits 0 (a benign skip, surfaced by the
       # Compute results step), so it does NOT trip this.
-      - uses: anthropics/claude-code-action@b7d4743d48297882c74b24c8bce8ec28a62d1d7c # v1.0.159
+      - uses: anthropics/claude-code-action@756cc22e19660d20e8cc9496b4f242475a7f7790 # v1.0.235
         id: review
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
