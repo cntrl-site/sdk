@@ -62,3 +62,43 @@ describe('Rect.getRotatedBoundingBox', () => {
     expect(box.height).toBeCloseTo(200);
   });
 });
+
+describe('Rect.getRotatedRectCoordinates', () => {
+  it('returns the plain coordinates when not rotated', () => {
+    const rect = new Rect(10, 20, 30, 40);
+    expect(Rect.getRotatedRectCoordinates(rect, rect, 0)).toEqual([10, 20, 40, 60]);
+  });
+
+  it('rotates the top-left and bottom-right corners around the original center', () => {
+    const [left, top, right, bottom] = Rect.getRotatedRectCoordinates(square, square, 90);
+    expect(left).toBeCloseTo(100);
+    expect(top).toBeCloseTo(0);
+    expect(right).toBeCloseTo(0);
+    expect(bottom).toBeCloseTo(100);
+  });
+});
+
+describe('Rect.getUnRotatedPosition', () => {
+  it('undoes getRotatedRectCoordinates', () => {
+    const rect = new Rect(10, 20, 100, 50);
+    const [left, top] = Rect.getUnRotatedPosition(Rect.getRotatedRectCoordinates(rect, rect, 30), 30);
+    expect(left).toBeCloseTo(10);
+    expect(top).toBeCloseTo(20);
+  });
+
+  it('rotates the first corner back around the coordinates center', () => {
+    const [left, top] = Rect.getUnRotatedPosition([100, 0, 0, 100], 90);
+    expect(left).toBeCloseTo(0);
+    expect(top).toBeCloseTo(0);
+  });
+});
+
+describe('Rect.getUnrotatedChildRect', () => {
+  it('rotates the child center back around the parent center', () => {
+    const child = Rect.getUnrotatedChildRect(new Rect(0, 0, 200, 100), new Rect(150, 40, 20, 20), 90);
+    expect(child.x).toBeCloseTo(90);
+    expect(child.y).toBeCloseTo(-20);
+    expect(child.width).toBe(20);
+    expect(child.height).toBe(20);
+  });
+});

@@ -1,5 +1,9 @@
 import { Dimensions, Left, Position, RectCoordinates, RectObject, scaleMatrix, ScaleOrigin, Sides, Top } from "../types/article/Rect";
 
+type Rotation = { cos: number; sin: number };
+
+const NO_ROTATION: Rotation = { cos: 1, sin: 0 };
+
 export class Rect {
   public static fromObject({ x, y, width, height }: RectObject): Rect {
     return new Rect(x, y, width, height);
@@ -73,51 +77,30 @@ export class Rect {
   }
 
   public static getUnrotatedChildRect(parentRect: Rect, childRect: Rect, rotationAngle: number): Rect {
-    const radians = -Rect.toRadians(rotationAngle);
-    const parentCenterX = parentRect.left + parentRect.width / 2;
-    const parentCenterY = parentRect.top + parentRect.height / 2;
-    const relativeX = childRect.left + childRect.width / 2 - parentCenterX;
-    const relativeY = childRect.top + childRect.height / 2 - parentCenterY;
-    const unrotatedX = relativeX * Math.cos(radians) - relativeY * Math.sin(radians);
-    const unrotatedY = relativeX * Math.sin(radians) + relativeY * Math.cos(radians);
-    const finalX = unrotatedX + parentCenterX;
-    const finalY = unrotatedY + parentCenterY;
-    const unrotatedWidth = childRect.width;
-    const unrotatedHeight = childRect.height;
-    return new Rect(finalX - unrotatedWidth / 2, finalY - unrotatedHeight / 2, unrotatedWidth, unrotatedHeight);
+    const { x, y } = Rect.rotatePoint(Rect.getCenter(childRect), Rect.getCenter(parentRect), Rect.getRotation(-rotationAngle));
+    return new Rect(x - childRect.width / 2, y - childRect.height / 2, childRect.width, childRect.height);
   }
 
   public static getRotatedRectCoordinates(originalRect: Rect, newRect: Rect, angle: number): RectCoordinates {
     if (angle === 0) return [newRect.left, newRect.top, newRect.right, newRect.bottom];
-    const radians: number = Rect.toRadians(angle);
-    const cos: number = Math.cos(radians);
-    const sin: number = Math.sin(radians);
-    const centerX = originalRect.left + originalRect.width / 2;
-    const centerY = originalRect.top + originalRect.height / 2;
-    const { left, top, right, bottom } = newRect;
-    const rotatedLeft = left * cos - top * sin - centerX * cos + centerY * sin + centerX;
-    const rotatedTop = left * sin + top * cos - centerX * sin - centerY * cos + centerY;
-    const rotatedRight = right * cos - bottom * sin - centerX * cos + centerY * sin + centerX;
-    const rotatedBottom = right * sin + bottom * cos - centerX * sin - centerY * cos + centerY;
-    return [rotatedLeft, rotatedTop, rotatedRight, rotatedBottom];
+    const center = Rect.getCenter(originalRect);
+    const rotation = Rect.getRotation(angle);
+    const topLeft = Rect.rotatePoint({ x: newRect.left, y: newRect.top }, center, rotation);
+    const bottomRight = Rect.rotatePoint({ x: newRect.right, y: newRect.bottom }, center, rotation);
+    return [topLeft.x, topLeft.y, bottomRight.x, bottomRight.y];
   }
 
   public static getUnRotatedPosition(coords: RectCoordinates, angle: number): [Top, Left] {
     const [left, top, right, bottom] = coords;
-    const centerX: number = (right + left) / 2;
-    const centerY: number = (bottom + top) / 2;
-    const radians: number = -Rect.toRadians(angle);
-    const cos: number = Math.cos(radians);
-    const sin: number = Math.sin(radians);
-    const newLeft: number = left * cos - top * sin - cos * centerX + sin * centerY + centerX;
-    const newTop: number = left * sin + top * cos - sin * centerX - cos * centerY + centerY;
-    return [newLeft, newTop];
+    const center = { x: (right + left) / 2, y: (bottom + top) / 2 };
+    const { x, y } = Rect.rotatePoint({ x: left, y: top }, center, Rect.getRotation(-angle));
+    return [x, y];
   }
 
   public static getOriginRectFromBoundary = (boundary: DOMRect, angle: number, ratio: number): Rect => {
-    const radians = Rect.toRadians(angle);
-    const cos = Math.abs(Math.cos(radians));
-    const sin = Math.abs(Math.sin(radians));
+    const rotation = Rect.getRotation(angle);
+    const cos = Math.abs(rotation.cos);
+    const sin = Math.abs(rotation.sin);
     const W = boundary.width;
     const H = boundary.height;
     if (Math.abs(angle % 180) === 90) {
@@ -138,8 +121,7 @@ export class Rect {
 
   public static getRotatedBoundingBox(boundary: Rect, angle: number) {
     if (angle === 0) return Rect.fromObject(boundary);
-    const radians = Rect.toRadians(angle);
-    const rotatedCorners = Rect.getCorners(boundary, Math.cos(radians), Math.sin(radians));
+    const rotatedCorners = Rect.getCorners(boundary, Rect.getRotation(angle));
     const xValues = rotatedCorners.map(point => point.x);
     const yValues = rotatedCorners.map(point => point.y);
     const minX = Math.min(...xValues);
@@ -150,11 +132,10 @@ export class Rect {
   }
 
   public static intersectsRotated(rect: Rect, target: Rect, angle: number): boolean {
-    const radians = Rect.toRadians(angle);
-    const cos = Math.cos(radians);
-    const sin = Math.sin(radians);
+    const rotation = Rect.getRotation(angle);
+    const { cos, sin } = rotation;
     const rectCorners = Rect.getCorners(rect);
-    const targetCorners = Rect.getCorners(target, cos, sin);
+    const targetCorners = Rect.getCorners(target, rotation);
     const axes: Position[] = [
       { x: 1, y: 0 },
       { x: 0, y: 1 },
@@ -248,28 +229,35 @@ export class Rect {
     return { x, y };
   }
 
-  private static getCorners({ x, y, width, height }: Rect, cos: number = 1, sin: number = 0): Position[] {
-    const cx = x + width / 2;
-    const cy = y + height / 2;
+  private static getCorners({ x, y, width, height }: Rect, rotation: Rotation = NO_ROTATION): Position[] {
+    const center = { x: x + width / 2, y: y + height / 2 };
     const corners: Position[] = [
       { x, y },
       { x: x + width, y },
       { x: x + width, y: y + height },
       { x, y: y + height }
     ];
-    return corners.map(corner => ({
-      x: cx + (corner.x - cx) * cos - (corner.y - cy) * sin,
-      y: cy + (corner.x - cx) * sin + (corner.y - cy) * cos
-    }));
+    return corners.map(corner => Rect.rotatePoint(corner, center, rotation));
+  }
+
+  private static getCenter({ left, top, width, height }: Rect): Position {
+    return { x: left + width / 2, y: top + height / 2 };
+  }
+
+  private static getRotation(degrees: number): Rotation {
+    const radians = degrees * (Math.PI / 180);
+    return { cos: Math.cos(radians), sin: Math.sin(radians) };
+  }
+
+  private static rotatePoint(point: Position, center: Position, { cos, sin }: Rotation): Position {
+    const dx = point.x - center.x;
+    const dy = point.y - center.y;
+    return { x: center.x + dx * cos - dy * sin, y: center.y + dx * sin + dy * cos };
   }
 
   private static projectOnAxis(points: Position[], axis: Position): [min: number, max: number] {
     const values = points.map(p => p.x * axis.x + p.y * axis.y);
     return [Math.min(...values), Math.max(...values)];
-  }
-
-  private static toRadians(degrees: number): number {
-    return degrees * (Math.PI / 180);
   }
 
   private static getNormalizedFactor(factor: number): number {
