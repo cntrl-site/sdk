@@ -1,5 +1,5 @@
 import { ItemAny } from './Item';
-import { StructuredBlockAny } from './StructuredBlock';
+import { HeaderStructuredBlock, StructuredBlockAny } from './StructuredBlock';
 
 export enum SectionHeightMode {
   ControlUnits = 'control-units' ,
@@ -64,6 +64,8 @@ export type DefaultSection = SectionBase & {
 export type ContentBasedSection = SectionBase & {
   type: 'content-based';
   structuredContentSettings: ContentBasedSectionSettings;
+  /** Draws some blocks of `structuredContent` at the top of the section, out of the stack's order. */
+  header?: HeaderStructuredBlock;
 };
 
 export type Section = DefaultSection | ContentBasedSection;

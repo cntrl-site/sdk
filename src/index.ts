@@ -25,7 +25,11 @@ export type {
 export type { Link, StickyParams, FillLayer, ScrollPlaybackFrameData } from './types/article/Params.type';
 export type {
   StructuredBlock, ComponentStructuredBlock, RichTextStructuredBlock,
-  ImageStructuredBlock, VimeoEmbedStructuredBlock, YoutubeEmbedStructuredBlock, StructuredBlockAny
+  ImageStructuredBlock, VimeoEmbedStructuredBlock, YoutubeEmbedStructuredBlock, StructuredBlockAny,
+  DividerStructuredBlock, DateStructuredBlock, HeaderStructuredBlock, HeaderImageStructuredBlock,
+  VideoStructuredBlock, QuoteStructuredBlock, CodeStructuredBlock,
+  StructuredBlockArea, StructuredBlockTextStyles, HeaderElementKind, CodeToken, CodeColors,
+  StructuredBlockCommonParamsMap, StructuredBlockLayoutParamsMap
 } from './types/article/StructuredBlock';
 export type { RichTextBlock, RichTextEntity, RichTextStyle } from './types/article/RichText';
 export type { ItemArea } from './types/article/ItemArea';

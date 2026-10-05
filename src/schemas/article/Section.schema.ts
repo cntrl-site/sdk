@@ -1,7 +1,7 @@
 import { Section, SectionHeightMode } from '../../types/article/Section';
 import { z, ZodType } from 'zod';
 import { ItemSchema } from './Item.schema';
-import { StructuredBlockSchema } from './StructuredBlock.schema';
+import { HeaderStructuredBlockSchema, StructuredBlockSchema } from './StructuredBlock.schema';
 
 export const SectionHeightSchema = z.object({
   mode: z.nativeEnum(SectionHeightMode),
@@ -60,7 +60,8 @@ const DefaultSectionSchema = SectionBaseSchema.extend({
 
 const ContentBasedSectionSchema = SectionBaseSchema.extend({
   type: z.literal('content-based'),
-  structuredContentSettings: ContentBasedSectionSettingsSchema
+  structuredContentSettings: ContentBasedSectionSettingsSchema,
+  header: HeaderStructuredBlockSchema.optional()
 });
 
 export const SectionSchema: ZodType<Section> = z.discriminatedUnion('type', [
