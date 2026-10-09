@@ -1,4 +1,4 @@
-import { RichTextBlock, RichTextStyle, TextAlign, TextTransform, VerticalAlign } from './RichText';
+import { Hyphens, RichTextBlock, RichTextStyle, TextAlign, TextTransform, VerticalAlign } from './RichText';
 import { ItemState } from './ItemState';
 import { StructuredBlockType } from './StructuredBlockType';
 import { ComponentLayoutParams, VimeoEmbedCommonParams, VimeoEmbedLayoutParams, YoutubeEmbedCommonParams, YoutubeEmbedLayoutParams } from './Params.type';
@@ -49,6 +49,13 @@ export interface StructuredBlockRichTextCommonParams {
 
 export interface StructuredBlockRichTextLayoutParams extends StructuredBlockTextStyles {
   rangeStyles: RichTextStyle[];
+  /**
+   * The columns a text block of the stack flows its text in, the gap between them as a share of the
+   * layout width, and whether its lines hyphenate. Absent on a quote's, a date's or a header's text.
+   */
+  columns?: number;
+  columnGap?: number;
+  hyphens?: Hyphens;
 }
 
 export interface StructuredBlockQuoteCommonParams extends StructuredBlockRichTextCommonParams {

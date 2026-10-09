@@ -28,7 +28,7 @@ export type {
   ImageStructuredBlock, VimeoEmbedStructuredBlock, YoutubeEmbedStructuredBlock, StructuredBlockAny,
   DividerStructuredBlock, DateStructuredBlock, HeaderStructuredBlock, HeaderImageStructuredBlock,
   VideoStructuredBlock, QuoteStructuredBlock, CodeStructuredBlock,
-  StructuredBlockArea, StructuredBlockTextStyles, HeaderElementKind, CodeToken, CodeColors,
+  StructuredBlockArea, StructuredBlockTextStyles, StructuredBlockRichTextLayoutParams, HeaderElementKind, CodeToken, CodeColors,
   StructuredBlockCommonParamsMap, StructuredBlockLayoutParamsMap
 } from './types/article/StructuredBlock';
 export type { RichTextBlock, RichTextEntity, RichTextStyle } from './types/article/RichText';

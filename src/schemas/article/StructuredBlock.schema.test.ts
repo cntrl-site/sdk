@@ -42,7 +42,7 @@ const richText = block(StructuredBlockType.RichText, 'text', {
     type: 'unstyled',
     entities: [{ start: 9, end: 13, type: 'LINK', data: { target: '_blank', url: 'https://cntrl.site' } }]
   }]
-}, { ...text, rangeStyles: [{ start: 0, end: 4, style: 'COLOR', value: '#112233' }] });
+}, { ...text, rangeStyles: [{ start: 0, end: 4, style: 'COLOR', value: '#112233' }], columns: 2, columnGap: 0.0139, hyphens: 'auto' });
 
 const quote = block(StructuredBlockType.Quote, 'quote', {
   text: 'A quote\n',

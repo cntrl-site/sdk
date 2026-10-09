@@ -8,7 +8,7 @@ import {
   StructuredBlockTextStyles
 } from '../../types/article/StructuredBlock';
 import { StructuredBlockType } from '../../types/article/StructuredBlockType';
-import { TextAlign, TextTransform, VerticalAlign } from '../../types/article/RichText';
+import { Hyphens, TextAlign, TextTransform, VerticalAlign } from '../../types/article/RichText';
 import {
   CodeBlockStateParamsSchema,
   ComponentBlockStateParamsSchema,
@@ -112,7 +112,10 @@ export const StructuredBlockHeaderCommonParamsSchema = z.object({
 });
 
 export const StructuredBlockRichTextLayoutParamsSchema = StructuredBlockTextStylesSchema.extend({
-  rangeStyles: z.array(RichTextStyleSchema)
+  rangeStyles: z.array(RichTextStyleSchema),
+  columns: z.number().int().positive().optional(),
+  columnGap: z.number().nonnegative().optional(),
+  hyphens: z.nativeEnum(Hyphens).optional()
 });
 
 export const StructuredBlockQuoteLayoutParamsSchema = StructuredBlockRichTextLayoutParamsSchema.extend({
