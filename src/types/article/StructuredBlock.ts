@@ -1,4 +1,4 @@
-import { Hyphens, RichTextBlock, RichTextStyle, TextAlign, TextTransform, VerticalAlign } from './RichText';
+import { HeadingTag, Hyphens, RichTextBlock, RichTextStyle, TextAlign, TextTransform, VerticalAlign } from './RichText';
 import { ItemState } from './ItemState';
 import { StructuredBlockType } from './StructuredBlockType';
 import { ComponentLayoutParams, VimeoEmbedCommonParams, VimeoEmbedLayoutParams, YoutubeEmbedCommonParams, YoutubeEmbedLayoutParams } from './Params.type';
@@ -42,9 +42,15 @@ export interface StructuredBlockComponentCommonParams {
   parameters?: Record<string, any>;
 }
 
-export interface StructuredBlockRichTextCommonParams {
+/** The text of a text block, a quote or a date. */
+interface StructuredBlockTextCommonParams {
   text: string;
   blocks?: RichTextBlock[];
+}
+
+export interface StructuredBlockRichTextCommonParams extends StructuredBlockTextCommonParams {
+  /** The tag the text is a heading in: for now the API gives text in the Title preset the page's h1. */
+  heading?: HeadingTag;
 }
 
 export interface StructuredBlockRichTextLayoutParams extends StructuredBlockTextStyles {
@@ -58,7 +64,7 @@ export interface StructuredBlockRichTextLayoutParams extends StructuredBlockText
   hyphens?: Hyphens;
 }
 
-export interface StructuredBlockQuoteCommonParams extends StructuredBlockRichTextCommonParams {
+export interface StructuredBlockQuoteCommonParams extends StructuredBlockTextCommonParams {
   kind: string;
 }
 
@@ -70,7 +76,7 @@ export interface StructuredBlockQuoteLayoutParams extends StructuredBlockRichTex
 }
 
 /** A date comes as the text it reads as, its day, month and year styled as ranges of it. */
-export interface StructuredBlockDateCommonParams extends StructuredBlockRichTextCommonParams {
+export interface StructuredBlockDateCommonParams extends StructuredBlockTextCommonParams {
   /** YYYY-MM-DD */
   date: string;
   format: string;

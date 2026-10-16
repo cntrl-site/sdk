@@ -132,6 +132,12 @@ describe('StructuredBlockSchema', () => {
     expect(SectionSchema.parse(section([richText]))).not.toHaveProperty('header');
   });
 
+  it('keeps the heading a text block is served as, and takes none on a quote', () => {
+    const title = { ...richText, commonParams: { ...richText.commonParams, heading: 'h1' } };
+    expect(StructuredBlockSchema.parse(title)).toEqual(title);
+    expect(StructuredBlockSchema.parse({ ...quote, commonParams: { ...quote.commonParams, heading: 'h1' } }).commonParams).not.toHaveProperty('heading');
+  });
+
   it('keeps whether an image\'s caption is switched on', () => {
     const switchedOff = { ...gallery, commonParams: { ...gallery.commonParams, showCaption: false } };
     expect(StructuredBlockSchema.parse(switchedOff)).toEqual(switchedOff);

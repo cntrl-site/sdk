@@ -8,7 +8,7 @@ import {
   StructuredBlockTextStyles
 } from '../../types/article/StructuredBlock';
 import { StructuredBlockType } from '../../types/article/StructuredBlockType';
-import { Hyphens, TextAlign, TextTransform, VerticalAlign } from '../../types/article/RichText';
+import { HeadingTag, Hyphens, TextAlign, TextTransform, VerticalAlign } from '../../types/article/RichText';
 import {
   CodeBlockStateParamsSchema,
   ComponentBlockStateParamsSchema,
@@ -53,16 +53,20 @@ export const StructuredBlockComponentCommonParamsSchema = z.object({
   parameters: z.record(z.any()).optional()
 });
 
-export const StructuredBlockRichTextCommonParamsSchema = z.object({
+const StructuredBlockTextCommonParamsSchema = z.object({
   text: z.string(),
   blocks: z.array(RichTextBlockSchema)
 });
 
-export const StructuredBlockQuoteCommonParamsSchema = StructuredBlockRichTextCommonParamsSchema.extend({
+export const StructuredBlockRichTextCommonParamsSchema = StructuredBlockTextCommonParamsSchema.extend({
+  heading: z.nativeEnum(HeadingTag).optional()
+});
+
+export const StructuredBlockQuoteCommonParamsSchema = StructuredBlockTextCommonParamsSchema.extend({
   kind: z.string()
 });
 
-export const StructuredBlockDateCommonParamsSchema = StructuredBlockRichTextCommonParamsSchema.extend({
+export const StructuredBlockDateCommonParamsSchema = StructuredBlockTextCommonParamsSchema.extend({
   date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
   format: z.string()
 });
