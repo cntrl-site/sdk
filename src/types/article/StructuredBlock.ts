@@ -76,11 +76,20 @@ export interface StructuredBlockDateCommonParams extends StructuredBlockRichText
   format: string;
 }
 
+/**
+ * An image's caption, and whether it is switched on: an image whose caption button was never
+ * pressed shows any caption it has. The API serves only the captions to draw; `getShownCaption`
+ * gives a site the same answer from either.
+ */
+interface ImageCaptionParams {
+  caption?: string;
+  showCaption?: boolean;
+}
+
 /** A gallery of one image or more. */
-export interface StructuredBlockImageCommonParams {
+export interface StructuredBlockImageCommonParams extends ImageCaptionParams {
   urls: string[];
   altText: string;
-  caption?: string;
 }
 
 export interface StructuredBlockImageLayoutParams {
@@ -90,10 +99,9 @@ export interface StructuredBlockImageLayoutParams {
 }
 
 /** A section header's key image: the url is empty until an image is uploaded. */
-export interface StructuredBlockHeaderImageCommonParams {
+export interface StructuredBlockHeaderImageCommonParams extends ImageCaptionParams {
   url: string;
   altText: string;
-  caption?: string;
 }
 
 export interface StructuredBlockVideoCommonParams {

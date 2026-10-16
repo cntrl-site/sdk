@@ -2,7 +2,7 @@
 export { Client as CntrlClient } from './Client/Client';
 export type { CntrlPageData } from './Client/Client';
 export { FontFaceGenerator } from './FontFaceGenerator/FontFaceGenerator';
-export { getLayoutStyles, getLayoutMediaQuery, measureFont } from './utils';
+export { getLayoutStyles, getLayoutMediaQuery, getShownCaption, measureFont } from './utils';
 export { ScrollPlaybackVideoManager } from './ScrollPlaybackVideoManager/ScrollPlaybackVideoManager';
 export { Rect } from './Rect/Rect';
 

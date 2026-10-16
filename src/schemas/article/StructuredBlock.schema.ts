@@ -72,14 +72,16 @@ const pointerEvents = z.enum(['never', 'when_visible', 'always']).optional();
 export const StructuredBlockImageCommonParamsSchema = z.object({
   urls: z.array(z.string().min(1)),
   altText: z.string(),
-  caption: z.string().optional()
+  caption: z.string().optional(),
+  showCaption: z.boolean().optional()
 });
 
 // empty until an image is uploaded: a header always has its key image slot
 export const StructuredBlockHeaderImageCommonParamsSchema = z.object({
   url: z.string(),
   altText: z.string(),
-  caption: z.string().optional()
+  caption: z.string().optional(),
+  showCaption: z.boolean().optional()
 });
 
 export const StructuredBlockVideoCommonParamsSchema = z.object({

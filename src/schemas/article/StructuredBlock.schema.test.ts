@@ -132,6 +132,11 @@ describe('StructuredBlockSchema', () => {
     expect(SectionSchema.parse(section([richText]))).not.toHaveProperty('header');
   });
 
+  it('keeps whether an image\'s caption is switched on', () => {
+    const switchedOff = { ...gallery, commonParams: { ...gallery.commonParams, showCaption: false } };
+    expect(StructuredBlockSchema.parse(switchedOff)).toEqual(switchedOff);
+  });
+
   it('rejects a text block served without the styles of its text', () => {
     const { typeFace, ...unstyled } = text;
     expect(StructuredBlockSchema.safeParse({ ...richText, layoutParams: { desktop: { ...unstyled, rangeStyles: [] } } }).success).toBe(false);
