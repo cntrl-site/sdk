@@ -1,7 +1,7 @@
 import { HeadingTag, Hyphens, RichTextBlock, RichTextStyle, TextAlign, TextTransform, VerticalAlign } from './RichText';
 import { ItemState } from './ItemState';
 import { StructuredBlockType } from './StructuredBlockType';
-import { ComponentLayoutParams, VimeoEmbedCommonParams, VimeoEmbedLayoutParams, YoutubeEmbedCommonParams, YoutubeEmbedLayoutParams } from './Params.type';
+import { ComponentLayoutParams, RichTextLayoutParams, VimeoEmbedCommonParams, VimeoEmbedLayoutParams, YoutubeEmbedCommonParams, YoutubeEmbedLayoutParams } from './Params.type';
 
 type LayoutIdentifier = string;
 
@@ -20,21 +20,12 @@ export interface StructuredBlockArea {
   innerPaddingBottom?: number;
 }
 
-/** How a block's text is set on a layout, resolved from what it was drawn with in the editor. */
-export interface StructuredBlockTextStyles {
-  typeFace: string;
-  fontSize: number;
-  lineHeight: number;
-  letterSpacing: number;
-  wordSpacing: number;
-  fontWeight: number;
-  fontStyle: string;
-  fontVariant: string;
-  textTransform: TextTransform;
-  verticalAlign: VerticalAlign;
-  textAlign: TextAlign;
-  color: string;
-}
+/** How a block's text is set on a layout, resolved from what it was drawn with in the editor: the type a rich text item carries. */
+export type StructuredBlockTextStyles = Pick<
+  RichTextLayoutParams,
+  'typeFace' | 'fontSize' | 'lineHeight' | 'letterSpacing' | 'wordSpacing' | 'fontWeight' | 'fontStyle' | 'fontVariant'
+  | 'textTransform' | 'verticalAlign' | 'textAlign' | 'color'
+>;
 
 export interface StructuredBlockComponentCommonParams {
   componentId: string;
@@ -45,7 +36,7 @@ export interface StructuredBlockComponentCommonParams {
 /** The text of a text block, a quote or a date. */
 interface StructuredBlockTextCommonParams {
   text: string;
-  blocks?: RichTextBlock[];
+  blocks: RichTextBlock[];
 }
 
 export interface StructuredBlockRichTextCommonParams extends StructuredBlockTextCommonParams {
@@ -131,7 +122,7 @@ export interface StructuredBlockDividerLayoutParams {
 export interface CodeToken {
   content: string;
   color?: string;
-  /** Bits: 1 italic, 2 bold, 4 underline. */
+  /** Bits: 1 italic, 2 bold, 4 underline, 8 strikethrough. */
   fontStyle?: number;
 }
 
@@ -155,15 +146,33 @@ export interface StructuredBlockCodeCommonParams {
 
 export interface StructuredBlockCodeLayoutParams {}
 
-export type HeaderElementKind = 'image' | 'subtitle' | 'title' | 'date';
-
-/** The ids of the blocks a section header draws: they are blocks of the section's structured content. */
-export interface StructuredBlockHeaderCommonParams {
-  title: string;
-  subtitle: string;
-  date: string;
-  image: string;
+/** A heading row and the body rows under it, every row as long as the heading; a cell is plain text. */
+export interface StructuredBlockTableCommonParams {
+  header: string[];
+  rows: string[][];
 }
+
+/**
+ * A table's cells, set in the text styles they are served with and spaced inside on every side,
+ * as shares of the layout width; the colour of the lines between them, and the fills behind the
+ * heading row and the body rows, absent where a row kind has none.
+ */
+export interface StructuredBlockTableLayoutParams extends StructuredBlockTextStyles {
+  cellPaddingTop: number;
+  cellPaddingRight: number;
+  cellPaddingBottom: number;
+  cellPaddingLeft: number;
+  borderColor?: string;
+  headingBackground?: string;
+  bodyBackground?: string;
+}
+
+export const HEADER_ELEMENT_KINDS = ['image', 'subtitle', 'title', 'date'] as const;
+
+export type HeaderElementKind = typeof HEADER_ELEMENT_KINDS[number];
+
+/** The ids of the blocks a section header draws, one per element: they are blocks of the section's structured content. */
+export type StructuredBlockHeaderCommonParams = Record<HeaderElementKind, string>;
 
 /**
  * 'A' draws the key image behind the other elements, anchored to its bottom; 'B' draws every element
@@ -191,6 +200,7 @@ export interface StructuredBlockLayoutParamsMap {
   [StructuredBlockType.Video]: StructuredBlockVideoLayoutParams;
   [StructuredBlockType.Quote]: StructuredBlockQuoteLayoutParams;
   [StructuredBlockType.Code]: StructuredBlockCodeLayoutParams;
+  [StructuredBlockType.Table]: StructuredBlockTableLayoutParams;
 }
 
 export interface StructuredBlockCommonParamsMap {
@@ -206,6 +216,7 @@ export interface StructuredBlockCommonParamsMap {
   [StructuredBlockType.Video]: StructuredBlockVideoCommonParams;
   [StructuredBlockType.Quote]: StructuredBlockQuoteCommonParams;
   [StructuredBlockType.Code]: StructuredBlockCodeCommonParams;
+  [StructuredBlockType.Table]: StructuredBlockTableCommonParams;
 }
 
 export interface StructuredBlock<T extends StructuredBlockType> {
@@ -219,7 +230,10 @@ export interface StructuredBlock<T extends StructuredBlockType> {
   state: ItemState<T>;
 }
 
-export type StructuredBlockAny = StructuredBlock<StructuredBlockType>;
+/** The block types a section's stack holds: every type but the header, which is the section's own and points at blocks of the stack. */
+export type StackBlockType = Exclude<StructuredBlockType, StructuredBlockType.Header>;
+
+export type StructuredBlockAny = StructuredBlock<StackBlockType>;
 
 export type ComponentStructuredBlock = StructuredBlock<StructuredBlockType.Component>;
 export type RichTextStructuredBlock = StructuredBlock<StructuredBlockType.RichText>;
@@ -233,3 +247,4 @@ export type HeaderImageStructuredBlock = StructuredBlock<StructuredBlockType.Hea
 export type VideoStructuredBlock = StructuredBlock<StructuredBlockType.Video>;
 export type QuoteStructuredBlock = StructuredBlock<StructuredBlockType.Quote>;
 export type CodeStructuredBlock = StructuredBlock<StructuredBlockType.Code>;
+export type TableStructuredBlock = StructuredBlock<StructuredBlockType.Table>;

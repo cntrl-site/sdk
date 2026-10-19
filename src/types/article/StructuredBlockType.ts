@@ -10,5 +10,6 @@ export enum StructuredBlockType {
   HeaderImage = 'header-image-block',
   Video = 'video-block',
   Quote = 'quote-block',
-  Code = 'code-block'
+  Code = 'code-block',
+  Table = 'table-block'
 }

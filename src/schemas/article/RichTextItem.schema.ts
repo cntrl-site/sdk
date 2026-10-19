@@ -4,6 +4,7 @@ import { ItemBaseSchema } from './ItemBase.schema';
 import { ArticleItemType } from '../../types/article/ArticleItemType';
 import { RichTextStateParamsSchema } from './ItemState.schema';
 import { RichTextItem } from '../../types/article/Item';
+import { StructuredBlockTextStyles } from '../../types/article/StructuredBlock';
 
 const pointerEvents = z.enum(['never', 'when_visible', 'always']).optional();
 
@@ -32,6 +33,22 @@ export const RichTextBlockSchema: z.Schema<RichTextBlock> = z.lazy(() => (
   })
 ));
 
+/** The type text is set in: a rich text item's, and the styles a structured block's text is served with. */
+export const TextStylesSchema = z.object({
+  typeFace: z.string(),
+  fontSize: z.number(),
+  lineHeight: z.number(),
+  letterSpacing: z.number(),
+  wordSpacing: z.number(),
+  fontWeight: z.number(),
+  fontStyle: z.string(),
+  fontVariant: z.string(),
+  textTransform: z.nativeEnum(TextTransform),
+  verticalAlign: z.nativeEnum(VerticalAlign),
+  textAlign: z.nativeEnum(TextAlign),
+  color: z.string()
+}) satisfies ZodType<StructuredBlockTextStyles>;
+
 export const RichTextItemSchema = ItemBaseSchema.extend({
   type: z.literal(ArticleItemType.RichText),
   commonParams: z.object({
@@ -47,22 +64,10 @@ export const RichTextItemSchema = ItemBaseSchema.extend({
     }).nullable(),
   ),
   layoutParams: z.record(
-    z.object({
+    TextStylesSchema.extend({
       rangeStyles: z.array(RichTextStyleSchema).optional(),
-      textAlign: z.nativeEnum(TextAlign),
       sizing: z.string(),
       blur: z.number(),
-      fontSize: z.number(),
-      lineHeight: z.number(),
-      letterSpacing: z.number(),
-      wordSpacing: z.number(),
-      textTransform: z.nativeEnum(TextTransform),
-      verticalAlign: z.nativeEnum(VerticalAlign),
-      color: z.string(),
-      typeFace: z.string(),
-      fontStyle: z.string(),
-      fontWeight: z.number(),
-      fontVariant: z.string(),
       columns: z.number().optional(),
       columnWidth: z.number().optional(),
       columnGutter: z.number().optional(),

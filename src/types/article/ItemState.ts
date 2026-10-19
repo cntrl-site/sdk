@@ -32,6 +32,7 @@ export interface ItemStatesMap {
   [StructuredBlockType.Video]: MediaBlockStateParams;
   [StructuredBlockType.Quote]: RichTextBlockStateParams;
   [StructuredBlockType.Code]: CodeBlockStateParams;
+  [StructuredBlockType.Table]: TableBlockStateParams;
 }
 
 export interface StateParams<T> {
@@ -87,6 +88,8 @@ export interface DividerBlockStateParams {
 export interface HeaderBlockStateParams {}
 
 export interface CodeBlockStateParams {}
+
+export interface TableBlockStateParams {}
 
 export interface MediaStateParams extends ItemStatesBaseMap {
   opacity?: StateParams<number>;

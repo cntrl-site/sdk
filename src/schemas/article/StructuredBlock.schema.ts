@@ -1,14 +1,13 @@
 import { z, ZodType } from 'zod';
-import { RichTextBlockSchema, RichTextStyleSchema } from './RichTextItem.schema';
+import { RichTextBlockSchema, RichTextStyleSchema, TextStylesSchema } from './RichTextItem.schema';
 import {
+  HEADER_ELEMENT_KINDS,
   HeaderStructuredBlock,
   StructuredBlockAny,
-  StructuredBlockCommonParamsMap,
-  StructuredBlockLayoutParamsMap,
-  StructuredBlockTextStyles
+  StructuredBlockHeaderCommonParams
 } from '../../types/article/StructuredBlock';
 import { StructuredBlockType } from '../../types/article/StructuredBlockType';
-import { HeadingTag, Hyphens, TextAlign, TextTransform, VerticalAlign } from '../../types/article/RichText';
+import { HeadingTag, Hyphens } from '../../types/article/RichText';
 import {
   CodeBlockStateParamsSchema,
   ComponentBlockStateParamsSchema,
@@ -16,6 +15,7 @@ import {
   HeaderBlockStateParamsSchema,
   MediaBlockStateParamsSchema,
   RichTextBlockStateParamsSchema,
+  TableBlockStateParamsSchema,
   VideoEmbedBlockStateParamsSchema
 } from './ItemState.schema';
 import { ComponentItemLayoutParamsSchema, VimeoEmbedLayoutParamsSchema, YoutubeEmbedLayoutParamsSchema } from './ElementLayoutParams.schema';
@@ -32,20 +32,7 @@ export const StructuredBlockAreaSchema = z.object({
   innerPaddingBottom: z.number().nonnegative().optional()
 });
 
-export const StructuredBlockTextStylesSchema = z.object({
-  typeFace: z.string(),
-  fontSize: z.number(),
-  lineHeight: z.number(),
-  letterSpacing: z.number(),
-  wordSpacing: z.number(),
-  fontWeight: z.number(),
-  fontStyle: z.string(),
-  fontVariant: z.string(),
-  textTransform: z.nativeEnum(TextTransform),
-  verticalAlign: z.nativeEnum(VerticalAlign),
-  textAlign: z.nativeEnum(TextAlign),
-  color: z.string()
-}) satisfies ZodType<StructuredBlockTextStyles>;
+export const StructuredBlockTextStylesSchema = TextStylesSchema;
 
 export const StructuredBlockComponentCommonParamsSchema = z.object({
   componentId: z.string(),
@@ -73,23 +60,24 @@ export const StructuredBlockDateCommonParamsSchema = StructuredBlockTextCommonPa
 
 const pointerEvents = z.enum(['never', 'when_visible', 'always']).optional();
 
-export const StructuredBlockImageCommonParamsSchema = z.object({
-  urls: z.array(z.string().min(1)),
-  altText: z.string(),
+const ImageCaptionParamsSchema = z.object({
   caption: z.string().optional(),
   showCaption: z.boolean().optional()
 });
 
-// empty until an image is uploaded: a header always has its key image slot
-export const StructuredBlockHeaderImageCommonParamsSchema = z.object({
+// a url is empty where the API could not resolve the file, as it is on a header's key image until one is uploaded
+export const StructuredBlockImageCommonParamsSchema = ImageCaptionParamsSchema.extend({
+  urls: z.array(z.string()),
+  altText: z.string()
+});
+
+export const StructuredBlockHeaderImageCommonParamsSchema = ImageCaptionParamsSchema.extend({
   url: z.string(),
-  altText: z.string(),
-  caption: z.string().optional(),
-  showCaption: z.boolean().optional()
+  altText: z.string()
 });
 
 export const StructuredBlockVideoCommonParamsSchema = z.object({
-  url: z.string().min(1),
+  url: z.string(),
   coverUrl: z.string().nullable()
 });
 
@@ -110,18 +98,33 @@ export const StructuredBlockCodeCommonParamsSchema = z.object({
   }).optional()
 });
 
+export const StructuredBlockTableCommonParamsSchema = z.object({
+  header: z.array(z.string()).min(1),
+  rows: z.array(z.array(z.string())).min(1)
+});
+
 export const StructuredBlockHeaderCommonParamsSchema = z.object({
   title: z.string().min(1),
   subtitle: z.string().min(1),
   date: z.string().min(1),
   image: z.string().min(1)
-});
+}) satisfies ZodType<StructuredBlockHeaderCommonParams>;
 
 export const StructuredBlockRichTextLayoutParamsSchema = StructuredBlockTextStylesSchema.extend({
   rangeStyles: z.array(RichTextStyleSchema),
   columns: z.number().int().positive().optional(),
   columnGap: z.number().nonnegative().optional(),
   hyphens: z.nativeEnum(Hyphens).optional()
+});
+
+export const StructuredBlockTableLayoutParamsSchema = StructuredBlockTextStylesSchema.extend({
+  cellPaddingTop: z.number().nonnegative(),
+  cellPaddingRight: z.number().nonnegative(),
+  cellPaddingBottom: z.number().nonnegative(),
+  cellPaddingLeft: z.number().nonnegative(),
+  borderColor: z.string().optional(),
+  headingBackground: z.string().optional(),
+  bodyBackground: z.string().optional()
 });
 
 export const StructuredBlockQuoteLayoutParamsSchema = StructuredBlockRichTextLayoutParamsSchema.extend({
@@ -144,8 +147,6 @@ export const StructuredBlockVideoLayoutParamsSchema = z.object({
 export const StructuredBlockDividerLayoutParamsSchema = z.object({
   color: z.string()
 });
-
-const HEADER_ELEMENT_KINDS = ['image', 'subtitle', 'title', 'date'] as const;
 
 export const StructuredBlockHeaderLayoutParamsSchema = z.object({
   variant: z.enum(['A', 'B']),
@@ -250,6 +251,13 @@ const CodeStructuredBlockSchema = StructuredBlockBaseSchema.extend({
   state: z.record(CodeBlockStateParamsSchema)
 });
 
+const TableStructuredBlockSchema = StructuredBlockBaseSchema.extend({
+  type: z.literal(StructuredBlockType.Table),
+  commonParams: StructuredBlockTableCommonParamsSchema,
+  layoutParams: z.record(StructuredBlockTableLayoutParamsSchema),
+  state: z.record(TableBlockStateParamsSchema)
+});
+
 /** A content-based section's header, kept out of the stack's union: the elements it points at are blocks of the stack. */
 export const HeaderStructuredBlockSchema = StructuredBlockBaseSchema.extend({
   type: z.literal(StructuredBlockType.Header),
@@ -257,31 +265,6 @@ export const HeaderStructuredBlockSchema = StructuredBlockBaseSchema.extend({
   layoutParams: z.record(StructuredBlockHeaderLayoutParamsSchema),
   state: z.record(HeaderBlockStateParamsSchema)
 }) satisfies ZodType<HeaderStructuredBlock>;
-
-export const StructuredBlockCommonParamsSchema: ZodType<StructuredBlockCommonParamsMap[StructuredBlockType]> = z.union([
-  StructuredBlockComponentCommonParamsSchema,
-  // a quote's and a date's params are a text block's and more, so they go before it: the text
-  // member would take them too, less the rest
-  StructuredBlockQuoteCommonParamsSchema,
-  StructuredBlockDateCommonParamsSchema,
-  StructuredBlockRichTextCommonParamsSchema,
-  StructuredBlockImageCommonParamsSchema,
-  StructuredBlockHeaderImageCommonParamsSchema,
-  StructuredBlockCodeCommonParamsSchema,
-  StructuredBlockHeaderCommonParamsSchema,
-  StructuredBlockVideoCommonParamsSchema
-]);
-
-export const StructuredBlockLayoutParamsSchema: ZodType<StructuredBlockLayoutParamsMap[StructuredBlockType]> = z.union([
-  ComponentItemLayoutParamsSchema,
-  // first for the same reason: the text member would keep a quote's text and drop its box
-  StructuredBlockQuoteLayoutParamsSchema,
-  StructuredBlockRichTextLayoutParamsSchema,
-  StructuredBlockImageLayoutParamsSchema,
-  StructuredBlockVideoLayoutParamsSchema,
-  StructuredBlockHeaderLayoutParamsSchema,
-  StructuredBlockDividerLayoutParamsSchema
-]);
 
 export const StructuredBlockSchema: ZodType<StructuredBlockAny> = z.discriminatedUnion('type', [
   ComponentStructuredBlockSchema,
@@ -294,5 +277,6 @@ export const StructuredBlockSchema: ZodType<StructuredBlockAny> = z.discriminate
   HeaderImageStructuredBlockSchema,
   VideoStructuredBlockSchema,
   QuoteStructuredBlockSchema,
-  CodeStructuredBlockSchema
+  CodeStructuredBlockSchema,
+  TableStructuredBlockSchema
 ]);

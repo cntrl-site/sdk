@@ -84,6 +84,40 @@ const code = block(StructuredBlockType.Code, 'code', {
   colors: { background: '#282A36', foreground: '#F8F8F2' }
 }, {});
 
+const tableCells = {
+  ...text,
+  cellPaddingTop: 0.0056,
+  cellPaddingRight: 0.0069,
+  cellPaddingBottom: 0.0056,
+  cellPaddingLeft: 0.0069,
+  borderColor: 'oklch(0.85 0 0 / 1)',
+  headingBackground: 'oklch(0.95 0 0 / 1)'
+};
+
+const table = block(StructuredBlockType.Table, 'table', {
+  header: ['Name', 'Price'],
+  rows: [['Tea', '3'], ['Coffee', '4']]
+}, tableCells);
+
+const vimeo = block(StructuredBlockType.VimeoEmbed, 'vimeo', {
+  url: 'https://player.vimeo.com/video/1',
+  coverUrl: null,
+  ratioLock: true,
+  pointerEvents: 'always'
+}, { play: 'auto', controls: false, loop: false, muted: true, pictureInPicture: true, opacity: 1, radius: 0, blur: 0 });
+
+const youtube = block(StructuredBlockType.YoutubeEmbed, 'youtube', {
+  url: 'https://www.youtube.com/watch?v=1',
+  coverUrl: 'https://cdn.cntrl.site/cover.jpg',
+  ratioLock: false
+}, { play: 'on-hover', controls: false, loop: true, opacity: 1, radius: 0.01, blur: 0 });
+
+const component = block(StructuredBlockType.Component, 'component', {
+  componentId: 'grid',
+  content: [{ title: 'One' }],
+  parameters: { settings: {} }
+}, { opacity: 1, blur: 0, parameters: {} });
+
 const divider = {
   ...block(StructuredBlockType.Divider, 'divider', {}, { color: 'oklch(57.61% 0 90 / 1)' }),
   area: { desktop: { paddingTop: 0.01, zIndex: 9, left: 0.35, width: 0.3, height: 0.0007, innerPaddingTop: 0, innerPaddingBottom: 0 } }
@@ -101,7 +135,7 @@ const header = {
   }
 };
 
-const served = [richText, quote, date, gallery, headerImage, video, code, divider];
+const served = [richText, quote, date, gallery, headerImage, video, code, table, vimeo, youtube, component, divider];
 
 function section(structuredContent: object[], extra: object = {}) {
   return {
@@ -143,8 +177,29 @@ describe('StructuredBlockSchema', () => {
     expect(StructuredBlockSchema.parse(switchedOff)).toEqual(switchedOff);
   });
 
+  it('takes a gallery or a video whose file the API could not resolve, served with an empty url', () => {
+    const missing = { ...gallery, commonParams: { ...gallery.commonParams, urls: ['https://cdn.cntrl.site/a.jpg', ''] } };
+    expect(StructuredBlockSchema.parse(missing)).toEqual(missing);
+    const gone = { ...video, commonParams: { ...video.commonParams, url: '' } };
+    expect(StructuredBlockSchema.parse(gone)).toEqual(gone);
+  });
+
+  it('drops a block of a type it does not know from a section\'s stack, and keeps the others', () => {
+    const unknown = { ...code, id: 'later', type: 'chart-block', commonParams: { series: [] }, layoutParams: { desktop: {} } };
+    const parsed = SectionSchema.parse(section([richText, unknown, divider]));
+    expect(parsed.structuredContent.map(({ id }) => id)).toEqual(['text', 'divider']);
+    expect(SectionSchema.safeParse(section([{ ...unknown, type: StructuredBlockType.Code }])).success).toBe(false);
+  });
+
   it('rejects a text block served without the styles of its text', () => {
     const { typeFace, ...unstyled } = text;
     expect(StructuredBlockSchema.safeParse({ ...richText, layoutParams: { desktop: { ...unstyled, rangeStyles: [] } } }).success).toBe(false);
+  });
+
+  it('rejects a table served without the styles of its cells, or without their spacing', () => {
+    const { typeFace, ...unstyled } = text;
+    const { cellPaddingTop, ...unspaced } = tableCells;
+    expect(StructuredBlockSchema.safeParse({ ...table, layoutParams: { desktop: { ...unstyled, cellPaddingTop } } }).success).toBe(false);
+    expect(StructuredBlockSchema.safeParse({ ...table, layoutParams: { desktop: unspaced } }).success).toBe(false);
   });
 });

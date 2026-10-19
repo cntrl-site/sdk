@@ -15,7 +15,8 @@ import {
   VideoEmbedBlockStateParams,
   DividerBlockStateParams,
   HeaderBlockStateParams,
-  CodeBlockStateParams
+  CodeBlockStateParams,
+  TableBlockStateParams
 } from '../../types/article/ItemState';
 import { FillLayerSchema } from './FillLayer.schema';
 
@@ -116,10 +117,12 @@ export const DividerBlockStateParamsSchema = z.object({
   color: getStateParamsSchema(z.string())
 }) satisfies ZodType<DividerBlockStateParams>;
 
-// these two are kept out of the union below, where a member with no keys would take any state and strip it
+// the union below takes any state by its first member, all of whose keys are optional, so these three add nothing to it
 export const HeaderBlockStateParamsSchema = z.object({}) satisfies ZodType<HeaderBlockStateParams>;
 
 export const CodeBlockStateParamsSchema = z.object({}) satisfies ZodType<CodeBlockStateParams>;
+
+export const TableBlockStateParamsSchema = z.object({}) satisfies ZodType<TableBlockStateParams>;
 
 export const ItemStateParamsSchema = z.union([
   EmbedStateParamsSchema,
@@ -134,6 +137,5 @@ export const ItemStateParamsSchema = z.union([
   RichTextBlockStateParamsSchema,
   MediaBlockStateParamsSchema,
   ComponentBlockStateParamsSchema,
-  VideoEmbedBlockStateParamsSchema,
-  DividerBlockStateParamsSchema
+  VideoEmbedBlockStateParamsSchema
 ]);
