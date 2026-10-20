@@ -1,6 +1,3 @@
-// @ts-ignore
-import * as MP4Box from 'mp4box';
-
 export class Writer {
   private data: Uint8Array;
   private idx: number;
@@ -83,7 +80,8 @@ const decodeVideo = (
   emitFrame: (bitmap: ImageBitmap) => void,
   { VideoDecoder, EncodedVideoChunk, debug }: any
 ): Promise<void> =>
-  new Promise((resolve, reject) => {
+  // @ts-ignore
+  import('mp4box').then((MP4Box: any) => new Promise<void>((resolve, reject) => {
     if (debug) console.info('Decoding video from', src);
     try {
       const mp4boxfile = MP4Box.createFile();
@@ -155,7 +153,7 @@ const decodeVideo = (
     } catch (e) {
       reject(e);
     }
-  });
+  }));
 
 
 export default ( src: string, emitFrame: (bitmap: ImageBitmap) => void, debug: boolean): Promise<void> => {
