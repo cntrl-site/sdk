@@ -84,6 +84,10 @@ const fetchBody = async (src: string, signal: AbortSignal): Promise<ReadableStre
 };
 
 const aborted = (signal: AbortSignal) => new Promise<never>((_, reject) => {
+  if (signal.aborted) {
+    reject(signal.reason);
+    return;
+  }
   signal.addEventListener('abort', () => reject(signal.reason), { once: true });
 });
 
@@ -96,29 +100,28 @@ const decodeVideo = async (
   const controller = new AbortController();
   const { signal } = controller;
   const fail = (error: unknown) => controller.abort(error);
-  let decoder: any;
+  const bitmaps: Promise<void>[] = [];
+  let configured = false;
+  const decoder = new VideoDecoder({
+    output: (frame: VideoFrame) => {
+      bitmaps.push(
+        createImageBitmap(frame, { resizeQuality: 'low' })
+          .then((bitmap) => {
+            if (signal.aborted) bitmap.close();
+            else emitFrame(bitmap);
+          })
+          .catch(fail)
+          .finally(() => frame.close())
+      );
+    },
+    error: (error: unknown) => {
+      console.error(error);
+      fail(error);
+    },
+  });
+
   try {
     const [MP4Box, stream] = await Promise.all([import('mp4box'), fetchBody(src, signal)]);
-    const bitmaps: Promise<void>[] = [];
-    let configured = false;
-    decoder = new VideoDecoder({
-      output: (frame: VideoFrame) => {
-        bitmaps.push(
-          createImageBitmap(frame, { resizeQuality: 'low' })
-            .then((bitmap) => {
-              if (signal.aborted) bitmap.close();
-              else emitFrame(bitmap);
-            })
-            .catch(fail)
-            .finally(() => frame.close())
-        );
-      },
-      error: (error: unknown) => {
-        console.error(error);
-        fail(error);
-      },
-    });
-
     const mp4boxfile = MP4Box.createFile();
     mp4boxfile.onError = fail;
 
@@ -174,7 +177,7 @@ const decodeVideo = async (
     fail(error);
     throw signal.reason;
   } finally {
-    if (decoder && decoder.state !== 'closed') decoder.close();
+    if (decoder.state !== 'closed') decoder.close();
   }
 };
 
