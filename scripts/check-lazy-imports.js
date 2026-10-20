@@ -1,4 +1,4 @@
-const { existsSync, readdirSync, readFileSync } = require('fs');
+const { readdirSync, readFileSync } = require('fs');
 const path = require('path');
 const ts = require('typescript');
 
@@ -8,47 +8,31 @@ const files = (dir, pattern) => readdirSync(dir, { withFileTypes: true }).flatMa
   return pattern.test(entry.name) ? [file] : [];
 });
 
-const dynamicImports = (file) => {
+const specifiers = (file) => {
   const source = ts.createSourceFile(file, readFileSync(file, 'utf8'), ts.ScriptTarget.Latest, true);
-  const modules = [];
+  const found = { imports: [], requires: [] };
   const visit = (node) => {
-    if (ts.isCallExpression(node) && node.expression.kind === ts.SyntaxKind.ImportKeyword) {
+    if (ts.isCallExpression(node)) {
       const [specifier] = node.arguments;
-      if (specifier && ts.isStringLiteralLike(specifier)) modules.push(specifier.text);
+      if (specifier && ts.isStringLiteralLike(specifier)) {
+        if (node.expression.kind === ts.SyntaxKind.ImportKeyword) found.imports.push(specifier.text);
+        if (ts.isIdentifier(node.expression) && node.expression.text === 'require') found.requires.push(specifier.text);
+      }
     }
     ts.forEachChild(node, visit);
   };
   visit(source);
-  return modules;
+  return found;
 };
 
-const escapeRegExp = value => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const lazy = new Set(files('src', /\.tsx?$/)
+  .filter(file => !/\.(test|d)\.tsx?$/.test(file))
+  .flatMap(file => specifiers(file).imports)
+  .filter(module => !module.startsWith('.')));
 
-const problems = [];
-const packages = new Set();
-for (const file of files('src', /\.tsx?$/).filter(file => !/\.(test|d)\.tsx?$/.test(file))) {
-  const modules = dynamicImports(file);
-  if (!modules.length) continue;
-  modules.filter(module => !module.startsWith('.')).forEach(module => packages.add(module));
-  const output = path.join('lib', path.relative('src', file)).replace(/\.tsx?$/, '.js');
-  if (!existsSync(output)) {
-    problems.push(`${file} has a dynamic import but tsc emitted no ${output}.`);
-    continue;
-  }
-  const kept = new Set(dynamicImports(output));
-  for (const module of modules.filter(module => !kept.has(module))) {
-    problems.push(`${output} no longer keeps a native import('${module}'). tsc rewrote it to require(), which bundles ${module} into every site's _app chunk. tsconfig.build.json must use module/moduleResolution Node16.`);
-  }
-}
-
-for (const output of files('lib', /\.js$/)) {
-  const code = readFileSync(output, 'utf8');
-  for (const module of packages) {
-    if (new RegExp(`\\brequire\\(\\s*["']${escapeRegExp(module)}["']\\s*\\)`).test(code)) {
-      problems.push(`${output} requires ${module} statically, which bundles it into every site's _app chunk. Load it with import() instead.`);
-    }
-  }
-}
+const problems = files('lib', /\.js$/).flatMap(output => specifiers(output).requires
+  .filter(module => lazy.has(module))
+  .map(module => `${output} requires ${module}, which bundles it into every site's _app chunk. src loads it with import(): keep tsconfig.build.json on module/moduleResolution Node16 (CommonJS rewrites import() to require()) and don't import it statically.`));
 
 if (problems.length) {
   console.error(problems.join('\n'));
