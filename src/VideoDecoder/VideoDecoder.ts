@@ -80,78 +80,112 @@ const decodeVideo = async (
   emitFrame: (bitmap: ImageBitmap) => void,
   { VideoDecoder, EncodedVideoChunk, debug }: any
 ): Promise<void> => {
-  const MP4Box = await import('mp4box');
+  if (debug) console.info('Decoding video from', src);
+  const controller = new AbortController();
+  const body = fetch(src, { signal: controller.signal }).then((res) => {
+    if (!res.ok || !res.body) throw new Error(`Failed to fetch ${src}: HTTP ${res.status}`);
+    return res.body;
+  });
+  body.catch(() => undefined);
+  const MP4Box = await import('mp4box').catch((error) => {
+    controller.abort();
+    throw error;
+  });
+
   return new Promise((resolve, reject) => {
-    if (debug) console.info('Decoding video from', src);
+    const bitmaps: Promise<void>[] = [];
+    let decoder: any;
+    let configured = false;
+    let settled = false;
+
+    const fail = (error: unknown) => {
+      if (settled) return;
+      settled = true;
+      controller.abort();
+      if (decoder && decoder.state !== 'closed') decoder.close();
+      reject(error);
+    };
+
+    const finish = async () => {
+      if (!configured) throw new Error('URL provided is not a valid mp4 video file.');
+      await decoder.flush();
+      await Promise.all(bitmaps);
+      if (settled) return;
+      settled = true;
+      decoder.close();
+      resolve();
+    };
+
     try {
-      const mp4boxfile = MP4Box.createFile();
-      let codec;
-      const decoder = new VideoDecoder({
+      decoder = new VideoDecoder({
         output: (frame: VideoFrame) => {
-          createImageBitmap(frame, { resizeQuality: 'low' }).then((bitmap) => {
-            emitFrame(bitmap);
-            frame.close();
-            if (decoder.decodeQueueSize <= 0) {
-              setTimeout(() => {
-                if (decoder.state !== 'closed') {
-                  decoder.close();
-                  resolve();
-                }
-              }, 500);
-            }
-          });
+          bitmaps.push(
+            createImageBitmap(frame, { resizeQuality: 'low' })
+              .then((bitmap) => {
+                if (settled) bitmap.close();
+                else emitFrame(bitmap);
+              })
+              .catch(fail)
+              .finally(() => frame.close())
+          );
         },
-        error: (e: any) => {
-          console.error(e);
-          reject(e);
+        error: (error: unknown) => {
+          console.error(error);
+          fail(error);
         },
       });
+
+      const mp4boxfile = MP4Box.createFile();
+      mp4boxfile.onError = fail;
 
       mp4boxfile.onReady = (info: any) => {
-        if (info && info.videoTracks && info.videoTracks[0]) {
-          [{ codec }] = info.videoTracks;
-          if (debug) console.info('Video with codec:', codec);
-          const avccBox = mp4boxfile.moov.traks[0].mdia.minf.stbl.stsd.entries[0].avcC;
-          const extradata = getExtradata(avccBox);
-          decoder.configure({ codec, description: extradata });
-          mp4boxfile.setExtractionOptions(info.videoTracks[0].id);
+        try {
+          const track = info?.videoTracks?.[0];
+          if (!track) throw new Error('URL provided is not a valid mp4 video file.');
+          if (debug) console.info('Video with codec:', track.codec);
+          const avccBox = mp4boxfile.getTrackById(track.id)?.mdia.minf.stbl.stsd.entries[0]?.avcC;
+          if (!avccBox) throw new Error(`Unsupported codec ${track.codec}: only H.264 video can be decoded.`);
+          decoder.configure({ codec: track.codec, description: getExtradata(avccBox) });
+          configured = true;
+          mp4boxfile.setExtractionOptions(track.id);
           mp4boxfile.start();
-        } else reject(new Error('URL provided is not a valid mp4 video file.'));
-      };
-
-      mp4boxfile.onSamples = (track_id: number, ref: any, samples: any[]) => {
-        for (let i = 0; i < samples.length; i += 1) {
-          const sample = samples[i];
-          const type = sample.is_sync ? 'key' : 'delta';
-          const chunk = new EncodedVideoChunk({
-            type,
-            timestamp: sample.cts,
-            duration: sample.duration,
-            data: sample.data,
-          });
-          decoder.decode(chunk);
+        } catch (error) {
+          fail(error);
         }
       };
 
-      fetch(src).then((res) => {
-        const reader = res.body!.getReader();
-        let offset = 0;
-        //@ts-ignore
-        function appendBuffers({ done, value }: any) {
-          if (done) {
-            mp4boxfile.flush();
-            return null;
+      mp4boxfile.onSamples = (_trackId: number, _ref: unknown, samples: any[]) => {
+        try {
+          for (const sample of samples) {
+            decoder.decode(new EncodedVideoChunk({
+              type: sample.is_sync ? 'key' : 'delta',
+              timestamp: sample.cts,
+              duration: sample.duration,
+              data: sample.data,
+            }));
           }
-          const buf = value.buffer;
-          buf.fileStart = offset;
-          offset += buf.byteLength;
-          mp4boxfile.appendBuffer(buf);
-          return reader.read().then(appendBuffers);
+        } catch (error) {
+          fail(error);
         }
-        return reader.read().then(appendBuffers);
-      });
-    } catch (e) {
-      reject(e);
+      };
+
+      body
+        .then(async (stream) => {
+          const reader = stream.getReader();
+          let offset = 0;
+          for (let chunk = await reader.read(); !chunk.done; chunk = await reader.read()) {
+            if (settled) return;
+            const buffer = chunk.value.buffer as ArrayBuffer & { fileStart: number };
+            buffer.fileStart = offset;
+            offset += buffer.byteLength;
+            mp4boxfile.appendBuffer(buffer);
+          }
+          mp4boxfile.flush();
+          await finish();
+        })
+        .catch(fail);
+    } catch (error) {
+      fail(error);
     }
   });
 };
