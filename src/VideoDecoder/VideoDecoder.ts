@@ -75,13 +75,13 @@ const getExtradata = (avccBox: AVCCBox) => {
   return writer.getData();
 };
 
-const decodeVideo = (
+const decodeVideo = async (
   src: string,
   emitFrame: (bitmap: ImageBitmap) => void,
   { VideoDecoder, EncodedVideoChunk, debug }: any
-): Promise<void> =>
-  // @ts-ignore
-  import('mp4box').then((MP4Box: any) => new Promise<void>((resolve, reject) => {
+): Promise<void> => {
+  const MP4Box = await import('mp4box');
+  return new Promise((resolve, reject) => {
     if (debug) console.info('Decoding video from', src);
     try {
       const mp4boxfile = MP4Box.createFile();
@@ -153,7 +153,8 @@ const decodeVideo = (
     } catch (e) {
       reject(e);
     }
-  }));
+  });
+};
 
 
 export default ( src: string, emitFrame: (bitmap: ImageBitmap) => void, debug: boolean): Promise<void> => {
