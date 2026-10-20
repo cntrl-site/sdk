@@ -11,6 +11,7 @@ export { SectionHeightMode } from './types/article/Section';
 export { HeadingTag, Hyphens, TextAlign, TextDecoration, TextTransform, VerticalAlign } from './types/article/RichText';
 export { ArticleItemType } from './types/article/ArticleItemType';
 export { StructuredBlockType } from './types/article/StructuredBlockType';
+export { TABLE_KINDS } from './types/article/StructuredBlock';
 export { AreaAnchor, AnchorSide, DimensionMode, PositionType, DimensionsType } from './types/article/ItemArea';
 export { KeyframeType } from './types/keyframe/Keyframe';
 
@@ -29,7 +30,7 @@ export type {
   DividerStructuredBlock, DateStructuredBlock, HeaderStructuredBlock, HeaderImageStructuredBlock,
   VideoStructuredBlock, QuoteStructuredBlock, CodeStructuredBlock, TableStructuredBlock,
   StackBlockType, StructuredBlockArea, StructuredBlockTextStyles, StructuredBlockRichTextLayoutParams, HeaderElementKind, CodeToken, CodeColors,
-  StructuredBlockTableCommonParams, StructuredBlockTableLayoutParams,
+  StructuredBlockTableCommonParams, StructuredBlockTableLayoutParams, StructuredBlockTableColumn, StructuredBlockTableCell, TableKind,
   StructuredBlockCommonParamsMap, StructuredBlockLayoutParamsMap
 } from './types/article/StructuredBlock';
 export type { RichTextBlock, RichTextEntity, RichTextStyle } from './types/article/RichText';

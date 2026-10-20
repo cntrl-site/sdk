@@ -146,22 +146,49 @@ export interface StructuredBlockCodeCommonParams {
 
 export interface StructuredBlockCodeLayoutParams {}
 
-/** A heading row and the body rows under it, every row as long as the heading; a cell is plain text. */
+export const TABLE_KINDS = ['cells', 'rows', 'lines'] as const;
+
+/**
+ * What a table draws: `cells` a heading row over a grid of lines; `rows` every row plain, the two
+ * fills alternating from the first; `lines` a heading row and a line between each pair of rows,
+ * nothing vertical and nothing around.
+ */
+export type TableKind = typeof TABLE_KINDS[number];
+
+/**
+ * One cell of a table: rich text as a text block holds it, its paragraphs with their links, and
+ * the styles of its ranges on every layout the site is served, the colours resolved.
+ */
+export interface StructuredBlockTableCell {
+  id: string;
+  text: string;
+  blocks: RichTextBlock[];
+  styles: Record<string, RichTextStyle[]>;
+}
+
+/** A heading row and the body rows under it, every row as long as the heading. */
 export interface StructuredBlockTableCommonParams {
-  header: string[];
-  rows: string[][];
+  kind: TableKind;
+  header: StructuredBlockTableCell[];
+  rows: StructuredBlockTableCell[][];
+}
+
+/** One column of a table: its share of the table's width, the shares summing to one, and the space inside its cells on either side as a share of the layout width. */
+export interface StructuredBlockTableColumn {
+  width: number;
+  paddingLeft: number;
+  paddingRight: number;
 }
 
 /**
- * A table's cells, set in the text styles they are served with and spaced inside on every side,
- * as shares of the layout width; the colour of the lines between them, and the fills behind the
- * heading row and the body rows, absent where a row kind has none.
+ * A table's cells, set in the text styles they are served with and spaced inside above and below,
+ * as shares of the layout width; its columns; the colour of the lines between the cells, and the
+ * two fills -- the heading row's and the body's, or every other row's -- absent where there is none.
  */
 export interface StructuredBlockTableLayoutParams extends StructuredBlockTextStyles {
   cellPaddingTop: number;
-  cellPaddingRight: number;
   cellPaddingBottom: number;
-  cellPaddingLeft: number;
+  columns: StructuredBlockTableColumn[];
   borderColor?: string;
   headingBackground?: string;
   bodyBackground?: string;

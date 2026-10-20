@@ -4,7 +4,8 @@ import {
   HEADER_ELEMENT_KINDS,
   HeaderStructuredBlock,
   StructuredBlockAny,
-  StructuredBlockHeaderCommonParams
+  StructuredBlockHeaderCommonParams,
+  TABLE_KINDS
 } from '../../types/article/StructuredBlock';
 import { StructuredBlockType } from '../../types/article/StructuredBlockType';
 import { HeadingTag, Hyphens } from '../../types/article/RichText';
@@ -98,9 +99,17 @@ export const StructuredBlockCodeCommonParamsSchema = z.object({
   }).optional()
 });
 
+const StructuredBlockTableCellSchema = z.object({
+  id: z.string().min(1),
+  text: z.string(),
+  blocks: z.array(RichTextBlockSchema),
+  styles: z.record(z.array(RichTextStyleSchema))
+});
+
 export const StructuredBlockTableCommonParamsSchema = z.object({
-  header: z.array(z.string()).min(1),
-  rows: z.array(z.array(z.string())).min(1)
+  kind: z.enum(TABLE_KINDS),
+  header: z.array(StructuredBlockTableCellSchema).min(1),
+  rows: z.array(z.array(StructuredBlockTableCellSchema)).min(1)
 });
 
 export const StructuredBlockHeaderCommonParamsSchema = z.object({
@@ -117,11 +126,16 @@ export const StructuredBlockRichTextLayoutParamsSchema = StructuredBlockTextStyl
   hyphens: z.nativeEnum(Hyphens).optional()
 });
 
+const StructuredBlockTableColumnSchema = z.object({
+  width: z.number().min(0).max(1),
+  paddingLeft: z.number().nonnegative(),
+  paddingRight: z.number().nonnegative()
+});
+
 export const StructuredBlockTableLayoutParamsSchema = StructuredBlockTextStylesSchema.extend({
   cellPaddingTop: z.number().nonnegative(),
-  cellPaddingRight: z.number().nonnegative(),
   cellPaddingBottom: z.number().nonnegative(),
-  cellPaddingLeft: z.number().nonnegative(),
+  columns: z.array(StructuredBlockTableColumnSchema).min(1),
   borderColor: z.string().optional(),
   headingBackground: z.string().optional(),
   bodyBackground: z.string().optional()

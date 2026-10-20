@@ -87,16 +87,18 @@ const code = block(StructuredBlockType.Code, 'code', {
 const tableCells = {
   ...text,
   cellPaddingTop: 0.0056,
-  cellPaddingRight: 0.0069,
   cellPaddingBottom: 0.0056,
-  cellPaddingLeft: 0.0069,
+  columns: [{ width: 0.6, paddingLeft: 0.0069, paddingRight: 0.0069 }, { width: 0.4, paddingLeft: 0.0069, paddingRight: 0 }],
   borderColor: 'oklch(0.85 0 0 / 1)',
   headingBackground: 'oklch(0.95 0 0 / 1)'
 };
 
+const cell = (id: string, text: string, styles: object = {}) => ({ id, text: `${text}\n`, blocks: paragraph(`${text}\n`), styles: { desktop: [], ...styles } });
+
 const table = block(StructuredBlockType.Table, 'table', {
-  header: ['Name', 'Price'],
-  rows: [['Tea', '3'], ['Coffee', '4']]
+  kind: 'cells',
+  header: [cell('h0', 'Name', { desktop: [{ start: 0, end: 4, style: 'FONTWEIGHT', value: '700' }] }), cell('h1', 'Price')],
+  rows: [[cell('r00', 'Tea'), cell('r01', '3')], [cell('r10', 'Coffee'), cell('r11', '4')]]
 }, tableCells);
 
 const vimeo = block(StructuredBlockType.VimeoEmbed, 'vimeo', {
@@ -196,10 +198,12 @@ describe('StructuredBlockSchema', () => {
     expect(StructuredBlockSchema.safeParse({ ...richText, layoutParams: { desktop: { ...unstyled, rangeStyles: [] } } }).success).toBe(false);
   });
 
-  it('rejects a table served without the styles of its cells, or without their spacing', () => {
-    const { typeFace, ...unstyled } = text;
-    const { cellPaddingTop, ...unspaced } = tableCells;
-    expect(StructuredBlockSchema.safeParse({ ...table, layoutParams: { desktop: { ...unstyled, cellPaddingTop } } }).success).toBe(false);
-    expect(StructuredBlockSchema.safeParse({ ...table, layoutParams: { desktop: unspaced } }).success).toBe(false);
+  it('rejects a table served without the styles of its cells, without its columns, with a cell of plain text, or of a kind it does not know', () => {
+    const { typeFace, ...unstyled } = tableCells;
+    const { columns, ...uncolumned } = tableCells;
+    expect(StructuredBlockSchema.safeParse({ ...table, layoutParams: { desktop: unstyled } }).success).toBe(false);
+    expect(StructuredBlockSchema.safeParse({ ...table, layoutParams: { desktop: uncolumned } }).success).toBe(false);
+    expect(StructuredBlockSchema.safeParse({ ...table, commonParams: { ...table.commonParams, header: ['Name', 'Price'] } }).success).toBe(false);
+    expect(StructuredBlockSchema.safeParse({ ...table, commonParams: { ...table.commonParams, kind: 'bars' } }).success).toBe(false);
   });
 });
