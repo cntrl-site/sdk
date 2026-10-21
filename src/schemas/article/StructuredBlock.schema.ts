@@ -143,7 +143,10 @@ export const StructuredBlockTableLayoutParamsSchema = StructuredBlockTextStylesS
 
 export const StructuredBlockQuoteLayoutParamsSchema = StructuredBlockRichTextLayoutParamsSchema.extend({
   background: z.string().optional(),
-  boxPadding: z.number().nonnegative().optional(),
+  boxPaddingTop: z.number().nonnegative().optional(),
+  boxPaddingRight: z.number().nonnegative().optional(),
+  boxPaddingBottom: z.number().nonnegative().optional(),
+  boxPaddingLeft: z.number().nonnegative().optional(),
   boxRadius: z.number().nonnegative().optional()
 });
 

@@ -59,10 +59,13 @@ export interface StructuredBlockQuoteCommonParams extends StructuredBlockTextCom
   kind: string;
 }
 
-/** A quote's text is drawn in a box: absent where its kind draws none. */
+/** A quote's text is drawn in a box, inset on each side and rounded: absent where its kind draws none. */
 export interface StructuredBlockQuoteLayoutParams extends StructuredBlockRichTextLayoutParams {
   background?: string;
-  boxPadding?: number;
+  boxPaddingTop?: number;
+  boxPaddingRight?: number;
+  boxPaddingBottom?: number;
+  boxPaddingLeft?: number;
   boxRadius?: number;
 }
 
