@@ -8,7 +8,10 @@ type LayoutIdentifier = string;
 export interface StructuredBlockArea {
   width?: number;
   height?: number;
-  /** The gap above the block. */
+  /**
+   * The gap above the block, or above a section header. A content-based section draws its stack's
+   * blocks with none, whatever they hold; a default section's blocks keep theirs.
+   */
   paddingTop?: number;
   zIndex: number;
   alignment?: 'left' | 'center' | 'right';
