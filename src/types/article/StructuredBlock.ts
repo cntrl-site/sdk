@@ -210,7 +210,8 @@ export type StructuredBlockHeaderCommonParams = Record<HeaderElementKind, string
 /**
  * 'A' draws the key image behind the other elements, anchored to its bottom; 'B' draws every element
  * in order. A variant A image either keeps its proportions or covers a header `coverHeight` of the
- * viewport's height tall.
+ * viewport's height tall, and with `stickyImage` stays put on the screen while the header scrolls
+ * over it, as a section's fixed background does; absent, it scrolls with the header.
  */
 export interface StructuredBlockHeaderLayoutParams {
   variant: 'A' | 'B';
@@ -218,6 +219,7 @@ export interface StructuredBlockHeaderLayoutParams {
   hiddenElements: HeaderElementKind[];
   imageFit: 'original' | 'cover';
   coverHeight: number;
+  stickyImage?: boolean;
 }
 
 export interface StructuredBlockLayoutParamsMap {

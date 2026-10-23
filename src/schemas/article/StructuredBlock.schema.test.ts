@@ -164,6 +164,14 @@ describe('StructuredBlockSchema', () => {
     expect(SectionSchema.parse(served)).toEqual(served);
   });
 
+  it('keeps a header\'s image staying put on the screen, and refuses a value it does not know', () => {
+    const sticky = { ...header, layoutParams: { desktop: { ...header.layoutParams.desktop, stickyImage: true } } };
+    const served = section([headerImage], { header: sticky });
+    expect(SectionSchema.parse(served)).toEqual(served);
+    const unknown = { ...header, layoutParams: { desktop: { ...header.layoutParams.desktop, stickyImage: 'yes' } } };
+    expect(SectionSchema.safeParse(section([headerImage], { header: unknown })).success).toBe(false);
+  });
+
   it('takes a section without a header', () => {
     expect(SectionSchema.parse(section([richText]))).not.toHaveProperty('header');
   });

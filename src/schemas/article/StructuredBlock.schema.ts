@@ -170,7 +170,8 @@ export const StructuredBlockHeaderLayoutParamsSchema = z.object({
   order: z.array(z.enum(HEADER_ELEMENT_KINDS)),
   hiddenElements: z.array(z.enum(HEADER_ELEMENT_KINDS)),
   imageFit: z.enum(['original', 'cover']),
-  coverHeight: z.number().positive()
+  coverHeight: z.number().positive(),
+  stickyImage: z.boolean().optional()
 });
 
 const StructuredBlockBaseSchema = z.object({
