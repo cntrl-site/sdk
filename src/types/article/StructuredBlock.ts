@@ -36,7 +36,7 @@ export interface StructuredBlockComponentCommonParams {
   parameters?: Record<string, any>;
 }
 
-/** The text of a text block, a quote or a date. */
+/** The text of a text block, a quote, a date or a table cell. */
 interface StructuredBlockTextCommonParams {
   text: string;
   blocks: RichTextBlock[];
@@ -163,13 +163,13 @@ export type TableKind = typeof TABLE_KINDS[number];
 
 /**
  * One cell of a table: rich text as a text block holds it, its paragraphs with their links, and
- * the styles of its ranges on every layout the site is served, the colours resolved.
+ * the styles of its ranges on every layout the site is served, the colours resolved. The styles
+ * are kept with the cell, not in the table's layout params, as the editor keeps them: a cell
+ * comes and goes with its row or column.
  */
-export interface StructuredBlockTableCell {
+export interface StructuredBlockTableCell extends StructuredBlockTextCommonParams {
   id: string;
-  text: string;
-  blocks: RichTextBlock[];
-  styles: Record<string, RichTextStyle[]>;
+  styles: Record<LayoutIdentifier, RichTextStyle[]>;
 }
 
 /** A heading row and the body rows under it, every row as long as the heading. */

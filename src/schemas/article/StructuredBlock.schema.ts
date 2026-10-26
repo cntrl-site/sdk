@@ -99,10 +99,8 @@ export const StructuredBlockCodeCommonParamsSchema = z.object({
   }).optional()
 });
 
-const StructuredBlockTableCellSchema = z.object({
+const StructuredBlockTableCellSchema = StructuredBlockTextCommonParamsSchema.extend({
   id: z.string().min(1),
-  text: z.string(),
-  blocks: z.array(RichTextBlockSchema),
   styles: z.record(z.array(RichTextStyleSchema))
 });
 
