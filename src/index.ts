@@ -2,7 +2,7 @@
 export { Client as CntrlClient } from './Client/Client';
 export type { CntrlPageData } from './Client/Client';
 export { FontFaceGenerator } from './FontFaceGenerator/FontFaceGenerator';
-export { getLayoutStyles, getLayoutMediaQuery, measureFont } from './utils';
+export { getLayoutStyles, getLayoutMediaQuery, getShownCaption, measureFont } from './utils';
 export { ScrollPlaybackVideoManager } from './ScrollPlaybackVideoManager/ScrollPlaybackVideoManager';
 export { Rect } from './Rect/Rect';
 
@@ -11,6 +11,7 @@ export { SectionHeightMode } from './types/article/Section';
 export { HeadingTag, Hyphens, TextAlign, TextDecoration, TextTransform, VerticalAlign } from './types/article/RichText';
 export { ArticleItemType } from './types/article/ArticleItemType';
 export { StructuredBlockType } from './types/article/StructuredBlockType';
+export { TABLE_KINDS } from './types/article/StructuredBlock';
 export { AreaAnchor, AnchorSide, DimensionMode, PositionType, DimensionsType } from './types/article/ItemArea';
 export { KeyframeType } from './types/keyframe/Keyframe';
 
@@ -25,7 +26,12 @@ export type {
 export type { Link, StickyParams, FillLayer, ScrollPlaybackFrameData } from './types/article/Params.type';
 export type {
   StructuredBlock, ComponentStructuredBlock, RichTextStructuredBlock,
-  ImageStructuredBlock, VimeoEmbedStructuredBlock, YoutubeEmbedStructuredBlock, StructuredBlockAny
+  ImageStructuredBlock, VimeoEmbedStructuredBlock, YoutubeEmbedStructuredBlock, StructuredBlockAny,
+  DividerStructuredBlock, DateStructuredBlock, HeaderStructuredBlock, HeaderImageStructuredBlock,
+  VideoStructuredBlock, QuoteStructuredBlock, CodeStructuredBlock, TableStructuredBlock,
+  StackBlockType, StructuredBlockArea, StructuredBlockTextStyles, StructuredBlockRichTextLayoutParams, HeaderElementKind, CodeToken, CodeColors,
+  StructuredBlockTableCommonParams, StructuredBlockTableLayoutParams, StructuredBlockTableColumn, StructuredBlockTableCell, TableKind,
+  StructuredBlockCommonParamsMap, StructuredBlockLayoutParamsMap
 } from './types/article/StructuredBlock';
 export type { RichTextBlock, RichTextEntity, RichTextStyle } from './types/article/RichText';
 export type { ItemArea } from './types/article/ItemArea';

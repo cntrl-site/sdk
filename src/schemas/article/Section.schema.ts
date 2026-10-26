@@ -1,7 +1,16 @@
 import { Section, SectionHeightMode } from '../../types/article/Section';
-import { z, ZodType } from 'zod';
+import { z, ZodType, ZodTypeDef } from 'zod';
 import { ItemSchema } from './Item.schema';
-import { StructuredBlockSchema } from './StructuredBlock.schema';
+import { HeaderStructuredBlockSchema, StructuredBlockSchema } from './StructuredBlock.schema';
+import { StructuredBlockType } from '../../types/article/StructuredBlockType';
+
+const STACK_BLOCK_TYPES = new Set<string>(Object.values(StructuredBlockType).filter(type => type !== StructuredBlockType.Header));
+
+/** The API adds block types over time; a site on a build that does not know one skips that block rather than the whole article. */
+function knownBlocksOf(stack: unknown): unknown {
+  if (!Array.isArray(stack)) return stack;
+  return stack.filter(block => typeof block === 'object' && block !== null && STACK_BLOCK_TYPES.has((block as { type?: unknown }).type as string));
+}
 
 export const SectionHeightSchema = z.object({
   mode: z.nativeEnum(SectionHeightMode),
@@ -49,7 +58,7 @@ const SectionBaseSchema = z.object({
   color: z.record(z.nullable(z.string())),
   hidden: z.record(z.boolean()),
   minHeight: z.record(SectionHeightSchema),
-  structuredContent: z.array(StructuredBlockSchema),
+  structuredContent: z.preprocess(knownBlocksOf, z.array(StructuredBlockSchema)),
   media: z.record(SectionMediaSchema).optional()
 });
 
@@ -60,10 +69,12 @@ const DefaultSectionSchema = SectionBaseSchema.extend({
 
 const ContentBasedSectionSchema = SectionBaseSchema.extend({
   type: z.literal('content-based'),
-  structuredContentSettings: ContentBasedSectionSettingsSchema
+  structuredContentSettings: ContentBasedSectionSettingsSchema,
+  header: HeaderStructuredBlockSchema.optional()
 });
 
-export const SectionSchema: ZodType<Section> = z.discriminatedUnion('type', [
+// parsed from what the API serves, so its input is anything: the stack is read through a filter
+export const SectionSchema: ZodType<Section, ZodTypeDef, unknown> = z.discriminatedUnion('type', [
   DefaultSectionSchema,
   ContentBasedSectionSchema
 ]);
