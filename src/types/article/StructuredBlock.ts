@@ -62,8 +62,13 @@ export interface StructuredBlockQuoteCommonParams extends StructuredBlockTextCom
   kind: string;
 }
 
-/** A quote's text is drawn in a box, inset on each side and rounded: absent where its kind draws none. */
-export interface StructuredBlockQuoteLayoutParams extends StructuredBlockRichTextLayoutParams {
+/**
+ * The box a quote's text or a table is drawn in: its fill; the space inside it above and below; the
+ * space on either side, where the box grows out past the columns the text or the table is placed on,
+ * which stay where they are; and its corner radius. Lengths are shares of the layout width; each
+ * absent where nothing boxes the block.
+ */
+export interface StructuredBlockBoxParams {
   background?: string;
   boxPaddingTop?: number;
   boxPaddingRight?: number;
@@ -71,6 +76,9 @@ export interface StructuredBlockQuoteLayoutParams extends StructuredBlockRichTex
   boxPaddingLeft?: number;
   boxRadius?: number;
 }
+
+/** A quote's text is drawn in a box: absent where its kind draws none. */
+export type StructuredBlockQuoteLayoutParams = StructuredBlockRichTextLayoutParams & StructuredBlockBoxParams;
 
 /** A date comes as the text it reads as, its day, month and year styled as ranges of it. */
 export interface StructuredBlockDateCommonParams extends StructuredBlockTextCommonParams {
@@ -189,9 +197,10 @@ export interface StructuredBlockTableColumn {
 /**
  * A table's cells, set in the text styles they are served with and spaced inside above and below,
  * as shares of the layout width; its columns; the colour of the lines between the cells, and the
- * two fills -- the heading row's and the body's, or every other row's -- absent where there is none.
+ * two fills -- the heading row's and the body's, or every other row's -- absent where there is none;
+ * and the box it is drawn in. Each kind of table is styled apart.
  */
-export interface StructuredBlockTableLayoutParams extends StructuredBlockTextStyles {
+export interface StructuredBlockTableLayoutParams extends StructuredBlockTextStyles, StructuredBlockBoxParams {
   cellPaddingTop: number;
   cellPaddingBottom: number;
   columns: StructuredBlockTableColumn[];

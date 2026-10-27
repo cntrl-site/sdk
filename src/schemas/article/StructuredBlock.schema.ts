@@ -130,7 +130,16 @@ const StructuredBlockTableColumnSchema = z.object({
   paddingRight: z.number().nonnegative()
 });
 
-export const StructuredBlockTableLayoutParamsSchema = StructuredBlockTextStylesSchema.extend({
+const StructuredBlockBoxParamsSchema = z.object({
+  background: z.string().optional(),
+  boxPaddingTop: z.number().nonnegative().optional(),
+  boxPaddingRight: z.number().nonnegative().optional(),
+  boxPaddingBottom: z.number().nonnegative().optional(),
+  boxPaddingLeft: z.number().nonnegative().optional(),
+  boxRadius: z.number().nonnegative().optional()
+});
+
+export const StructuredBlockTableLayoutParamsSchema = StructuredBlockTextStylesSchema.merge(StructuredBlockBoxParamsSchema).extend({
   cellPaddingTop: z.number().nonnegative(),
   cellPaddingBottom: z.number().nonnegative(),
   columns: z.array(StructuredBlockTableColumnSchema).min(1),
@@ -139,14 +148,7 @@ export const StructuredBlockTableLayoutParamsSchema = StructuredBlockTextStylesS
   bodyBackground: z.string().optional()
 });
 
-export const StructuredBlockQuoteLayoutParamsSchema = StructuredBlockRichTextLayoutParamsSchema.extend({
-  background: z.string().optional(),
-  boxPaddingTop: z.number().nonnegative().optional(),
-  boxPaddingRight: z.number().nonnegative().optional(),
-  boxPaddingBottom: z.number().nonnegative().optional(),
-  boxPaddingLeft: z.number().nonnegative().optional(),
-  boxRadius: z.number().nonnegative().optional()
-});
+export const StructuredBlockQuoteLayoutParamsSchema = StructuredBlockRichTextLayoutParamsSchema.merge(StructuredBlockBoxParamsSchema);
 
 export const StructuredBlockImageLayoutParamsSchema = z.object({
   opacity: z.number().nonnegative(),

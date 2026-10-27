@@ -30,7 +30,7 @@ export type {
   DividerStructuredBlock, DateStructuredBlock, HeaderStructuredBlock, HeaderImageStructuredBlock,
   VideoStructuredBlock, QuoteStructuredBlock, CodeStructuredBlock, TableStructuredBlock,
   StackBlockType, StructuredBlockArea, StructuredBlockTextStyles, StructuredBlockRichTextLayoutParams, HeaderElementKind, CodeToken, CodeColors,
-  StructuredBlockTableCommonParams, StructuredBlockTableLayoutParams, StructuredBlockTableColumn, StructuredBlockTableCell, TableKind,
+  StructuredBlockTableCommonParams, StructuredBlockTableLayoutParams, StructuredBlockBoxParams, StructuredBlockTableColumn, StructuredBlockTableCell, TableKind,
   StructuredBlockCommonParamsMap, StructuredBlockLayoutParamsMap
 } from './types/article/StructuredBlock';
 export type { RichTextBlock, RichTextEntity, RichTextStyle } from './types/article/RichText';

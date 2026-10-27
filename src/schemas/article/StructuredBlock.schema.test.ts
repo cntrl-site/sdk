@@ -90,7 +90,14 @@ const tableCells = {
   cellPaddingBottom: 0.0056,
   columns: [{ width: 0.6, paddingLeft: 0.0069, paddingRight: 0.0069 }, { width: 0.4, paddingLeft: 0.0069, paddingRight: 0 }],
   borderColor: 'oklch(0.85 0 0 / 1)',
-  headingBackground: 'oklch(0.95 0 0 / 1)'
+  headingBackground: 'oklch(0.95 0 0 / 1)',
+  // the box the table is drawn in, which a table of each kind may have
+  background: 'oklch(0.97 0 0 / 1)',
+  boxPaddingTop: 0.01,
+  boxPaddingRight: 0.02,
+  boxPaddingBottom: 0.01,
+  boxPaddingLeft: 0.02,
+  boxRadius: 0.005
 };
 
 const cell = (id: string, text: string, styles: object = {}) => ({ id, text: `${text}\n`, blocks: paragraph(`${text}\n`), styles: { desktop: [], ...styles } });
