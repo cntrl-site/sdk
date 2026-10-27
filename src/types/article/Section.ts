@@ -21,6 +21,7 @@ export type SectionVideo = {
   coverUrl: string | null;
   offsetX: number | null;
   opacity?: number;
+  scale?: number;
 };
 
 export type SectionImage = {
@@ -31,6 +32,7 @@ export type SectionImage = {
   offsetX: number | null;
   opacity?: number;
   tileSize?: number;
+  scale?: number;
 };
 
 export interface ContentBasedSectionSettings {
