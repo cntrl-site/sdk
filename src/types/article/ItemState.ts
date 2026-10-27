@@ -25,6 +25,14 @@ export interface ItemStatesMap {
   [StructuredBlockType.Image]: MediaBlockStateParams;
   [StructuredBlockType.VimeoEmbed]: VideoEmbedBlockStateParams;
   [StructuredBlockType.YoutubeEmbed]: VideoEmbedBlockStateParams;
+  [StructuredBlockType.Divider]: DividerBlockStateParams;
+  [StructuredBlockType.Date]: RichTextBlockStateParams;
+  [StructuredBlockType.Header]: HeaderBlockStateParams;
+  [StructuredBlockType.HeaderImage]: MediaBlockStateParams;
+  [StructuredBlockType.Video]: MediaBlockStateParams;
+  [StructuredBlockType.Quote]: RichTextBlockStateParams;
+  [StructuredBlockType.Code]: CodeBlockStateParams;
+  [StructuredBlockType.Table]: TableBlockStateParams;
 }
 
 export interface StateParams<T> {
@@ -71,6 +79,17 @@ export interface VideoEmbedBlockStateParams {
   opacity?: StateParams<number>;
   radius?: StateParams<number>;
 }
+
+export interface DividerBlockStateParams {
+  color?: StateParams<string>;
+}
+
+/** A header animates nothing of its own; its elements carry their own states. */
+export interface HeaderBlockStateParams {}
+
+export interface CodeBlockStateParams {}
+
+export interface TableBlockStateParams {}
 
 export interface MediaStateParams extends ItemStatesBaseMap {
   opacity?: StateParams<number>;
