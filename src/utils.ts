@@ -101,3 +101,9 @@ interface FontMetrics {
   rightMargin: number;
   bottomMargin: number;
 }
+
+/** The caption a site draws under an image: none where it is switched off, or where it says nothing. */
+export function getShownCaption({ caption, showCaption }: { caption?: string; showCaption?: boolean }): string | undefined {
+  if (showCaption === false || !caption?.trim()) return undefined;
+  return caption;
+}
