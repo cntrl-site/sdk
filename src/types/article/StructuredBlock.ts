@@ -103,10 +103,21 @@ export interface StructuredBlockImageCommonParams extends ImageCaptionParams {
   altText: string;
 }
 
+/**
+ * How an image's caption is set on a layout, and its box: centered under the image, as wide as
+ * `width` (a share of the layout width) or as the image where that is narrower, with the space
+ * inside it above and below its text.
+ */
+export interface StructuredBlockCaptionStyles extends StructuredBlockTextStyles {
+  width?: number;
+  paddingTop?: number;
+  paddingBottom?: number;
+}
+
 export interface StructuredBlockImageLayoutParams {
   opacity: number;
   /** Set where the image has a caption. */
-  captionStyles?: StructuredBlockTextStyles;
+  captionStyles?: StructuredBlockCaptionStyles;
 }
 
 /** A section header's key image: the url is empty until an image is uploaded. */

@@ -150,9 +150,15 @@ export const StructuredBlockTableLayoutParamsSchema = StructuredBlockTextStylesS
 
 export const StructuredBlockQuoteLayoutParamsSchema = StructuredBlockRichTextLayoutParamsSchema.merge(StructuredBlockBoxParamsSchema);
 
+const StructuredBlockCaptionStylesSchema = StructuredBlockTextStylesSchema.extend({
+  width: z.number().nonnegative().optional(),
+  paddingTop: z.number().nonnegative().optional(),
+  paddingBottom: z.number().nonnegative().optional()
+});
+
 export const StructuredBlockImageLayoutParamsSchema = z.object({
   opacity: z.number().nonnegative(),
-  captionStyles: StructuredBlockTextStylesSchema.optional()
+  captionStyles: StructuredBlockCaptionStylesSchema.optional()
 });
 
 export const StructuredBlockVideoLayoutParamsSchema = z.object({

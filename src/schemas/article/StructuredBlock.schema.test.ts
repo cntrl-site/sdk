@@ -61,7 +61,7 @@ const gallery = block(StructuredBlockType.Image, 'gallery', {
   urls: ['https://cdn.cntrl.site/a.jpg', 'https://cdn.cntrl.site/b.jpg'],
   altText: '',
   caption: 'Two views'
-}, { opacity: 1, captionStyles: { ...text, fontSize: 0.0069, color: '#E6E6E6' } });
+}, { opacity: 1, captionStyles: { ...text, fontSize: 0.0069, color: '#E6E6E6', width: 0.4, paddingTop: 0.002, paddingBottom: 0 } });
 
 const headerImage = block(StructuredBlockType.HeaderImage, 'header-image', {
   url: 'https://cdn.cntrl.site/header.jpg',
