@@ -131,7 +131,7 @@ const StructuredBlockTableColumnSchema = z.object({
 });
 
 const StructuredBlockBoxParamsSchema = z.object({
-  background: z.string().optional(),
+  boxBackground: z.string().optional(),
   boxPaddingTop: z.number().nonnegative().optional(),
   boxPaddingRight: z.number().nonnegative().optional(),
   boxPaddingBottom: z.number().nonnegative().optional(),
@@ -151,9 +151,9 @@ export const StructuredBlockTableLayoutParamsSchema = StructuredBlockTextStylesS
 export const StructuredBlockQuoteLayoutParamsSchema = StructuredBlockRichTextLayoutParamsSchema.merge(StructuredBlockBoxParamsSchema);
 
 const StructuredBlockCaptionStylesSchema = StructuredBlockTextStylesSchema.extend({
-  width: z.number().nonnegative().optional(),
-  paddingTop: z.number().nonnegative().optional(),
-  paddingBottom: z.number().nonnegative().optional()
+  maxWidth: z.number().min(0).max(1).optional(),
+  innerPaddingTop: z.number().nonnegative().optional(),
+  innerPaddingBottom: z.number().nonnegative().optional()
 });
 
 export const StructuredBlockImageLayoutParamsSchema = z.object({

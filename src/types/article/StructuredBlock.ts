@@ -66,10 +66,10 @@ export interface StructuredBlockQuoteCommonParams extends StructuredBlockTextCom
  * The box a quote's text or a table is drawn in: its fill; the space inside it above and below; the
  * space on either side, where the box grows out past the columns the text or the table is placed on,
  * which stay where they are; and its corner radius. Lengths are shares of the layout width; each
- * absent where nothing boxes the block.
+ * absent where nothing boxes the block. The fill is the box's, not the text's or a table's cells'.
  */
 export interface StructuredBlockBoxParams {
-  background?: string;
+  boxBackground?: string;
   boxPaddingTop?: number;
   boxPaddingRight?: number;
   boxPaddingBottom?: number;
@@ -105,13 +105,13 @@ export interface StructuredBlockImageCommonParams extends ImageCaptionParams {
 
 /**
  * How an image's caption is set on a layout, and its box: centered under the image, as wide as
- * `width` (a share of the layout width) or as the image where that is narrower, with the space
- * inside it above and below its text.
+ * `maxWidth` (a share of the layout width) or as the image where that is narrower, with the space
+ * inside it above and below its text, as a block's area has inside it.
  */
 export interface StructuredBlockCaptionStyles extends StructuredBlockTextStyles {
-  width?: number;
-  paddingTop?: number;
-  paddingBottom?: number;
+  maxWidth?: number;
+  innerPaddingTop?: number;
+  innerPaddingBottom?: number;
 }
 
 export interface StructuredBlockImageLayoutParams {
