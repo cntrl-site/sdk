@@ -130,7 +130,16 @@ const StructuredBlockTableColumnSchema = z.object({
   paddingRight: z.number().nonnegative()
 });
 
-export const StructuredBlockTableLayoutParamsSchema = StructuredBlockTextStylesSchema.extend({
+const StructuredBlockBoxParamsSchema = z.object({
+  boxBackground: z.string().optional(),
+  boxPaddingTop: z.number().nonnegative().optional(),
+  boxPaddingRight: z.number().nonnegative().optional(),
+  boxPaddingBottom: z.number().nonnegative().optional(),
+  boxPaddingLeft: z.number().nonnegative().optional(),
+  boxRadius: z.number().nonnegative().optional()
+});
+
+export const StructuredBlockTableLayoutParamsSchema = StructuredBlockTextStylesSchema.merge(StructuredBlockBoxParamsSchema).extend({
   cellPaddingTop: z.number().nonnegative(),
   cellPaddingBottom: z.number().nonnegative(),
   columns: z.array(StructuredBlockTableColumnSchema).min(1),
@@ -139,18 +148,17 @@ export const StructuredBlockTableLayoutParamsSchema = StructuredBlockTextStylesS
   bodyBackground: z.string().optional()
 });
 
-export const StructuredBlockQuoteLayoutParamsSchema = StructuredBlockRichTextLayoutParamsSchema.extend({
-  background: z.string().optional(),
-  boxPaddingTop: z.number().nonnegative().optional(),
-  boxPaddingRight: z.number().nonnegative().optional(),
-  boxPaddingBottom: z.number().nonnegative().optional(),
-  boxPaddingLeft: z.number().nonnegative().optional(),
-  boxRadius: z.number().nonnegative().optional()
+export const StructuredBlockQuoteLayoutParamsSchema = StructuredBlockRichTextLayoutParamsSchema.merge(StructuredBlockBoxParamsSchema);
+
+const StructuredBlockCaptionStylesSchema = StructuredBlockTextStylesSchema.extend({
+  maxWidth: z.number().min(0).max(1).optional(),
+  innerPaddingTop: z.number().nonnegative().optional(),
+  innerPaddingBottom: z.number().nonnegative().optional()
 });
 
 export const StructuredBlockImageLayoutParamsSchema = z.object({
   opacity: z.number().nonnegative(),
-  captionStyles: StructuredBlockTextStylesSchema.optional()
+  captionStyles: StructuredBlockCaptionStylesSchema.optional()
 });
 
 export const StructuredBlockVideoLayoutParamsSchema = z.object({
