@@ -241,6 +241,7 @@ export interface StickyParams {
 export interface Link {
   url: string;
   target: string;
+  download?: string;
 }
 
 export interface ComponentLayoutParams {
