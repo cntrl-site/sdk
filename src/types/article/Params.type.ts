@@ -241,7 +241,6 @@ export interface StickyParams {
 export interface Link {
   url: string;
   target: string;
-  // Set on a link to a file: the link downloads the file under this name instead of opening it.
   download?: string;
 }
 
