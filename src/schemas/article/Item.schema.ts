@@ -17,7 +17,6 @@ import {
   CustomItemStateParamsSchema,
   EmbedStateParamsSchema,
   GroupStateParamsSchema,
-  ImageStateParamsSchema,
   MediaStateParamsSchema,
   RectangleStateParamsSchema
 } from './ItemState.schema';
@@ -70,7 +69,7 @@ const ImageItemSchema = ItemBaseSchema.extend({
   layoutParams: z.record(
     ImageLayoutParamsSchema
   ),
-  state: z.record(ImageStateParamsSchema)
+  state: z.record(MediaStateParamsSchema)
 }) satisfies ZodType<ImageItem>;
 
 const ScrollPlaybackFrameDataSchema = z.object({
