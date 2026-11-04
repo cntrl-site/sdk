@@ -9,7 +9,7 @@ export type ItemState<T extends ArticleItemType | StructuredBlockType> = Record<
 export type ItemStateParams = ItemStatesMap[ArticleItemType] | ItemStatesMap[StructuredBlockType];
 
 export interface ItemStatesMap {
-  [ArticleItemType.Image]: MediaStateParams;
+  [ArticleItemType.Image]: ImageStateParams;
   [ArticleItemType.Video]: MediaStateParams;
   [ArticleItemType.RichText]: RichTextStateParams;
   [ArticleItemType.Rectangle]: RectangleStateParams;
@@ -96,6 +96,9 @@ export interface MediaStateParams extends ItemStatesBaseMap {
   radius?: StateParams<number>;
   strokeWidth?: StateParams<number>;
   strokeFill?: StateParams<FillLayer[]>;
+}
+
+export interface ImageStateParams extends MediaStateParams {
   fill?: StateParams<FillLayer[]>;
 }
 

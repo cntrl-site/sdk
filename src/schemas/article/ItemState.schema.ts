@@ -5,6 +5,7 @@ import {
   VideoEmbedStateParams,
   GroupStateParams,
   MediaStateParams,
+  ImageStateParams,
   RectangleStateParams,
   RichTextStateParams,
    CompoundStateParams,
@@ -49,10 +50,13 @@ export const MediaStateParamsSchema =
     opacity: getStateParamsSchema(z.number()),
     radius: getStateParamsSchema(z.number()),
     strokeWidth: getStateParamsSchema(z.number()),
-    strokeFill: getStateParamsSchema(z.array(FillLayerSchema)),
-    fill: getStateParamsSchema(z.array(FillLayerSchema))
+    strokeFill: getStateParamsSchema(z.array(FillLayerSchema))
   })
     .merge(ItemStateBaseSchema) satisfies ZodType<MediaStateParams>;
+
+export const ImageStateParamsSchema = MediaStateParamsSchema.extend({
+  fill: getStateParamsSchema(z.array(FillLayerSchema))
+}) satisfies ZodType<ImageStateParams>;
 
 export const RectangleStateParamsSchema = z.object({
   strokeWidth: getStateParamsSchema(z.number()),
@@ -128,6 +132,7 @@ export const TableBlockStateParamsSchema = z.object({}) satisfies ZodType<TableB
 export const ItemStateParamsSchema = z.union([
   EmbedStateParamsSchema,
   MediaStateParamsSchema,
+  ImageStateParamsSchema,
   RectangleStateParamsSchema,
   RichTextStateParamsSchema,
   CustomItemStateParamsSchema,
