@@ -48,7 +48,7 @@ const quote = block(StructuredBlockType.Quote, 'quote', {
   text: 'A quote\n',
   kind: 'boxed',
   blocks: paragraph('A quote\n')
-}, { ...text, fontStyle: 'italic', rangeStyles: [], background: 'oklch(0.95 0 0 / 1)', boxPaddingTop: 0.0278, boxPaddingRight: 0.02, boxPaddingBottom: 0.0278, boxPaddingLeft: 0.02, boxRadius: 0.0111 });
+}, { ...text, fontStyle: 'italic', rangeStyles: [], boxBackground: 'oklch(0.95 0 0 / 1)', boxPaddingTop: 0.0278, boxPaddingRight: 0.02, boxPaddingBottom: 0.0278, boxPaddingLeft: 0.02, boxRadius: 0.0111 });
 
 const date = block(StructuredBlockType.Date, 'date', {
   date: '2026-09-23',
@@ -61,7 +61,7 @@ const gallery = block(StructuredBlockType.Image, 'gallery', {
   urls: ['https://cdn.cntrl.site/a.jpg', 'https://cdn.cntrl.site/b.jpg'],
   altText: '',
   caption: 'Two views'
-}, { opacity: 1, captionStyles: { ...text, fontSize: 0.0069, color: '#E6E6E6' } });
+}, { opacity: 1, captionStyles: { ...text, fontSize: 0.0069, color: '#E6E6E6', maxWidth: 0.4, innerPaddingTop: 0.002, innerPaddingBottom: 0 } });
 
 const headerImage = block(StructuredBlockType.HeaderImage, 'header-image', {
   url: 'https://cdn.cntrl.site/header.jpg',
@@ -90,7 +90,14 @@ const tableCells = {
   cellPaddingBottom: 0.0056,
   columns: [{ width: 0.6, paddingLeft: 0.0069, paddingRight: 0.0069 }, { width: 0.4, paddingLeft: 0.0069, paddingRight: 0 }],
   borderColor: 'oklch(0.85 0 0 / 1)',
-  headingBackground: 'oklch(0.95 0 0 / 1)'
+  headingBackground: 'oklch(0.95 0 0 / 1)',
+  // the box the table is drawn in, which a table of each kind may have
+  boxBackground: 'oklch(0.97 0 0 / 1)',
+  boxPaddingTop: 0.01,
+  boxPaddingRight: 0.02,
+  boxPaddingBottom: 0.01,
+  boxPaddingLeft: 0.02,
+  boxRadius: 0.005
 };
 
 const cell = (id: string, text: string, styles: object = {}) => ({ id, text: `${text}\n`, blocks: paragraph(`${text}\n`), styles: { desktop: [], ...styles } });

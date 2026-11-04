@@ -62,15 +62,23 @@ export interface StructuredBlockQuoteCommonParams extends StructuredBlockTextCom
   kind: string;
 }
 
-/** A quote's text is drawn in a box, inset on each side and rounded: absent where its kind draws none. */
-export interface StructuredBlockQuoteLayoutParams extends StructuredBlockRichTextLayoutParams {
-  background?: string;
+/**
+ * The box a quote's text or a table is drawn in: its fill; the space inside it above and below; the
+ * space on either side, where the box grows out past the columns the text or the table is placed on,
+ * which stay where they are; and its corner radius. Lengths are shares of the layout width; each
+ * absent where nothing boxes the block. The fill is the box's, not the text's or a table's cells'.
+ */
+export interface StructuredBlockBoxParams {
+  boxBackground?: string;
   boxPaddingTop?: number;
   boxPaddingRight?: number;
   boxPaddingBottom?: number;
   boxPaddingLeft?: number;
   boxRadius?: number;
 }
+
+/** A quote's text is drawn in a box: absent where its kind draws none. */
+export type StructuredBlockQuoteLayoutParams = StructuredBlockRichTextLayoutParams & StructuredBlockBoxParams;
 
 /** A date comes as the text it reads as, its day, month and year styled as ranges of it. */
 export interface StructuredBlockDateCommonParams extends StructuredBlockTextCommonParams {
@@ -95,10 +103,21 @@ export interface StructuredBlockImageCommonParams extends ImageCaptionParams {
   altText: string;
 }
 
+/**
+ * How an image's caption is set on a layout, and its box: centered under the image, as wide as
+ * `maxWidth` (a share of the layout width) or as the image where that is narrower, with the space
+ * inside it above and below its text, as a block's area has inside it.
+ */
+export interface StructuredBlockCaptionStyles extends StructuredBlockTextStyles {
+  maxWidth?: number;
+  innerPaddingTop?: number;
+  innerPaddingBottom?: number;
+}
+
 export interface StructuredBlockImageLayoutParams {
   opacity: number;
   /** Set where the image has a caption. */
-  captionStyles?: StructuredBlockTextStyles;
+  captionStyles?: StructuredBlockCaptionStyles;
 }
 
 /** A section header's key image: the url is empty until an image is uploaded. */
@@ -189,9 +208,10 @@ export interface StructuredBlockTableColumn {
 /**
  * A table's cells, set in the text styles they are served with and spaced inside above and below,
  * as shares of the layout width; its columns; the colour of the lines between the cells, and the
- * two fills -- the heading row's and the body's, or every other row's -- absent where there is none.
+ * two fills -- the heading row's and the body's, or every other row's -- absent where there is none;
+ * and the box it is drawn in. Each kind of table is styled apart.
  */
-export interface StructuredBlockTableLayoutParams extends StructuredBlockTextStyles {
+export interface StructuredBlockTableLayoutParams extends StructuredBlockTextStyles, StructuredBlockBoxParams {
   cellPaddingTop: number;
   cellPaddingBottom: number;
   columns: StructuredBlockTableColumn[];
