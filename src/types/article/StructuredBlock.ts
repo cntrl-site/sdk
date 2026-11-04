@@ -43,7 +43,10 @@ interface StructuredBlockTextCommonParams {
 }
 
 export interface StructuredBlockRichTextCommonParams extends StructuredBlockTextCommonParams {
-  /** The tag the text is a heading in: for now the API gives text in the Title preset the page's h1. */
+  /**
+   * The tag the text is a heading in: for now the API gives text in the Title preset the page's h1,
+   * text in the Heading preset an h2 and text in the Subheading preset an h3.
+   */
   heading?: HeadingTag;
 }
 
