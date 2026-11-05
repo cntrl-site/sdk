@@ -4,7 +4,8 @@ import { AreaAnchor, DimensionMode } from '../../types/article/ItemArea';
 
 export const Link = z.object({
   url: z.string().min(1),
-  target: z.string().min(1)
+  target: z.string().min(1),
+  download: z.string().optional()
 });
 
 export const CompoundSettingsSchema = z.object({
