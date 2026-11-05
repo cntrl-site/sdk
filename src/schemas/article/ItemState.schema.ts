@@ -49,7 +49,8 @@ export const MediaStateParamsSchema =
     opacity: getStateParamsSchema(z.number()),
     radius: getStateParamsSchema(z.number()),
     strokeWidth: getStateParamsSchema(z.number()),
-    strokeFill: getStateParamsSchema(z.array(FillLayerSchema))
+    strokeFill: getStateParamsSchema(z.array(FillLayerSchema)),
+    fill: getStateParamsSchema(z.array(FillLayerSchema))
   })
     .merge(ItemStateBaseSchema) satisfies ZodType<MediaStateParams>;
 

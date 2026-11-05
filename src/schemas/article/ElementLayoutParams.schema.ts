@@ -8,6 +8,7 @@ export const ImageLayoutParamsSchema = z.object({
   radius: z.number(),
   strokeWidth: z.number(),
   strokeFill: z.array(FillLayerSchema),
+  fill: z.array(FillLayerSchema).optional(),
   blur: z.number(),
   isDraggable: z.boolean().optional(),
   blendMode: z.string().optional()

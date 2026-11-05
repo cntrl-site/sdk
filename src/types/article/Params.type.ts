@@ -125,6 +125,7 @@ export interface YoutubeEmbedLayoutParams {
 
 export interface ImageLayoutParams extends MediaLayoutParams {
   altText?: string;
+  fill?: FillLayer[];
 }
 
 export interface VideoLayoutParams extends MediaLayoutParams {
