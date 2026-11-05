@@ -96,6 +96,7 @@ export interface MediaStateParams extends ItemStatesBaseMap {
   radius?: StateParams<number>;
   strokeWidth?: StateParams<number>;
   strokeFill?: StateParams<FillLayer[]>;
+  fill?: StateParams<FillLayer[]>;
 }
 
 export interface RichTextStateParams extends ItemStatesBaseMap {
