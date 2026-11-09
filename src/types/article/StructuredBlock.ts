@@ -234,7 +234,9 @@ export type StructuredBlockHeaderCommonParams = Record<HeaderElementKind, string
  * 'A' draws the key image behind the other elements, anchored to its bottom; 'B' draws every element
  * in order. A variant A image either keeps its proportions or covers a header `coverHeight` of the
  * viewport's height tall, and with `stickyImage` stays put on the screen while the header scrolls
- * over it, as a section's fixed background does; absent, it scrolls with the header.
+ * over it, as a section's fixed background does; absent, it scrolls with the header. With
+ * `fadeOnScroll` it zooms in a little and fades out as it scrolls off the screen's top, from when a
+ * third of it is left on the screen, and comes back as the page scrolls back; absent, it stays still.
  */
 export interface StructuredBlockHeaderLayoutParams {
   variant: 'A' | 'B';
@@ -243,6 +245,7 @@ export interface StructuredBlockHeaderLayoutParams {
   imageFit: 'original' | 'cover';
   coverHeight: number;
   stickyImage?: boolean;
+  fadeOnScroll?: boolean;
 }
 
 export interface StructuredBlockLayoutParamsMap {

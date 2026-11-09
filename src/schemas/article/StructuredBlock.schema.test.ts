@@ -179,6 +179,14 @@ describe('StructuredBlockSchema', () => {
     expect(SectionSchema.safeParse(section([headerImage], { header: unknown })).success).toBe(false);
   });
 
+  it('keeps a header\'s image fading on scroll, and refuses a value it does not know', () => {
+    const fading = { ...header, layoutParams: { desktop: { ...header.layoutParams.desktop, fadeOnScroll: true } } };
+    const served = section([headerImage], { header: fading });
+    expect(SectionSchema.parse(served)).toEqual(served);
+    const unknown = { ...header, layoutParams: { desktop: { ...header.layoutParams.desktop, fadeOnScroll: 'yes' } } };
+    expect(SectionSchema.safeParse(section([headerImage], { header: unknown })).success).toBe(false);
+  });
+
   it('takes a section without a header', () => {
     expect(SectionSchema.parse(section([richText]))).not.toHaveProperty('header');
   });
