@@ -136,7 +136,8 @@ const StructuredBlockBoxParamsSchema = z.object({
   boxPaddingRight: z.number().nonnegative().optional(),
   boxPaddingBottom: z.number().nonnegative().optional(),
   boxPaddingLeft: z.number().nonnegative().optional(),
-  boxRadius: z.number().nonnegative().optional()
+  boxRadius: z.number().nonnegative().optional(),
+  boxRotation: z.number().optional()
 });
 
 export const StructuredBlockTableLayoutParamsSchema = StructuredBlockTextStylesSchema.merge(StructuredBlockBoxParamsSchema).extend({
