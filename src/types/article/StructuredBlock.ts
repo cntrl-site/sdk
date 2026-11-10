@@ -239,6 +239,8 @@ export type StructuredBlockHeaderCommonParams = Record<HeaderElementKind, string
  * over it, as a section's fixed background does; absent, it scrolls with the header. With
  * `fadeOnScroll` it zooms in a little and fades out as it scrolls off the screen's top, from when a
  * third of it is left on the screen, and comes back as the page scrolls back; absent, it stays still.
+ * While a variant A image fades, the header is filled with `background`, which shows as the image
+ * fades; absent, or on a header whose image keeps still, the header is clear.
  */
 export interface StructuredBlockHeaderLayoutParams {
   variant: 'A' | 'B';
@@ -248,6 +250,7 @@ export interface StructuredBlockHeaderLayoutParams {
   coverHeight: number;
   stickyImage?: boolean;
   fadeOnScroll?: boolean;
+  background?: string;
 }
 
 export interface StructuredBlockLayoutParamsMap {

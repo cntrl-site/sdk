@@ -187,6 +187,14 @@ describe('StructuredBlockSchema', () => {
     expect(SectionSchema.safeParse(section([headerImage], { header: unknown })).success).toBe(false);
   });
 
+  it('keeps the fill a header shows as its image fades, and refuses one that is not a colour', () => {
+    const filled = { ...header, layoutParams: { desktop: { ...header.layoutParams.desktop, fadeOnScroll: true, background: 'oklch(0.9 0.02 80 / 1)' } } };
+    const served = section([headerImage], { header: filled });
+    expect(SectionSchema.parse(served)).toEqual(served);
+    const unknown = { ...header, layoutParams: { desktop: { ...header.layoutParams.desktop, background: 4 } } };
+    expect(SectionSchema.safeParse(section([headerImage], { header: unknown })).success).toBe(false);
+  });
+
   it('takes a section without a header', () => {
     expect(SectionSchema.parse(section([richText]))).not.toHaveProperty('header');
   });
