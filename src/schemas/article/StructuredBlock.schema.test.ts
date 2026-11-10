@@ -48,7 +48,7 @@ const quote = block(StructuredBlockType.Quote, 'quote', {
   text: 'A quote\n',
   kind: 'boxed',
   blocks: paragraph('A quote\n')
-}, { ...text, fontStyle: 'italic', rangeStyles: [], boxBackground: 'oklch(0.95 0 0 / 1)', boxPaddingTop: 0.0278, boxPaddingRight: 0.02, boxPaddingBottom: 0.0278, boxPaddingLeft: 0.02, boxRadius: 0.0111 });
+}, { ...text, fontStyle: 'italic', rangeStyles: [], boxBackground: 'oklch(0.95 0 0 / 1)', boxPaddingTop: 0.0278, boxPaddingRight: 0.02, boxPaddingBottom: 0.0278, boxPaddingLeft: 0.02, boxRadius: 0.0111, boxRotation: -4 });
 
 const date = block(StructuredBlockType.Date, 'date', {
   date: '2026-09-23',
@@ -176,6 +176,22 @@ describe('StructuredBlockSchema', () => {
     const served = section([headerImage], { header: sticky });
     expect(SectionSchema.parse(served)).toEqual(served);
     const unknown = { ...header, layoutParams: { desktop: { ...header.layoutParams.desktop, stickyImage: 'yes' } } };
+    expect(SectionSchema.safeParse(section([headerImage], { header: unknown })).success).toBe(false);
+  });
+
+  it('keeps a header\'s image fading on scroll, and refuses a value it does not know', () => {
+    const fading = { ...header, layoutParams: { desktop: { ...header.layoutParams.desktop, fadeOnScroll: true } } };
+    const served = section([headerImage], { header: fading });
+    expect(SectionSchema.parse(served)).toEqual(served);
+    const unknown = { ...header, layoutParams: { desktop: { ...header.layoutParams.desktop, fadeOnScroll: 'yes' } } };
+    expect(SectionSchema.safeParse(section([headerImage], { header: unknown })).success).toBe(false);
+  });
+
+  it('keeps the fill a header shows as its image fades, and refuses one that is not a colour', () => {
+    const filled = { ...header, layoutParams: { desktop: { ...header.layoutParams.desktop, fadeOnScroll: true, background: 'oklch(0.9 0.02 80 / 1)' } } };
+    const served = section([headerImage], { header: filled });
+    expect(SectionSchema.parse(served)).toEqual(served);
+    const unknown = { ...header, layoutParams: { desktop: { ...header.layoutParams.desktop, background: 4 } } };
     expect(SectionSchema.safeParse(section([headerImage], { header: unknown })).success).toBe(false);
   });
 

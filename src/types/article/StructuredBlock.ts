@@ -68,7 +68,8 @@ export interface StructuredBlockQuoteCommonParams extends StructuredBlockTextCom
 /**
  * The box a quote's text or a table is drawn in: its fill; the space inside it above and below; the
  * space on either side, where the box grows out past the columns the text or the table is placed on,
- * which stay where they are; and its corner radius. Lengths are shares of the layout width; each
+ * which stay where they are; its corner radius; and its turn, in degrees clockwise, absent for none,
+ * which leaves the blocks around it where they are. Lengths are shares of the layout width; each
  * absent where nothing boxes the block. The fill is the box's, not the text's or a table's cells'.
  */
 export interface StructuredBlockBoxParams {
@@ -78,6 +79,7 @@ export interface StructuredBlockBoxParams {
   boxPaddingBottom?: number;
   boxPaddingLeft?: number;
   boxRadius?: number;
+  boxRotation?: number;
 }
 
 /** A quote's text is drawn in a box: absent where its kind draws none. */
@@ -234,7 +236,11 @@ export type StructuredBlockHeaderCommonParams = Record<HeaderElementKind, string
  * 'A' draws the key image behind the other elements, anchored to its bottom; 'B' draws every element
  * in order. A variant A image either keeps its proportions or covers a header `coverHeight` of the
  * viewport's height tall, and with `stickyImage` stays put on the screen while the header scrolls
- * over it, as a section's fixed background does; absent, it scrolls with the header.
+ * over it, as a section's fixed background does; absent, it scrolls with the header. With
+ * `fadeOnScroll` it zooms in a little and fades out as it scrolls off the screen's top, from when a
+ * third of it is left on the screen, and comes back as the page scrolls back; absent, it stays still.
+ * While a variant A image fades, the header is filled with `background`, which shows as the image
+ * fades; absent, or on a header whose image keeps still, the header is clear.
  */
 export interface StructuredBlockHeaderLayoutParams {
   variant: 'A' | 'B';
@@ -243,6 +249,8 @@ export interface StructuredBlockHeaderLayoutParams {
   imageFit: 'original' | 'cover';
   coverHeight: number;
   stickyImage?: boolean;
+  fadeOnScroll?: boolean;
+  background?: string;
 }
 
 export interface StructuredBlockLayoutParamsMap {

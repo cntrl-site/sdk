@@ -136,7 +136,8 @@ const StructuredBlockBoxParamsSchema = z.object({
   boxPaddingRight: z.number().nonnegative().optional(),
   boxPaddingBottom: z.number().nonnegative().optional(),
   boxPaddingLeft: z.number().nonnegative().optional(),
-  boxRadius: z.number().nonnegative().optional()
+  boxRadius: z.number().nonnegative().optional(),
+  boxRotation: z.number().optional()
 });
 
 export const StructuredBlockTableLayoutParamsSchema = StructuredBlockTextStylesSchema.merge(StructuredBlockBoxParamsSchema).extend({
@@ -177,7 +178,9 @@ export const StructuredBlockHeaderLayoutParamsSchema = z.object({
   hiddenElements: z.array(z.enum(HEADER_ELEMENT_KINDS)),
   imageFit: z.enum(['original', 'cover']),
   coverHeight: z.number().positive(),
-  stickyImage: z.boolean().optional()
+  stickyImage: z.boolean().optional(),
+  fadeOnScroll: z.boolean().optional(),
+  background: z.string().optional()
 });
 
 const StructuredBlockBaseSchema = z.object({
