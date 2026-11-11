@@ -229,6 +229,14 @@ describe('StructuredBlockSchema', () => {
     expect(StructuredBlockSchema.safeParse({ ...richText, layoutParams: { desktop: { ...unstyled, rangeStyles: [] } } }).success).toBe(false);
   });
 
+  it('takes a table scrolling inside its box as wide as its columns, wider than the layout if need be, each column its share of it', () => {
+    const scrolling = { ...table, layoutParams: { desktop: { ...tableCells, sizing: 'scroll', tableWidth: 1.8 } } };
+    expect(StructuredBlockSchema.parse(scrolling)).toEqual(scrolling);
+    expect(StructuredBlockSchema.parse({ ...table, layoutParams: { desktop: { ...tableCells, sizing: 'fill' } } })).toMatchObject({ layoutParams: { desktop: { sizing: 'fill' } } });
+    expect(StructuredBlockSchema.safeParse({ ...table, layoutParams: { desktop: { ...tableCells, sizing: 'wrap' } } }).success).toBe(false);
+    expect(StructuredBlockSchema.safeParse({ ...table, layoutParams: { desktop: { ...tableCells, sizing: 'scroll', tableWidth: 0 } } }).success).toBe(false);
+  });
+
   it('rejects a table served without the styles of its cells, without its columns, with a cell of plain text, or of a kind it does not know', () => {
     const { typeFace, ...unstyled } = tableCells;
     const { columns, ...uncolumned } = tableCells;
