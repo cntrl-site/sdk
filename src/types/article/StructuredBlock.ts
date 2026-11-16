@@ -123,6 +123,8 @@ export interface StructuredBlockImageLayoutParams {
   opacity: number;
   /** Set where the image has a caption. */
   captionStyles?: StructuredBlockCaptionStyles;
+  /** Set on the layouts where a gallery's images open full screen when clicked. */
+  lightbox?: boolean;
 }
 
 /** A section header's key image: the url is empty until an image is uploaded. */

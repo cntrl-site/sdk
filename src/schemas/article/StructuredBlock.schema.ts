@@ -159,7 +159,8 @@ const StructuredBlockCaptionStylesSchema = StructuredBlockTextStylesSchema.exten
 
 export const StructuredBlockImageLayoutParamsSchema = z.object({
   opacity: z.number().nonnegative(),
-  captionStyles: StructuredBlockCaptionStylesSchema.optional()
+  captionStyles: StructuredBlockCaptionStylesSchema.optional(),
+  lightbox: z.boolean().optional()
 });
 
 export const StructuredBlockVideoLayoutParamsSchema = z.object({

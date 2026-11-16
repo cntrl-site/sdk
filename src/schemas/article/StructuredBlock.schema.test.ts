@@ -210,6 +210,12 @@ describe('StructuredBlockSchema', () => {
     expect(StructuredBlockSchema.parse(switchedOff)).toEqual(switchedOff);
   });
 
+  it('keeps the layouts a gallery opens its images in a lightbox on', () => {
+    const withLightbox = { ...gallery, layoutParams: { desktop: { ...gallery.layoutParams.desktop, lightbox: true } } };
+    expect(StructuredBlockSchema.parse(withLightbox)).toEqual(withLightbox);
+    expect(StructuredBlockSchema.parse(gallery).layoutParams.desktop).not.toHaveProperty('lightbox');
+  });
+
   it('takes a gallery or a video whose file the API could not resolve, served with an empty url', () => {
     const missing = { ...gallery, commonParams: { ...gallery.commonParams, urls: ['https://cdn.cntrl.site/a.jpg', ''] } };
     expect(StructuredBlockSchema.parse(missing)).toEqual(missing);
