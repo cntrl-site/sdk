@@ -5,7 +5,8 @@ import {
   HeaderStructuredBlock,
   StructuredBlockAny,
   StructuredBlockHeaderCommonParams,
-  TABLE_KINDS
+  TABLE_KINDS,
+  TABLE_SIZINGS
 } from '../../types/article/StructuredBlock';
 import { StructuredBlockType } from '../../types/article/StructuredBlockType';
 import { HeadingTag, Hyphens } from '../../types/article/RichText';
@@ -150,6 +151,8 @@ const StructuredBlockBoxParamsSchema = z.object({
 export const StructuredBlockTableLayoutParamsSchema = StructuredBlockTextStylesSchema.merge(StructuredBlockBoxParamsSchema).extend({
   cellPaddingTop: z.number().nonnegative(),
   cellPaddingBottom: z.number().nonnegative(),
+  sizing: z.enum(TABLE_SIZINGS).optional(),
+  tableWidth: z.number().positive().optional(),
   columns: z.array(StructuredBlockTableColumnSchema).min(1),
   borderColor: z.string().optional(),
   headingBackground: z.string().optional(),

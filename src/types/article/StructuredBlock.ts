@@ -192,6 +192,15 @@ export const TABLE_KINDS = ['cells', 'rows', 'lines'] as const;
  */
 export type TableKind = typeof TABLE_KINDS[number];
 
+export const TABLE_SIZINGS = ['fill', 'scroll'] as const;
+
+/**
+ * How a table is as wide as it is on a layout: `fill` the whole of its box, each column a share of
+ * that; `scroll` as wide as its columns together, each as wide as it is set, scrolling sideways
+ * inside its box where it is wider than that.
+ */
+export type TableSizing = typeof TABLE_SIZINGS[number];
+
 /**
  * One cell of a table: rich text as a text block holds it, its paragraphs with their links, and
  * the styles of its ranges on every layout the site is served, the colours resolved. The styles
@@ -219,13 +228,17 @@ export interface StructuredBlockTableColumn {
 
 /**
  * A table's cells, set in the text styles they are served with and spaced inside above and below,
- * as shares of the layout width; its columns; the colour of the lines between the cells, and the
- * two fills -- the heading row's and the body's, or every other row's -- absent where there is none;
- * and the box it is drawn in. Each kind of table is styled apart.
+ * as shares of the layout width; whether it fills its box or scrolls inside it -- filling it where
+ * it is served without one --, as wide as its columns then, its width a share of the layout width;
+ * its columns; the colour of the lines between the cells, and the two fills -- the heading row's
+ * and the body's, or every other row's -- absent where there is none; and the box it is drawn in.
+ * Each kind of table is styled apart.
  */
 export interface StructuredBlockTableLayoutParams extends StructuredBlockTextStyles, StructuredBlockBoxParams {
   cellPaddingTop: number;
   cellPaddingBottom: number;
+  sizing?: TableSizing;
+  tableWidth?: number;
   columns: StructuredBlockTableColumn[];
   borderColor?: string;
   headingBackground?: string;
