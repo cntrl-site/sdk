@@ -58,8 +58,7 @@ const date = block(StructuredBlockType.Date, 'date', {
 }, { ...text, rangeStyles: [{ start: 3, end: 6, style: 'FONTWEIGHT', value: '700' }] });
 
 const gallery = block(StructuredBlockType.Image, 'gallery', {
-  urls: ['https://cdn.cntrl.site/a.jpg', 'https://cdn.cntrl.site/b.jpg'],
-  altText: '',
+  images: [{ url: 'https://cdn.cntrl.site/a.jpg', altText: 'A hand' }, { url: 'https://cdn.cntrl.site/b.jpg', altText: '' }],
   caption: 'Two views'
 }, { opacity: 1, captionStyles: { ...text, fontSize: 0.0069, color: '#E6E6E6', maxWidth: 0.4, innerPaddingTop: 0.002, innerPaddingBottom: 0 } });
 
@@ -216,8 +215,21 @@ describe('StructuredBlockSchema', () => {
     expect(StructuredBlockSchema.parse(gallery).layoutParams.desktop).not.toHaveProperty('lightbox');
   });
 
+  it('reads a gallery served by an older API, with urls and one alt text, as images that each carry it', () => {
+    const older = { ...gallery, commonParams: { urls: ['https://cdn.cntrl.site/a.jpg', ''], altText: 'Two views', caption: 'Seen' } };
+    expect(StructuredBlockSchema.parse(older).commonParams).toEqual({
+      images: [{ url: 'https://cdn.cntrl.site/a.jpg', altText: 'Two views' }, { url: '', altText: 'Two views' }],
+      caption: 'Seen'
+    });
+  });
+
+  it('drops the urls and alt text an API still serves beside the images for sites on an older SDK', () => {
+    const both = { ...gallery, commonParams: { ...gallery.commonParams, urls: ['https://cdn.cntrl.site/a.jpg', 'https://cdn.cntrl.site/b.jpg'], altText: '' } };
+    expect(StructuredBlockSchema.parse(both)).toEqual(gallery);
+  });
+
   it('takes a gallery or a video whose file the API could not resolve, served with an empty url', () => {
-    const missing = { ...gallery, commonParams: { ...gallery.commonParams, urls: ['https://cdn.cntrl.site/a.jpg', ''] } };
+    const missing = { ...gallery, commonParams: { ...gallery.commonParams, images: [{ url: 'https://cdn.cntrl.site/a.jpg', altText: '' }, { url: '', altText: '' }] } };
     expect(StructuredBlockSchema.parse(missing)).toEqual(missing);
     const gone = { ...video, commonParams: { ...video.commonParams, url: '' } };
     expect(StructuredBlockSchema.parse(gone)).toEqual(gone);
