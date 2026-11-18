@@ -1,4 +1,4 @@
-import { z, ZodType } from 'zod';
+import { z, ZodType, ZodTypeDef } from 'zod';
 import { RichTextBlockSchema, RichTextStyleSchema, TextStylesSchema } from './RichTextItem.schema';
 import {
   HEADER_ELEMENT_KINDS,
@@ -67,11 +67,18 @@ const ImageCaptionParamsSchema = z.object({
   showCaption: z.boolean().optional()
 });
 
+// an API from before each image carried its alt text serves `urls` and the one `altText` said of them all
+function withImagesFromUrls(params: unknown): unknown {
+  if (typeof params !== 'object' || params === null || 'images' in params) return params;
+  const { urls, altText } = params as { urls?: unknown; altText?: unknown };
+  if (!Array.isArray(urls)) return params;
+  return { ...params, images: urls.map(url => ({ url, altText: typeof altText === 'string' ? altText : '' })) };
+}
+
 // a url is empty where the API could not resolve the file, as it is on a header's key image until one is uploaded
-export const StructuredBlockImageCommonParamsSchema = ImageCaptionParamsSchema.extend({
-  urls: z.array(z.string()),
-  altText: z.string()
-});
+export const StructuredBlockImageCommonParamsSchema = z.preprocess(withImagesFromUrls, ImageCaptionParamsSchema.extend({
+  images: z.array(z.object({ url: z.string(), altText: z.string() }))
+}));
 
 export const StructuredBlockHeaderImageCommonParamsSchema = ImageCaptionParamsSchema.extend({
   url: z.string(),
@@ -162,7 +169,8 @@ const StructuredBlockCaptionStylesSchema = StructuredBlockTextStylesSchema.exten
 
 export const StructuredBlockImageLayoutParamsSchema = z.object({
   opacity: z.number().nonnegative(),
-  captionStyles: StructuredBlockCaptionStylesSchema.optional()
+  captionStyles: StructuredBlockCaptionStylesSchema.optional(),
+  lightbox: z.boolean().optional()
 });
 
 export const StructuredBlockVideoLayoutParamsSchema = z.object({
@@ -296,7 +304,8 @@ export const HeaderStructuredBlockSchema = StructuredBlockBaseSchema.extend({
   state: z.record(HeaderBlockStateParamsSchema)
 }) satisfies ZodType<HeaderStructuredBlock>;
 
-export const StructuredBlockSchema: ZodType<StructuredBlockAny> = z.discriminatedUnion('type', [
+// its input is anything: an image block may come as an older API served it
+export const StructuredBlockSchema: ZodType<StructuredBlockAny, ZodTypeDef, unknown> = z.discriminatedUnion('type', [
   ComponentStructuredBlockSchema,
   RichTextStructuredBlockSchema,
   ImageStructuredBlockSchema,

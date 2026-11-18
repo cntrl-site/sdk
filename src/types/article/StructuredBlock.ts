@@ -102,10 +102,15 @@ interface ImageCaptionParams {
   showCaption?: boolean;
 }
 
-/** A gallery of one image or more. */
-export interface StructuredBlockImageCommonParams extends ImageCaptionParams {
-  urls: string[];
+/** One image of an image block: its url, empty where the API could not resolve the file, and the alt text that describes it. */
+export interface BlockImage {
+  url: string;
   altText: string;
+}
+
+/** A gallery of one image or more, side by side in one row. */
+export interface StructuredBlockImageCommonParams extends ImageCaptionParams {
+  images: BlockImage[];
 }
 
 /**
@@ -123,6 +128,8 @@ export interface StructuredBlockImageLayoutParams {
   opacity: number;
   /** Set where the image has a caption. */
   captionStyles?: StructuredBlockCaptionStyles;
+  /** Set on the layouts where a gallery's images open full screen when clicked. */
+  lightbox?: boolean;
 }
 
 /** A section header's key image: the url is empty until an image is uploaded. */
