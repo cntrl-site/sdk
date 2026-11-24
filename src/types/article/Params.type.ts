@@ -151,6 +151,7 @@ export interface RichTextLayoutParams {
   fontStyle: string;
   fontWeight: number;
   fontVariant: string;
+  fontVariables?: Record<string, number>;
   columns?: number;
   columnWidth?: number;
   columnGutter?: number;

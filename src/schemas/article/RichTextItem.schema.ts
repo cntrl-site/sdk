@@ -68,6 +68,7 @@ export const RichTextItemSchema = ItemBaseSchema.extend({
       rangeStyles: z.array(RichTextStyleSchema).optional(),
       sizing: z.string(),
       blur: z.number(),
+      fontVariables: z.record(z.string(), z.number()).optional(),
       columns: z.number().optional(),
       columnWidth: z.number().optional(),
       columnGutter: z.number().optional(),

@@ -105,6 +105,11 @@ const FXParamsKeyframeSchema = KeyframesBaseSchema.extend({
   value: z.record(z.string(), z.number())
 });
 
+const FontVariationKeyframeSchema = KeyframesBaseSchema.extend({
+  type: z.literal(KeyframeType.FontVariation),
+  value: z.record(z.string(), z.number())
+});
+
 const FillKeyframeSchema = KeyframesBaseSchema.extend({
   type: z.literal(KeyframeType.Fill),
   value: z.array(FillLayerSchema)
@@ -125,7 +130,8 @@ export const KeyframeSchema = z.discriminatedUnion('type', [
   LetterSpacingKeyframeSchema,
   WordSpacingKeyframeSchema,
   FXParamsKeyframeSchema,
-  FillKeyframeSchema
+  FillKeyframeSchema,
+  FontVariationKeyframeSchema
 ]);
 
 export const KeyframesSchema = z.array(KeyframeSchema);

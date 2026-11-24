@@ -45,7 +45,13 @@ export const ProjectSchema = z.object({
           type: z.nativeEnum(FontFileTypes),
           url: z.string()
         })
-      )
+      ),
+      // only what getDeclaredFonts reads; the rest of each axis passes through
+      axes: z.array(z.object({
+        tag: z.string(),
+        min: z.number(),
+        max: z.number()
+      }).passthrough()).optional()
     }))
   }),
   primaryDomain: z.string().nullable().optional()

@@ -103,6 +103,7 @@ export interface RichTextStateParams extends ItemStatesBaseMap {
   color?: StateParams<string>;
   letterSpacing?: StateParams<number>;
   wordSpacing?: StateParams<number>;
+  fontVariables?: StateParams<Record<string, number>>;
 }
 
 export interface RectangleStateParams extends ItemStatesBaseMap {

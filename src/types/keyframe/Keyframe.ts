@@ -27,6 +27,7 @@ export enum KeyframeType {
   FXParams = 'fx-params',
   BorderFill = 'border-fill',
   Fill = 'fill',
+  FontVariation = 'font-variation',
 }
 
 export interface KeyframeValueMap {
@@ -45,6 +46,7 @@ export interface KeyframeValueMap {
   [KeyframeType.FXParams]: FXParamsValue;
   [KeyframeType.BorderFill]: BorderFillValue;
   [KeyframeType.Fill]: FillValue;
+  [KeyframeType.FontVariation]: FontVariationValue;
 }
 
 interface DimensionsValue {
@@ -106,3 +108,5 @@ type BorderFillValue = FillLayer[];
 type FXParamsValue = Record<string, number>;
 
 type FillValue = FillLayer[];
+
+type FontVariationValue = Record<string, number>;

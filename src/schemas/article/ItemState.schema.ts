@@ -72,7 +72,8 @@ export const EmbedStateParamsSchema = z.object({
 export const RichTextStateParamsSchema = z.object({
   color: getStateParamsSchema(z.string()),
   letterSpacing: getStateParamsSchema(z.number()),
-  wordSpacing: getStateParamsSchema(z.number())
+  wordSpacing: getStateParamsSchema(z.number()),
+  fontVariables: getStateParamsSchema(z.record(z.string(), z.number()))
 }).merge(ItemStateBaseSchema) satisfies ZodType<RichTextStateParams>;
 
 export const GroupStateParamsSchema = z.object({

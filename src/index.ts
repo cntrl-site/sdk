@@ -1,7 +1,7 @@
 // logic
 export { Client as CntrlClient } from './Client/Client';
 export type { CntrlPageData } from './Client/Client';
-export { FontFaceGenerator } from './FontFaceGenerator/FontFaceGenerator';
+export { FontFaceGenerator, getDeclaredFonts } from './FontFaceGenerator/FontFaceGenerator';
 export { getLayoutStyles, getLayoutMediaQuery, getShownCaption, measureFont } from './utils';
 export { ScrollPlaybackVideoManager } from './ScrollPlaybackVideoManager/ScrollPlaybackVideoManager';
 export { Rect } from './Rect/Rect';
